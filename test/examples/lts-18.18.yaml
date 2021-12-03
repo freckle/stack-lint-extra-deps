@@ -1,0 +1,23 @@
+resolver: lts-18.18
+
+packages:
+  # Exists in resolver now, newer in Hackage too
+  - dhall-1.37.1@sha256:447031286e8fe270b0baacd9cc5a8af340d2ae94bb53b85807bee93381ca5287,35080
+  - generic-lens-2.0.0.0@sha256:7409fa0ce540d0bd41acf596edd1c5d0c0ab1cd1294d514cf19c5c24e8ef2550,3866
+
+  # Newer in Hackage
+  - faktory-1.1.2.0@sha256:b2a1986095aefa645f6ad701504e1671ddfeb36f11b68434837fc9fcd3594ca8,9078
+  - hspec-core-2.8.3@sha256:e4c1e08e16842804c470c2b4722e417ed2a556a47a74107401ad42195522f7a7,4992
+  - hspec-2.8.3@sha256:43a42e23994a6c61a7adead7e8a412016680234f5a14a157f68c020871e59534,1709
+  - hspec-junit-formatter-1.0.1.0@sha256:6429871263be4532a3a6d08e72da5a8e4c00e8bfbfd7fc5b8352a3643f867453,2652
+
+  # No suggestions (yet)
+  - network-3.1.2.5@sha256:433a5e076aaa8eb3e4158abae78fb409c6bd754e9af99bc2e87583d2bcd8404a,4888
+
+  # Newer commits, version-like tag exists too
+  - git: https://github.com/freckle/yesod-routes-flow
+    commit: 2a9cd873880956dd9a0999b593022d3c746324e8
+
+  # No suggestions (yet)
+  - git: https://github.com/freckle/asana
+    commit: 91ce6ade118674bb273966943370684eba71f227
