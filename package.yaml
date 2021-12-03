@@ -1,0 +1,53 @@
+name: lsd
+version: 0.0.0.0
+
+extra-source-files:
+  - README.md
+  - CHANGELOG.md
+  - test/examples/lts-18.18.yaml
+
+default-extensions:
+  - DerivingStrategies
+  - FlexibleContexts
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - NoImplicitPrelude
+  - OverloadedStrings
+  - RecordWildCards
+
+dependencies:
+  - base
+  - rio
+
+library:
+  source-dirs: src
+  dependencies:
+    - Glob
+    - aeson
+    - errors
+    - extra
+    - html-conduit
+    - http-conduit
+    - http-types
+    - mtl
+    - optparse-applicative
+    - transformers
+    - xdg-basedir
+    - xml-conduit
+    - yaml
+
+executables:
+  lsd:
+    source-dirs: app
+    main: Main.hs
+    dependencies:
+      - lsd
+
+tests:
+  doctest:
+    main: Main.hs
+    source-dirs: doctest
+    dependencies:
+      - aeson
+      - doctest
+      - yaml
