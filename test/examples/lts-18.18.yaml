@@ -1,0 +1,54 @@
+# https://renaissancelearning.atlassian.net/wiki/spaces/EN/pages/41987178508/Shared+Backend+Stackage+Snapshot
+resolver: lts-18.18
+
+packages:
+  # === Dependencies we own
+
+  # Newer versions that will arrive in next major LTS
+  - faktory-1.1.2.0@sha256:b2a1986095aefa645f6ad701504e1671ddfeb36f11b68434837fc9fcd3594ca8,9078
+  - aws-xray-client-persistent-0.1.0.2@sha256:f00b3c3da576c488f2605ab5d049437d935eae429e7fe0eb9a6dc53d0367aebc,1682
+  - freckle-app-1.0.2.1@sha256:f8f80463b17ef9e08557fa4f414a19b797ffceca819c34eaae76d2b6fe4e2c47,6449
+
+  # https://github.com/freckle/asana/issues/29
+  - git: https://github.com/freckle/asana
+    commit: 91ce6ade118674bb273966943370684eba71f227
+
+  # https://app.asana.com/0/399653121150251/1199556619843537/f
+  - git: https://github.com/freckle/yesod-routes-flow
+    commit: 2a9cd873880956dd9a0999b593022d3c746324e8
+
+  # === Dependencies we don't own
+
+  # Newer versions that will arrive in next major LTS
+  - hspec-core-2.8.3@sha256:e4c1e08e16842804c470c2b4722e417ed2a556a47a74107401ad42195522f7a7,4992
+  - hspec-2.8.3@sha256:43a42e23994a6c61a7adead7e8a412016680234f5a14a157f68c020871e59534,1709
+  - hspec-junit-formatter-1.0.1.0@sha256:6429871263be4532a3a6d08e72da5a8e4c00e8bfbfd7fc5b8352a3643f867453,2652
+  - network-3.1.2.5@sha256:433a5e076aaa8eb3e4158abae78fb409c6bd754e9af99bc2e87583d2bcd8404a,4888
+
+  # Open an Issue asking the authors if they'd add them to Stackage and/or offer
+  # to adopt them in Stackage ourselves. Check in each LTS bump if they've been
+  # added yet.
+  - compact-0.2.0.0@sha256:9c5785bdc178ea6cf8f514ad35a78c64220e3cdb22216534e4cf496765551c7e,2345
+  - executable-hash-0.2.0.4@sha256:70d606ec3ab3a833af698f961439ae8ecb2b1238565e8af13d21d464d1838428,2435
+  - file-location-0.4.9.1@sha256:fb61c964f3aefbc32d2c2bac77a4a260d43d879959a62c56c2e3607aa79b9cad,2828
+  - monad-validate-1.2.0.0@sha256:9850f408431098b28806dd464b6825a88a0b56c84f380d7fe0454c1df9d6f881,3505
+  - monoidal-containers-0.6.0.1@sha256:7d776942659eb4d70d8b8da5d734396374a6eda8b4622df9e61e26b24e9c8e40,2501
+  - oidc-client-0.6.0.0@sha256:2079dc5c9dfb5b3e2fa93098254ca16787c01a0cd3634b1d84afe84c9a6c4825,3368
+  - pwstore-fast-2.4.4@sha256:9b6a37510d8b9f37f409a8ab3babac9181afcaaa3fce8ba1c131a7ed3de30698,1351
+
+  # For brittany-0.13.1.2
+  - data-tree-print-0.1.0.2@sha256:d845e99f322df70e0c06d6743bf80336f5918d5423498528beb0593a2afc1703,1620
+
+  # For stylish-haskell
+  - optparse-applicative-0.15.1.0@sha256:29ff6146aabf54d46c4c8788e8d1eadaea27c94f6d360c690c5f6c93dac4b07e,4810
+
+  # For weeder
+  - dhall-1.37.1@sha256:447031286e8fe270b0baacd9cc5a8af340d2ae94bb53b85807bee93381ca5287,35080
+  - generic-lens-2.0.0.0@sha256:7409fa0ce540d0bd41acf596edd1c5d0c0ab1cd1294d514cf19c5c24e8ef2550,3866
+
+  # 1.6.1 + fixes needed for newer unliftio, until 2.0 drops.
+  # https://github.com/brendanhay/amazonka/pull/617#issuecomment-830606997
+  - git: https://github.com/brendanhay/amazonka
+    commit: 14bc3248c423f486ae710d523b8996ddb3dac854
+    subdirs:
+      - amazonka
