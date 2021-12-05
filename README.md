@@ -48,7 +48,7 @@ new resolver (such as redundant Hackage deps).
 - [ ] Confirm all Hackage `extra-deps` use sha-pinning
 - [x] Suggest update when there are newer commits in a git dep
 - [x] Suggest replacement when there is a Hackage version of a git dep at a
-      same-or-newer version*
+      same-or-newer version\*
 - [ ] Apply custom rules
 
 \*For now we just look for a same-or-newer, version-like tag in the repository.
