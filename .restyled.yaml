@@ -1,0 +1,4 @@
+restylers:
+  - brittany
+  - stylish-haskell
+  - "*"
