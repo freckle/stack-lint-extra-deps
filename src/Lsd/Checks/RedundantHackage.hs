@@ -29,7 +29,7 @@ checkRedundantHackage resolver = Check $ \extraDep -> do
     pure $ Suggestion
       { sAction = Remove
       , sDetails =
-        "Newer version ("
+        "Same or newer version ("
         <> display sdStackageVersion
         <> ") is already in your resolver"
       }
