@@ -28,4 +28,4 @@ jobs:
             --exclude "*/amazonka" \
             --no-exit \
             --cache-dir /tmp/cache/lsd \
-            test/examples/lts-18.18.yaml
+            test/examples/lts-18.18.yaml || true
