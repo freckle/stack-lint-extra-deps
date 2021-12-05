@@ -1,6 +1,6 @@
 module Lsd.Checks.RedundantHackage
-    ( checkRedundantHackage
-    ) where
+  ( checkRedundantHackage
+  ) where
 
 import RIO
 
@@ -15,21 +15,21 @@ import Lsd.StackageResolver
 import Lsd.Suggestion
 
 checkRedundantHackage
-    :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasCache env)
-    => StackageResolver
-    -> Check m
+  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasCache env)
+  => StackageResolver
+  -> Check m
 checkRedundantHackage resolver = Check $ \extraDep -> do
-    runMaybeT $ do
-        Hackage HackageExtraDep {..} <- pure extraDep
-        current <- hoistMaybe hedVersion
-        StackageDetails {..} <- MaybeT $ getStackageDetails resolver hedPackage
+  runMaybeT $ do
+    Hackage HackageExtraDep {..} <- pure extraDep
+    current <- hoistMaybe hedVersion
+    StackageDetails {..} <- MaybeT $ getStackageDetails resolver hedPackage
 
-        guard $ sdStackageVersion >= current
+    guard $ sdStackageVersion >= current
 
-        pure $ Suggestion
-            { sAction = Remove
-            , sDetails =
-                "Newer version ("
-                <> display sdStackageVersion
-                <> ") is already in your resolver"
-            }
+    pure $ Suggestion
+      { sAction = Remove
+      , sDetails =
+        "Newer version ("
+        <> display sdStackageVersion
+        <> ") is already in your resolver"
+      }

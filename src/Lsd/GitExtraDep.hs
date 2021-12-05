@@ -1,9 +1,9 @@
 module Lsd.GitExtraDep
-    ( GitExtraDep(..)
-    , Repository(..)
-    , repositoryBase
-    , CommitSHA(..)
-    ) where
+  ( GitExtraDep(..)
+  , Repository(..)
+  , repositoryBase
+  , CommitSHA(..)
+  ) where
 
 import RIO
 
@@ -11,18 +11,17 @@ import Data.Aeson
 import qualified RIO.Text as T
 
 data GitExtraDep = GitExtraDep
-    { gedRepository :: Repository
-    , gedCommit :: CommitSHA
-    }
-    deriving stock Show
+  { gedRepository :: Repository
+  , gedCommit :: CommitSHA
+  }
+  deriving stock Show
 
 instance FromJSON GitExtraDep where
-    parseJSON = withObject "GitExtraDep"
-        $ \o -> GitExtraDep <$> o .: "git" <*> o .: "commit"
+  parseJSON = withObject "GitExtraDep"
+    $ \o -> GitExtraDep <$> o .: "git" <*> o .: "commit"
 
 instance Display GitExtraDep where
-    display GitExtraDep {..} =
-        display gedRepository <> "@" <> display gedCommit
+  display GitExtraDep {..} = display gedRepository <> "@" <> display gedCommit
 
 newtype Repository = Repository
     { unRepository :: Text
@@ -38,4 +37,4 @@ newtype CommitSHA = CommitSHA
     deriving newtype (Show, FromJSON)
 
 instance Display CommitSHA where
-    display (CommitSHA x) = display $ T.take 7 x
+  display (CommitSHA x) = display $ T.take 7 x

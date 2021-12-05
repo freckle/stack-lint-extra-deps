@@ -1,8 +1,8 @@
 module Lsd.PackageName
-    ( PackageName
-    , packageName
-    , unPackageName
-    ) where
+  ( PackageName
+  , packageName
+  , unPackageName
+  ) where
 
 import RIO
 

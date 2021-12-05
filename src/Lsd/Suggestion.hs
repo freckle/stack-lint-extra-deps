@@ -1,7 +1,7 @@
 module Lsd.Suggestion
-    ( Suggestion(..)
-    , SuggestionAction(..)
-    ) where
+  ( Suggestion(..)
+  , SuggestionAction(..)
+  ) where
 
 import RIO
 
@@ -10,6 +10,6 @@ data SuggestionAction
     | Replace
 
 data Suggestion = Suggestion
-    { sAction :: SuggestionAction
-    , sDetails :: Utf8Builder
-    }
+  { sAction :: SuggestionAction
+  , sDetails :: Utf8Builder
+  }
