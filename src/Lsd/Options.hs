@@ -1,9 +1,9 @@
 module Lsd.Options
-    ( Options(..)
-    , parseOptions
-    , optionsLogOptions
-    , ColorOption(..)
-    ) where
+  ( Options(..)
+  , parseOptions
+  , optionsLogOptions
+  , ColorOption(..)
+  ) where
 
 import RIO
 
@@ -16,42 +16,42 @@ import System.Environment (lookupEnv)
 import System.FilePath.Glob
 
 data Options = Options
-    { oResolver :: Maybe StackageResolver
-    , oExcludes :: [Pattern]
-    , oChecks :: ChecksName
-    , oFormat :: Format
-    , oNoExit :: Bool
-    , oCacheDirectory :: FilePath
-    , oNoCache :: Bool
-    , oColor :: ColorOption
-    , oVerbose :: Bool
-    , oPath :: FilePath
-    }
+  { oResolver :: Maybe StackageResolver
+  , oExcludes :: [Pattern]
+  , oChecks :: ChecksName
+  , oFormat :: Format
+  , oNoExit :: Bool
+  , oCacheDirectory :: FilePath
+  , oNoCache :: Bool
+  , oColor :: ColorOption
+  , oVerbose :: Bool
+  , oPath :: FilePath
+  }
 
 instance HasCache Options where
-    cacheEnabledL = lens (not . oNoCache) $ \x y -> x { oNoCache = not y }
-    cacheDirectoryL = lens oCacheDirectory $ \x y -> x { oCacheDirectory = y }
+  cacheEnabledL = lens (not . oNoCache) $ \x y -> x { oNoCache = not y }
+  cacheDirectoryL = lens oCacheDirectory $ \x y -> x { oCacheDirectory = y }
 
 optionsLogOptions :: MonadIO m => Options -> Handle -> m LogOptions
 optionsLogOptions Options {..} h = do
-    useColor <- case oColor of
-        ColorAuto -> hIsTerminalDevice h
-        ColorAlways -> pure True
-        ColorNever -> pure False
-    setLogVerboseFormat True
-        . setLogUseColor useColor
-        . setLogMinLevel minLevel
-        <$> logOptionsHandle h False
-    where minLevel = if oVerbose then LevelDebug else LevelInfo
+  useColor <- case oColor of
+    ColorAuto -> hIsTerminalDevice h
+    ColorAlways -> pure True
+    ColorNever -> pure False
+  setLogVerboseFormat True
+    . setLogUseColor useColor
+    . setLogMinLevel minLevel
+    <$> logOptionsHandle h False
+  where minLevel = if oVerbose then LevelDebug else LevelInfo
 
 parseOptions :: IO Options
 parseOptions = do
-    envStackYaml <- fromMaybe "stack.yaml" <$> lookupEnv "STACK_YAML"
-    envCacheDir <- defaultCacheDirectory
-    execParser
-        $ info (options envStackYaml envCacheDir <**> helper)
-        $ fullDesc
-        <> progDesc "Lint Stackage (extra) Deps"
+  envStackYaml <- fromMaybe "stack.yaml" <$> lookupEnv "STACK_YAML"
+  envCacheDir <- defaultCacheDirectory
+  execParser
+    $ info (options envStackYaml envCacheDir <**> helper)
+    $ fullDesc
+    <> progDesc "Lint Stackage (extra) Deps"
 
 -- brittany-disable-next-binding
 
@@ -116,7 +116,7 @@ data ColorOption
 
 readColorOption :: String -> Either String ColorOption
 readColorOption = \case
-    "auto" -> Right ColorAuto
-    "always" -> Right ColorAlways
-    "never" -> Right ColorNever
-    x -> Left $ "Invalid color option: " <> x
+  "auto" -> Right ColorAuto
+  "always" -> Right ColorAlways
+  "never" -> Right ColorNever
+  x -> Left $ "Invalid color option: " <> x

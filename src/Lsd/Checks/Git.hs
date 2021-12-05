@@ -1,6 +1,6 @@
 module Lsd.Checks.Git
-    ( checkInGitClone
-    ) where
+  ( checkInGitClone
+  ) where
 
 import RIO
 
@@ -16,27 +16,28 @@ import RIO.Process
 import RIO.Text (unpack)
 
 checkInGitClone
-    :: ( MonadUnliftIO m
-       , MonadReader env m
-       , HasLogFunc env
-       , HasProcessContext env
-       , HasCache env
-       )
-    => (GitExtraDep -> m (Maybe a))
-    -> (a -> Maybe Suggestion)
-    -> Check m
+  :: ( MonadUnliftIO m
+     , MonadReader env m
+     , HasLogFunc env
+     , HasProcessContext env
+     , HasCache env
+     )
+  => (GitExtraDep -> m (Maybe a))
+  -> (a -> Maybe Suggestion)
+  -> Check m
 checkInGitClone setup suggest = Check $ \extraDep -> do
-    runMaybeT $ do
-        Git ged@GitExtraDep {..} <- pure extraDep
+  runMaybeT $ do
+    Git ged@GitExtraDep {..} <- pure extraDep
 
-        let cloneUrl = unpack $ unRepository gedRepository
-            cloneTo path = do
-                logDebug $ "Cloning " <> fromString cloneUrl <> "..."
-                proc "git" ["clone", "--quiet", cloneUrl, path] runProcess_
+    let
+      cloneUrl = unpack $ unRepository gedRepository
+      cloneTo path = do
+        logDebug $ "Cloning " <> fromString cloneUrl <> "..."
+        proc "git" ["clone", "--quiet", cloneUrl, path] runProcess_
 
-        a <- MaybeT $ withinCachedDirectory (takeBaseName cloneUrl) cloneTo $ do
-            logDebug $ "Updating " <> fromString cloneUrl <> "..."
-            proc "git" ["pull", "--quiet"] runProcess_
-            setup ged
+    a <- MaybeT $ withinCachedDirectory (takeBaseName cloneUrl) cloneTo $ do
+      logDebug $ "Updating " <> fromString cloneUrl <> "..."
+      proc "git" ["pull", "--quiet"] runProcess_
+      setup ged
 
-        hoistMaybe $ suggest a
+    hoistMaybe $ suggest a

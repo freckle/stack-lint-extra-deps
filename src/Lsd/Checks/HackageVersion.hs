@@ -1,6 +1,6 @@
 module Lsd.Checks.HackageVersion
-    ( checkHackageVersion
-    ) where
+  ( checkHackageVersion
+  ) where
 
 import RIO
 
@@ -15,21 +15,19 @@ import Lsd.StackageResolver
 import Lsd.Suggestion
 
 checkHackageVersion
-    :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasCache env)
-    => StackageResolver
-    -> Check m
+  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasCache env)
+  => StackageResolver
+  -> Check m
 checkHackageVersion resolver = Check $ \extraDep -> do
-    runMaybeT $ do
-        Hackage HackageExtraDep {..} <- pure extraDep
-        current <- hoistMaybe hedVersion
-        StackageDetails {..} <- MaybeT $ getStackageDetails resolver hedPackage
+  runMaybeT $ do
+    Hackage HackageExtraDep {..} <- pure extraDep
+    current <- hoistMaybe hedVersion
+    StackageDetails {..} <- MaybeT $ getStackageDetails resolver hedPackage
 
-        guard $ sdHackageVersion > current
+    guard $ sdHackageVersion > current
 
-        pure $ Suggestion
-            { sAction = Replace
-            , sDetails =
-                "Newer version ("
-                <> display sdHackageVersion
-                <> ") is available"
-            }
+    pure $ Suggestion
+      { sAction = Replace
+      , sDetails =
+        "Newer version (" <> display sdHackageVersion <> ") is available"
+      }

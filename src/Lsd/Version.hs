@@ -1,8 +1,8 @@
 module Lsd.Version
-    ( Version
-    , parseVersion
-    , showVersion
-    ) where
+  ( Version
+  , parseVersion
+  , showVersion
+  ) where
 
 import RIO
 
@@ -20,7 +20,7 @@ newtype Version = Version Version.Version
         )
 
 instance Display Version where
-    display (Version v) = fromString $ Version.showVersion v
+  display (Version v) = fromString $ Version.showVersion v
 
 parseVersion :: String -> Maybe Version
 parseVersion = fmap Version . parse Version.parseVersion

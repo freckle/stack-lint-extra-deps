@@ -1,9 +1,9 @@
 module Lsd.Checks
-    ( ChecksName(..)
-    , readChecksName
-    , checksNameList
-    , checksByName
-    ) where
+  ( ChecksName(..)
+  , readChecksName
+  , checksNameList
+  , checksByName
+  ) where
 
 import RIO
 
@@ -23,31 +23,31 @@ data ChecksName
 
 readChecksName :: String -> Either String ChecksName
 readChecksName = \case
-    "all" -> Right AllChecks
-    "git" -> Right GitChecks
-    "hackage" -> Right HackageChecks
-    x -> Left $ "Invalid checks name: " <> x
+  "all" -> Right AllChecks
+  "git" -> Right GitChecks
+  "hackage" -> Right HackageChecks
+  x -> Left $ "Invalid checks name: " <> x
 
 checksNameList :: String
 checksNameList = "all, git, hackage"
 
 checksByName
-    :: ( MonadUnliftIO m
-       , MonadReader env m
-       , HasLogFunc env
-       , HasProcessContext env
-       , HasCache env
-       )
-    => StackageResolver
-    -> ChecksName
-    -> [Check m]
+  :: ( MonadUnliftIO m
+     , MonadReader env m
+     , HasLogFunc env
+     , HasProcessContext env
+     , HasCache env
+     )
+  => StackageResolver
+  -> ChecksName
+  -> [Check m]
 checksByName resolver = \case
-    AllChecks ->
-        [ checkRedundantGit
-        , checkGitVersion
-        , checkRedundantHackage resolver
-        , checkHackageVersion resolver
-        ]
-    GitChecks -> [checkRedundantGit, checkGitVersion]
-    HackageChecks ->
-        [checkRedundantHackage resolver, checkHackageVersion resolver]
+  AllChecks ->
+    [ checkRedundantGit
+    , checkGitVersion
+    , checkRedundantHackage resolver
+    , checkHackageVersion resolver
+    ]
+  GitChecks -> [checkRedundantGit, checkGitVersion]
+  HackageChecks ->
+    [checkRedundantHackage resolver, checkHackageVersion resolver]

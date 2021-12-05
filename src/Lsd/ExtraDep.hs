@@ -1,7 +1,7 @@
 module Lsd.ExtraDep
-    ( ExtraDep(..)
-    , matchExclude
-    ) where
+  ( ExtraDep(..)
+  , matchExclude
+  ) where
 
 import RIO
 
@@ -22,17 +22,17 @@ data ExtraDep
     deriving stock Show
 
 instance FromJSON ExtraDep where
-    parseJSON x =
-        asum [Git <$> parseJSON x, Hackage <$> parseJSON x, pure $ Other x]
+  parseJSON x =
+    asum [Git <$> parseJSON x, Hackage <$> parseJSON x, pure $ Other x]
 
 instance Display ExtraDep where
-    display = \case
-        Hackage x -> display x
-        Git x -> display x
-        Other{} -> "<other>"
+  display = \case
+    Hackage x -> display x
+    Git x -> display x
+    Other{} -> "<other>"
 
 matchExclude :: Pattern -> ExtraDep -> Bool
 matchExclude p = \case
-    Hackage HackageExtraDep {..} -> p `match` unpack (unPackageName hedPackage)
-    Git GitExtraDep {..} -> p `match` unpack (repositoryBase gedRepository)
-    Other{} -> False
+  Hackage HackageExtraDep {..} -> p `match` unpack (unPackageName hedPackage)
+  Git GitExtraDep {..} -> p `match` unpack (repositoryBase gedRepository)
+  Other{} -> False

@@ -1,8 +1,8 @@
 module Lsd.StackageResolver
-    ( StackageResolver
-    , stackageResolver
-    , unStackageResolver
-    ) where
+  ( StackageResolver
+  , stackageResolver
+  , unStackageResolver
+  ) where
 
 import RIO
 

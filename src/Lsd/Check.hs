@@ -1,7 +1,7 @@
 module Lsd.Check
-    ( Check(..)
-    , runChecks
-    ) where
+  ( Check(..)
+  , runChecks
+  ) where
 
 import RIO
 
@@ -13,13 +13,13 @@ newtype Check m = Check
     }
 
 runChecks
-    :: Monad m
-    => [ExtraDep]
-    -> [Check m]
-    -> (ExtraDep -> Suggestion -> m ())
-    -> m Int
+  :: Monad m
+  => [ExtraDep]
+  -> [Check m]
+  -> (ExtraDep -> Suggestion -> m ())
+  -> m Int
 runChecks extraDeps checks onSuggestion = do
-    fmap (length . catMaybes) $ for pairs $ \(check, extraDep) -> do
-        mSuggestion <- runCheck check extraDep
-        traverse (onSuggestion extraDep) mSuggestion
-    where pairs = (,) <$> checks <*> extraDeps
+  fmap (length . catMaybes) $ for pairs $ \(check, extraDep) -> do
+    mSuggestion <- runCheck check extraDep
+    traverse (onSuggestion extraDep) mSuggestion
+  where pairs = (,) <$> checks <*> extraDeps
