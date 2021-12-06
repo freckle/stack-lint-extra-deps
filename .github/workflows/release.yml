@@ -50,7 +50,7 @@ jobs:
       - uses: freckle/stack-cache-action@v1
       - run: |
           mkdir -p dist/lsd
-          stack build --copy-bins --bin-path dist/lsd
+          stack build --copy-bins --local-bin-path dist/lsd
           cd dist && tar -czf ./lsd.tar.gz ./lsd
       - uses: actions/upload-release-asset@v1
         id: upload-release-asset
