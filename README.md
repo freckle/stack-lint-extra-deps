@@ -12,13 +12,20 @@ All of these are manual, annoying, and error prone to check by hand.
 
 ## Install
 
-Assuming `~/.local/bin` is on `$PATH`:
+Get the Download URL for the latest release,
+
+```sh
+url=$(curl --silent https://api.github.com/repos/freckle/lsd/releases/latest |
+  jq '.assets[].browser_download_url | select(.|test("x86_64-linux.tar.gz$"))' --raw-output)
+```
+
+(You can also just browse [Releases][].)
+
+[releases]: https://github.com/freckle/lsd/releases
 
 ```console
-% version=v0.0.0.0
-% suffix=x86_64-linux
-% curl -L https://github.com/freckle/lsd/releases/download/$version/lsd-$suffix.tar.gz | tar xzf - &&
-  mv lsd/lsd ~/.local/bin && rmdir lsd && which lsd
+% curl -L "$url" | tar xzf - && mv lsd/lsd ~/.local/bin && rmdir lsd
+% which lsd
 ~/.local/bin/lsd
 ```
 
