@@ -8,6 +8,7 @@ jobs:
   tag:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - id: tag
         uses: freckle/haskell-tag-action@v1
         env:
