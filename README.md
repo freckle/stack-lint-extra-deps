@@ -10,9 +10,22 @@ All of these are manual, annoying, and error prone to check by hand.
 
 ![](./files/example.png)
 
+## Install
+
+Assuming `~/.local/bin` is on `$PATH`:
+
+```console
+% version=v0.0.0.0
+% suffix=x86_64-linux
+% curl -L https://github.com/freckle/lsd/releases/download/$version/lsd-$suffix.tar.gz | tar xzf - &&
+  mv lsd/lsd ~/.local/bin && rmdir lsd && which lsd
+~/.local/bin/lsd
+```
+
 ## Usage
 
 ```console
+% lsd --help
 Usage: lsd [-r|--resolver ARG] [--exclude ARG] [--checks ARG] [-f|--format ARG]
            [--no-exit] [--cache-dir ARG] [--no-cache] [-c|--color ARG]
            [-v|--verbose] [PATH]
