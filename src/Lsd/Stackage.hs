@@ -35,13 +35,14 @@ getStackageDetails
   -> PackageName
   -> m (Maybe StackageDetails)
 getStackageDetails resolver package = do
-  html <- cachedFile cachePath $ getStackageHtml resolver package
-  let versions = parseVersionsTable $ fromDocument $ parseLBS html
+  mHtml <- cachedFile cachePath $ getStackageHtml resolver package
 
-  pure
-    $ StackageDetails
-    <$> Map.lookup "Version on this page:" versions
-    <*> Map.lookup "Latest on Hackage:" versions
+  pure $ do
+    versions <- parseVersionsTable . fromDocument . parseLBS <$> mHtml
+
+    StackageDetails
+      <$> Map.lookup "Version on this page:" versions
+      <*> Map.lookup "Latest on Hackage:" versions
  where
   cachePath =
     unpack $ unStackageResolver resolver <> "-" <> unPackageName package
@@ -50,7 +51,7 @@ getStackageHtml
   :: (MonadIO m, MonadReader env m, HasLogFunc env)
   => StackageResolver
   -> PackageName
-  -> m BSL.ByteString
+  -> m (Maybe BSL.ByteString)
 getStackageHtml resolver package = do
   req <-
     liftIO
@@ -63,8 +64,8 @@ getStackageHtml resolver package = do
 
   resp <- httpLBS req
   pure $ if getResponseStatus resp == status200
-    then getResponseBody resp
-    else "<html>"
+    then Just $ getResponseBody resp
+    else Nothing
 
 parseVersionsTable :: Cursor -> Map Text Version
 parseVersionsTable cursor = do
