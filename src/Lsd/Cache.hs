@@ -29,8 +29,8 @@ defaultCacheDirectory = liftIO $ getUserCacheDir "lsd"
 cachedFile
   :: (MonadUnliftIO m, MonadReader env m, HasCache env)
   => FilePath
-  -> m BSL.ByteString
-  -> m BSL.ByteString
+  -> m (Maybe BSL.ByteString)
+  -> m (Maybe BSL.ByteString)
 cachedFile name action = do
   enabled <- view cacheEnabledL
   directory <- view cacheDirectoryL
@@ -40,10 +40,10 @@ cachedFile name action = do
   exists <- doesFileExist path
 
   if exists && enabled
-    then BSL.fromStrict <$> readFileBinary path
+    then Just . BSL.fromStrict <$> readFileBinary path
     else do
-      result <- action
-      result <$ writeFileBinary path (BSL.toStrict result)
+      mResult <- action
+      mResult <$ traverse_ (writeFileBinary path . BSL.toStrict) mResult
 
 cachedDirectory
   :: (MonadIO m, MonadReader env m, HasCache env)
