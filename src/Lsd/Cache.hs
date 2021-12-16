@@ -58,7 +58,11 @@ cachedDirectory name create = do
   let path = directory </> name
   exists <- doesDirectoryExist path
 
-  if exists then unless enabled $ removeDirectoryRecursive path else create path
+  if exists
+    then unless enabled $ do
+      removeDirectoryRecursive path
+      create path
+    else create path
 
   pure path
 
