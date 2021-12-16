@@ -1,0 +1,3321 @@
+<!doctype html><!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]--><!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]--><!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]--><!--[if gt IE 8]><!--><html class="no-js" lang="en"> <!--<![endif]--><head><meta charset="UTF-8"><link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css"><link rel="search" type="application/opensearchdescription+xml" title="Stackage.org hoogle" href="/static/opensearchhoogle.xml"><link rel="search" type="application/opensearchdescription+xml" title="Stackage.org package page" href="/static/opensearchpackage.xml"><title>dhall :: Stackage Server</title><meta name="og:site_name" content="Stackage"><meta name="twitter:card" content="summary"><meta name="og:title" content="dhall"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://www.stackage.org/feed" type="application/atom+xml" rel="alternate" title="Recent Stackage snapshots">
+<link rel="stylesheet" href="https://www.stackage.org/static/combined/d9jEluDQ.css"><link rel="stylesheet" href="https://www.stackage.org/static/combined/kYdVr3eT.css"><style>form.hoogle{margin-bottom:20px}form.hoogle .search{width:25em}form.hoogle input{margin-bottom:0}.exact-lookup{display:inline-block;margin-left:1em}.wrap{padding-left:0 !important;padding-right:0 !important;margin-right:0 !important;margin-left:0 !important}h3{color:#777}.table.snapshots{width:auto;margin-left:auto}.version{font-weight:bold}#disqus_thread{margin-top:2em}#upvote{margin-left:-1em}.fa-google-plus-square{color:#dd4b39
+}.fa-facebook-square{color:#3b5998
+}.fa-twittersquare{color:#0088cc
+}.social{border-top:1px solid #ddd;padding-top:0.5em;margin-bottom:0.5em;margin-top:0.5em;border-bottom:1px solid #ddd;padding-bottom:0.5em}.social .fa-thumbs-o-up{color:rgba(0, 39, 59, 0.34902);cursor:pointer}.social .fa-thumbs-o-up:hover{color:#3f4549
+  }.social .fa-thumbs-up{cursor:pointer}.dependencies{margin-top:0.5em;padding-top:0.5em}.docs{margin-top:0.5em;border-top:1px solid #ddd;padding-top:0.5em}.docs ul{list-style-type:none}.docs ul li{line-height:1.5em }.docs,.docs ul,.docs li{position:relative}.docs ul{list-style:none;padding-left:10px}.docs li::before,.docs li::after{content:"";position:absolute;left:-12px}.docs li::before{border-top:1px solid #DDD;top:9px;width:8px;height:0}.docs li::after{border-left:1px solid #DDD;height:100%;width:0px;top:0}.docs ul > li:last-child::after{height:9px}.docs > ul > li::after{border-left:none}.docs > ul > li::before{border-top:none}.downloads{margin-left:1em}.fa-plus-square{color:rgba(0, 39, 59, 0.34902);cursor:pointer}.fa-plus-square:hover{color:#3f4549
+}@media (max-width: 767px) {.table.snapshots{margin-top:1em;margin-left:-8px}.container{padding-left:15px !important;padding-right:15px !important;margin-right:0 !important;margin-left:0 !important}}.markdown-container{margin-top:1em;border-top:1px solid #ddd;padding-top:1em;margin-bottom:0em;border-bottom:1px solid #ddd;padding-bottom:1em;background:#f4f4f4}.markdown-container h1,.markdown-container h2,.markdown-container h3,.markdown-container h4,.markdown-container h5{color:#333;margin-top:0.5em;margin-bottom:0.5em;font-weight:normal}.markdown-container h2,.markdown-container h3,.markdown-container h4,.markdown-container h5{margin-top:1em}.markdown-container h1{font-size:3em}.markdown-container h2{font-size:2em}.markdown-container h3{font-size:1.5em}.markdown-container h4,.markdown-container h5{font-size:1.2em}.markdown-container ul,.markdown-container ol,.markdown-container p{margin-top:0.5em}.markdown-container ul,.markdown-container ol{padding-left:1em}.markdown-container pre,.markdown-container pre code,.markdown-container code{font-family:ubuntu mono, dejavu sans mono, monospace;background:#f8f8f8}.markdown-container pre{padding:1em}.changelog-container{margin-top:0.5em}.changelog-container h1{font-size:1.2em}.changelog-container h2,.changelog-container h3,.changelog-container h4,.changelog-container h5{font-size:1.2em}h2.changes-title{margin-top:1em;font-size:1.5em;color:#555}.readme-container{margin-top:1em}.hidden{display:none}.expanding{position:relative}.expanding .bottom-gradient{display:none;bottom:0;position:absolute;width:100%;cursor:pointer;height:150px;line-height:150px;text-align:center;background:-moz-linear-gradient(top, rgba(244,244,244,0) 0%, rgba(244,244,244,1) 100%);background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(244,244,244,0)), color-stop(100%,rgba(244,244,244,1)));background:-webkit-linear-gradient(top, rgba(244,244,244,0) 0%,rgba(244,244,244,1) 100%);background:-o-linear-gradient(top, rgba(244,244,244,0) 0%,rgba(244,244,244,1) 100%);background:-ms-linear-gradient(top, rgba(244,244,244,0) 0%,rgba(244,244,244,1) 100%);background:linear-gradient(to bottom, rgba(244,244,244,0) 0%,rgba(244,244,244,1) 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#00f4f4f4', endColorstr='#f4f4f4',GradientType=0 )}.expanding .bottom-gradient:hover .fa{color:#000}.expanding .fa{font-size:5em;color:#666;line-height:150px;margin-top:25px}.expanding.collapsed{height:300px;overflow:hidden}.expanding.collapsed .bottom-gradient{display:block}.likes{margin-right:1em}.no-tags{color:#888}.tag-count{border:0.1em solid #d8d8d8;padding:0 0.25em;border-radius:0.25em;color:#999;font-size:0.8em}.tag-count:hover{border:0.1em solid #333;color:#333;cursor:pointer;text-decoration:none}.tag-count.tagged{background:#06537d;border:none;color:#fff}div.plain-text{white-space:pre-wrap}.deprecated{color:#aaa}.deprecated h1,.deprecated h2,.deprecated h3,.deprecated h4,.deprecated h5,.deprecated a{color:#aaa}.deprecated .package-deprecation-warning{color:red}.deprecated .in-favour-of{color:#333}.deprecated .in-favour-of .in-favour-of-list a{color:#08c}.add-to-nightly{border:1px solid black;padding:0.5em;background:#eef}html{position:relative;min-height:100%}body{background:#f0f0f0;font-family:'Lato', sans-serif;font-size:16px;margin-bottom:4em;padding-bottom:2em}code,pre{color:#555;font-family:"ubuntu mono", monospace}.brand > img{height:20px}.navbar-inverse{margin-bottom:1em}.navbar-inverse .navbar-inner{background:#0981c3}.navbar-inverse .navbar-inner .btn-navbar{background:#0981c3}.navbar-inverse .navbar-inner *{color:#fff !important
+}.navbar-inverse .nav .active>a,.navbar-inverse .nav .active>a:hover,.navbar-inverse .nav .active>a:focus{background:#0981c3 !important}.navbar-inner{border-color:#06537d !important}.footer{background:#0981c3;border-top:1px solid #ddd;color:#fff;position:absolute;bottom:0;left:0;width:100%;height:4em;line-height:2em;text-align:center}.footer a{color:#fff;font-weight:bold}.footer .span12{padding:0px 15px 0 0;line-height:4em}.alert{margin-top:1em}h1,h2,h3,h4,h5{color:#06537d
+}.content{line-height:30px}</style><!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--><script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');</script></head><body><div id="main" role="main"><div class="navbar navbar-inverse navbar-static-top"><div class="navbar-inner"><div class="container"><button class="btn btn-navbar" type="button" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="brand" href="/"><img src="/static/img/stackage.png" title="Stackage">
+</a>
+<div class="nav-collapse collapse"><ul class="nav"><li> <a href="/#about">About</a></li>
+<li> <a href="/snapshots">Snapshots</a></li>
+<li> <a href="/lts">LTS</a></li>
+<li> <a href="/nightly">Nightly</a></li>
+<li> <a href="https://github.com/fpco/stackage#frequently-asked-questions">FAQ</a></li>
+<li> <a href="/blog">Blog</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="container"><div class="container content " id="snapshot-home"><div class="row"><div class="span12"><h1>dhall</h1><p class="synopsis">A configuration language guaranteed to terminate</p><table><tr><td align="right">Version on this page:</td><td><span class="version">1.39.0@rev:3</span></td></tr><tr><td align="right"><a href="https://www.stackage.org/lts-18.18">LTS Haskell 18.18</a>:</td><td><span class="version"><a href="https://www.stackage.org/lts-18.18/package/dhall">1.39.0@rev:3</a></span></td></tr><tr><td align="right"><a href="https://www.stackage.org/nightly-2021-12-16">Stackage Nightly 2021-12-16</a>:</td><td><span class="version"><a href="https://www.stackage.org/nightly-2021-12-16/package/dhall">1.40.2</a></span></td></tr><tr><td align="right">Latest on Hackage:</td><td><a href="https://hackage.haskell.org/package/dhall"><span class="version">1.40.2</span></a></td></tr></table><p><a href="https://www.stackage.org/package/dhall/snapshots">See all snapshots <code>dhall</code> appears in</a></p></div></div><div class="row"><div class="span12"><div class="authorship"><span class="license">BSD-3-Clause licensed </span>by <strong class="author">Gabriel Gonzalez</strong></div><div class="maintainer">Maintained by <strong class="author"><a href="mailto:Gabriel439@gmail.com">Gabriel439@gmail.com</a></strong></div><div class="pantry-version">This version can be pinned in stack with:<code>dhall-1.39.0@sha256:869eb2a0a18bd10ba19c91cc381e71c1e05aab73fe6d30b8f207901111a61afa,35170</code></div><div class="docs"><h4>Module documentation for 1.39.0</h4><form class="hoogle" action="https://www.stackage.org/lts-18.18/hoogle"><input class="search" type="search" autofocus name="q" value="" placeholder="Hoogle Search Phrase">
+<input class="btn" type="submit" value="Search">
+<input type="hidden" name="package" value="dhall">
+<label class="checkbox exact-lookup" for="exact" title="Only find identifiers matching your search term precisely"><input type="checkbox" name="exact" id="exact">
+Exact lookup</label>
+</form>
+<ul class="docs-list"><li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall.html">Dhall</a>
+<ul class="docs-list"><li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Binary.html">Dhall.Binary</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Context.html">Dhall.Context</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Core.html">Dhall.Core</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Crypto.html">Dhall.Crypto</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Diff.html">Dhall.Diff</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-DirectoryTree.html">Dhall.DirectoryTree</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Format.html">Dhall.Format</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Freeze.html">Dhall.Freeze</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Import.html">Dhall.Import</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Lint.html">Dhall.Lint</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Main.html">Dhall.Main</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Map.html">Dhall.Map</a>
+</li>
+<li>Dhall.Marshal<ul class="docs-list"><li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Marshal-Decode.html">Dhall.Marshal.Decode</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Marshal-Encode.html">Dhall.Marshal.Encode</a>
+</li>
+</ul>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Optics.html">Dhall.Optics</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Parser.html">Dhall.Parser</a>
+<ul class="docs-list"><li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Parser-Expression.html">Dhall.Parser.Expression</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Parser-Token.html">Dhall.Parser.Token</a>
+</li>
+</ul>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Pretty.html">Dhall.Pretty</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Repl.html">Dhall.Repl</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Schemas.html">Dhall.Schemas</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Set.html">Dhall.Set</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Src.html">Dhall.Src</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Substitution.html">Dhall.Substitution</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Tags.html">Dhall.Tags</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Tutorial.html">Dhall.Tutorial</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-TypeCheck.html">Dhall.TypeCheck</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Util.html">Dhall.Util</a>
+</li>
+<li><a href="https://www.stackage.org/haddock/lts-18.18/dhall-1.39.0/Dhall-Version.html">Dhall.Version</a>
+</li>
+</ul>
+</li>
+</ul>
+</div></div></div></div><div class="container content" id="snapshot-home"><div class="row"><div class="span12"><div class="dependencies" id="dependencies">Depends on 52 packages<em>(<a href=https://www.stackage.org/lts-18.18/package/dhall-1.39.0/deps>full list with versions</a>)</em>:</em><div class="dep-list"><a href="https://www.stackage.org/package/aeson" title="&gt;=1.0.0.0 &amp;&amp; &lt;1.6">aeson</a>, <a href="https://www.stackage.org/package/aeson-pretty" title="&lt;0.9">aeson-pretty</a>, <a href="https://www.stackage.org/package/ansi-terminal" title="&gt;=0.6.3.1 &amp;&amp; &lt;0.12">ansi-terminal</a>, <a href="https://www.stackage.org/package/atomic-write" title="&gt;=0.2.0.7 &amp;&amp; &lt;0.3">atomic-write</a>, <a href="https://www.stackage.org/package/base" title="&gt;=4.11.0.0 &amp;&amp; &lt;5">base</a>, <a href="https://www.stackage.org/package/bytestring" title="&lt;0.12">bytestring</a>, <a href="https://www.stackage.org/package/case-insensitive" title="&lt;1.3">case-insensitive</a>, <a href="https://www.stackage.org/package/cborg" title="&gt;=0.2.0.0 &amp;&amp; &lt;0.3">cborg</a>, <a href="https://www.stackage.org/package/cborg-json" title="&gt;=0.2.2.0 &amp;&amp; &lt;0.3">cborg-json</a>, <a href="https://www.stackage.org/package/containers" title="&gt;=0.5.8.0 &amp;&amp; &lt;0.7">containers</a>, <a href="https://www.stackage.org/package/contravariant" title="&lt;1.6">contravariant</a>, <a href="https://www.stackage.org/package/cryptonite" title="&gt;=0.23 &amp;&amp; &lt;0.30">cryptonite</a>, <a href="https://www.stackage.org/package/data-fix" title="&lt;0.4">data-fix</a>, <a href="https://www.stackage.org/package/deepseq" title="&lt;1.5">deepseq</a>, <a href="https://www.stackage.org/package/dhall" title="-any">dhall</a>, <a href="https://www.stackage.org/package/Diff" title="&gt;=0.2 &amp;&amp; &lt;0.5">Diff</a>, <a href="https://www.stackage.org/package/directory" title="&gt;=1.3.0.0 &amp;&amp; &lt;1.4">directory</a>, <a href="https://www.stackage.org/package/dotgen" title="&gt;=0.4.2 &amp;&amp; &lt;0.5">dotgen</a>, <a href="https://www.stackage.org/package/either" title="&gt;=5 &amp;&amp; &lt;5.1">either</a>, <a href="https://www.stackage.org/package/exceptions" title="&gt;=0.8.3 &amp;&amp; &lt;0.11">exceptions</a>, <a href="https://www.stackage.org/package/filepath" title="&gt;=1.4 &amp;&amp; &lt;1.5">filepath</a>, <a href="https://www.stackage.org/package/half" title="&gt;=0.2.2.3 &amp;&amp; &lt;0.4">half</a>, <a href="https://www.stackage.org/package/hashable" title="&gt;=1.2 &amp;&amp; &lt;1.4">hashable</a>, <a href="https://www.stackage.org/package/haskeline" title="&gt;=0.7.2.1 &amp;&amp; &lt;0.9">haskeline</a>, <a href="https://www.stackage.org/package/http-client" title="&gt;=0.5.0 &amp;&amp; &lt;0.8">http-client</a>, <a href="https://www.stackage.org/package/http-client-tls" title="&gt;=0.2.0 &amp;&amp; &lt;0.4">http-client-tls</a>, <a href="https://www.stackage.org/package/http-types" title="&gt;=0.7.0 &amp;&amp; &lt;0.13">http-types</a>, <a href="https://www.stackage.org/package/lens-family-core" title="&gt;=1.0.0 &amp;&amp; &lt;2.2">lens-family-core</a>, <a href="https://www.stackage.org/package/megaparsec" title="&gt;=7 &amp;&amp; &lt;9.2">megaparsec</a>, <a href="https://www.stackage.org/package/memory" title="&gt;=0.14 &amp;&amp; &lt;0.17">memory</a>, <a href="https://www.stackage.org/package/mmorph" title="&lt;1.3">mmorph</a>, <a href="https://www.stackage.org/package/mtl" title="&gt;=2.2.1 &amp;&amp; &lt;2.3">mtl</a>, <a href="https://www.stackage.org/package/network-uri" title="&gt;=2.6 &amp;&amp; &lt;2.7">network-uri</a>, <a href="https://www.stackage.org/package/optparse-applicative" title="&gt;=0.14.0.0 &amp;&amp; &lt;0.17">optparse-applicative</a>, <a href="https://www.stackage.org/package/parser-combinators" title="-any">parser-combinators</a>, <a href="https://www.stackage.org/package/parsers" title="&gt;=0.12.4 &amp;&amp; &lt;0.13">parsers</a>, <a href="https://www.stackage.org/package/prettyprinter" title="&gt;=1.5.1 &amp;&amp; &lt;1.8">prettyprinter</a>, <a href="https://www.stackage.org/package/prettyprinter-ansi-terminal" title="&gt;=1.1.1 &amp;&amp; &lt;1.2">prettyprinter-ansi-terminal</a>, <a href="https://www.stackage.org/package/pretty-simple" title="&lt;4.1">pretty-simple</a>, <a href="https://www.stackage.org/package/profunctors" title="&gt;=3.1.2 &amp;&amp; &lt;5.7">profunctors</a>, <em>and many more</em></div></div><div class="reverse-dependencies" id="reverse-dependencies">Used by 8 packages in <b>lts-18.18</b><em>(<a href=https://www.stackage.org/lts-18.18/package/dhall-1.39.0/revdeps>full list with versions</a>)</em>:</em><div class="dep-list"><a href="https://www.stackage.org/package/dhall" title="-any">dhall</a>, <a href="https://www.stackage.org/package/dhall-bash" title="&gt;=1.36.0 &amp;&amp; &lt;1.40">dhall-bash</a>, <a href="https://www.stackage.org/package/dhall-json" title="&gt;=1.39.0 &amp;&amp; &lt;1.40">dhall-json</a>, <a href="https://www.stackage.org/package/dhall-lsp-server" title="&gt;=1.38.0 &amp;&amp; &lt;1.41">dhall-lsp-server</a>, <a href="https://www.stackage.org/package/dhall-yaml" title="&gt;=1.31.0 &amp;&amp; &lt;1.40">dhall-yaml</a>, <a href="https://www.stackage.org/package/hpack-dhall" title="-any">hpack-dhall</a>, <a href="https://www.stackage.org/package/pandoc-dhall-decoder" title="-any">pandoc-dhall-decoder</a>, <a href="https://www.stackage.org/package/verbosity" title="&gt;=1.23.0 &amp;&amp; &lt;2">verbosity</a></div></div></div></div></div><div class="markdown-container readme-container"><div class="container content"><div class="row"><div class="span12 expanding"><p>Dhall is an explicitly typed configuration language that is not Turing
+complete.  Despite being Turing incomplete, Dhall is a real programming
+language with a type-checker and evaluator.</p><p>Use this library to parse, type-check, evaluate, and pretty-print the Dhall
+configuration language.  This package also includes an executable which
+type-checks a Dhall file and reduces the file to a fully evaluated normal
+form.</p><p>Read <code>Dhall.Tutorial</code> to learn how to use this library</p><div class="bottom-gradient"><i class="fa fa-angle-down"></i></div></div></div></div></div><div class="container content" id="changes"><div class="row"><div class="span12"><h2 class="changes-title">Changes</h2></div></div></div><div class="markdown-container changelog-container content"><div class="container"><div class="row"><div class="span12 expanding"><p>1.39.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v20.2.0">Supports version 20.2.0 of the standard</a>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2175">Add support for Unix shebangs</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2169">BREAKING CHANGE TO THE API: <code>dhall {format,freeze,lint}</code> now accept multiple
+files</a>
+<ul>
+<li>The <code>--inplace</code> flag is no longer necessary and you can now specify
+multiple files to update in place on the command line, like
+<code>dhall format foo.dhall bar.dhall</code></li>
+<li>The <code>--inplace</code> flag is still accepted, but does nothing, and will emit a
+warning</li>
+<li>This is a breaking change to the API for formatting/freezing/linting files
+because now you can specify multiple inputs instead of one input</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2190">BREAKING CHANGE: Pre-6.0.0 hashes are no longer supported</a>
+<ul>
+<li>The interpreter no longer provides backwards compatibility for integrity
+checks computed before standard version 6.0.0</li>
+<li>This is a breaking change to the API of the <code>Dhall.Binary</code> module, where
+certain utilities are no longer parameterized on a <code>StandardVersion</code></li>
+<li>This is also a breaking change to any Dhall code that depended on these
+really old integrity checks</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2176">BUG FIX: Formatting <code>≡</code> now correctly preserves the original character set</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2184">BUG FIX: Don’t panic on <code>Text/replace &quot;&quot;</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2198">Quasiquotation support for Dhall</a>
+<ul>
+<li>You can now convert a Dhall expression to the corresponding syntax tree
+using a quasiquoter like this: <code>[dhall| \x -&gt; x + 2 ]</code></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2193">New <code>Dhall.Marshal.{Encode,Decode}</code> modules</a>
+<ul>
+<li>These modules split up the <code>Dhall</code> module into two smaller modules for
+encoding and decoding logic, respectively</li>
+<li>The <code>Dhall</code> module still re-exports the same functionality as before, so
+this is not a breaking change</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2154">Support GHC 9.0.1</a></li>
+<li>Fixes and improvements to code formatting
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2189">Improve pretty-printing of <code>sha256</code></a></li>
+</ul>
+</li>
+</ul>
+<p>1.38.1</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2164">Add <code>INLINABLE</code> annotations in more places</a>
+<ul>
+<li>This may improve performance by enabling more specializations</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2152">Fix <code>hashable</code>-related test failures</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2143">Fix support for GHC 8.4.4</a>
+<ul>
+<li>… by using <code>GeneralizedNewtypeDeriving</code> (with a <code>z</code>)</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2148">Allow doctest-0.18</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2144">Allow bytestring-0.11</a></li>
+</ul>
+<p>1.38.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2108">BREAKING CHANGE: Detect preferred character set from input</a>
+<ul>
+<li><code>dhall format</code> will now preserve the character set of the formatted file
+by default.  In other words, if the file uses ASCII punctuation then
+<code>dhall format</code> will format the file using ASCII punctuation.</li>
+<li>If the file contains both ASCII and Unicode punctuation it will prefer
+Unicode by default</li>
+<li>This is a breaking change because the <code>Lam</code> / <code>Pi</code> / <code>Combine</code> /
+<code>CombineTypes</code>, and <code>Prefer</code> constructors now take an additional argument
+to record which character set was used</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2121">BUG FIX: Fix CORS compliance check</a>
+<ul>
+<li>Previous versions were not correctly enforcing CORS compliance</li>
+<li>This implies that some imports that would have worked previously by
+accident will now fail; specifically: an import from one domain
+transitively importing something from another domain that has not opted
+into CORS</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2122">Add <code>ToDhall (Fix f)</code> instance</a></li>
+<li>Fixes and improvements to error messages
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2130">#2130</a></li>
+</ul>
+</li>
+</ul>
+<p>1.37.1</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2112">Fix performance regression for <code>with</code> expressions</a></li>
+</ul>
+<p>1.37.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v20.0.0">Supports version 20.0.0 of the standard</a>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2072">Implement revised <code>Text/replace</code> β-normalization</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2084">Allow <code>Text/replace &quot;&quot;</code> to support an abstract haystack</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2080">Support <code>if</code> expressions returning a type or kind</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/2097">Improve error message for duplicate projection label</a>
+<ul>
+<li>This also makes the implementation more standards-compliant, by treating
+a duplicate label as a type error instead of a parse error</li>
+<li>This is a breaking change since the <code>Project</code> constructor now stores a
+<code>[Text]</code> instead of <code>Set Text</code></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2093">Add <code>--cache</code> flag to <code>dhall hash</code></a>
+<ul>
+<li>This flag adds the hashed expression to the cache when enabled</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2099">Deprecate <code>Inject</code> / <code>Interpret</code></a>
+<ul>
+<li>You should instead use <code>ToDhall</code> / <code>FromDhall</code>, respectively</li>
+</ul>
+</li>
+<li>Fixes and improvements to the haddocks:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2098">#2098</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2100">#2100</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to error messages:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2082">#2082</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2095">#2095</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to the parser:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2089">#2083</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to the pretty printer:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2083">#2083</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2101">#2101</a></li>
+</ul>
+</li>
+</ul>
+<p>1.36.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v19.0.0">Supports version 19.0.0 of the standard</a>
+<ul>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/2063">Add <code>Text/replace</code> built-in</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2055">Implement <code>with</code> without syntactic sugar</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2061"><code>dhall lint</code> will now add a <code>.dhall</code> extension to all Prelude imports</a>
+<ul>
+<li>The old extension-free Prelude imports are deprecated</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2016">Fix command-line completions for files</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2070">Improve Template Haskell support for record constructors</a></li>
+<li>Fixes and improvements to code formatting
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2037">#2037</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2048">#2048</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2069">#2069</a></li>
+</ul>
+</li>
+</ul>
+<p>1.35.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v18.0.0">Supports version 18.0.0 of the standard</a>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1993">Implement more efficient <code>with</code> desugaring</a>
+<ul>
+<li>Chained <code>with</code> expressions will now be much more efficient</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1980">BREAKING CHANGE TO THE API: Preserve whitespace for <code>Lam</code> constructor</a>
+<ul>
+<li>This change extends the <code>Lam</code> constructor to preserve whitespace around
+the variable binding</li>
+<li>The motivation for this change is to enable <code>dhall-docs</code> to support
+jumping to definitions</li>
+<li>You can replace your existing <code>Lam</code> constructors with
+<code>Dhall.Core.makeFunctionBinding</code></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1991">BREAKING CHANGE TO THE API: Preserve whitespace for <code>Field</code> constructors</a>
+<ul>
+<li>This change extends the <code>Field</code> constructor to preserve whitespace around
+the selected field</li>
+<li>The motivation for this change is to enable <code>dhall-docs</code> to support
+jumping to definitions</li>
+<li>You can use <code>Dhall.Core.makeFieldSelection</code> and
+<code>Dhall.Core.fieldSelectionLabel</code> to convert between the detailed and the
+simple representation of the selected field.</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2012">Add <code>FromDhall</code> instances for <code>{Int,Word}{,8,16,32,64}</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1974">Add <code>--output</code> option for <code>dhall text</code> subcommand</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1976">Add <code>Dhall.Crypto.toString</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2027">Make the HTTP <code>Manager</code> configurable</a>
+<ul>
+<li>Several import-related functions now provide an alternative variants that
+allows the user to supply a custom <code>Manager</code></li>
+<li>You can use this to tweak HTTP request timeouts or use a different TLS
+manager (e.g. one from <code>http-client-openssl</code>)</li>
+</ul>
+</li>
+<li>Fixes and improvements to code formatting
+<ul>
+<li>
+<p><a href="https://github.com/dhall-lang/dhall-haskell/pull/2000">#2000</a></p>
+</li>
+<li>
+<p><a href="https://github.com/dhall-lang/dhall-haskell/pull/2021">#2021</a></p>
+<p>The formatter now preserves comments for record fields (both record types
+and record literals)</p>
+</li>
+</ul>
+</li>
+<li>Fixes and improvements to documentation
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2011">#2011</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2013">#2013</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2014">#2014</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to test suite
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/2020">#2020</a></li>
+</ul>
+</li>
+</ul>
+<p>1.34.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v17.1.0">Supports version 17.1.0 of the standard</a>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1885">Add support for trailing commas</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE to the API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1908">Support prefix comments on record key-value pairs</a>
+<ul>
+<li>The Dhall AST (i.e. <code>Expr</code>) now preserves some comments for record types
+and record literals</li>
+<li>The impact of this change is that you will need to add
+<code>Dhall.Syntax.makeRecordField</code> or <code>Dhall.Syntax.recordFieldValue</code> in a few
+places wherever your Haskell assembles or disassembles record expressions</li>
+<li>The motivation of this change is two-fold:
+<ul>
+<li>To eventually enable <code>dhall-docs</code> support for rendering record
+comments as documentation</li>
+<li>To eventually enable support for preserving record-related comments
+when formatting Dhall code</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1897">Fix <code>with</code> expressions to permit functions on their left-hand side</a>
+<ul>
+<li>This was a case of the Haskell implementation not being compliant with the
+standard grammar</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1949">Drop support for GHC 8.2</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1902">Add a new <code>dhall rewrite-with-schemas</code> command</a>
+<ul>
+<li>You can now simplify a Dhall expression using a schema record (e.g. a
+<code>./schemas.dhall</code> record that a package might provide)</li>
+<li>This simplification replaces large anonymous records with an
+equivalent use of a record completion when possible</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1880">Add <code>--transitive</code> flag to `dhall {format,lint,freeze}</a>
+<ul>
+<li>This flag lets you format/lint/freeze a file and all of its transitive
+dependencies that are reachable via relative file imports</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1921">Move <code>man/dhall.1</code> to <code>data-files</code></a>
+<ul>
+<li>This ensures that Cabal will install <code>dhall</code>’s <code>man</code> pages in the
+correct directory</li>
+</ul>
+</li>
+<li>Performance improvements
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1879">#1879</a></li>
+</ul>
+</li>
+<li>Standards compliance
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1953">#1953</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1954">#1954</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1956">#1956</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1957">#1957</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1958">#1958</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to haddocks
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1881">#1881</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1955">#1955</a></li>
+</ul>
+</li>
+</ul>
+<p>1.33.1</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1867">Multi-line REPL / support <code>repline-0.4.0.0</code></a>
+<ul>
+<li><code>dhall repl</code> supports a new <code>:paste</code> command that lets you input a command
+by pasting one or more lines</li>
+</ul>
+</li>
+</ul>
+<p>1.33.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v17.0.0">Supports version 17.0.0 of the standard</a>
+<ul>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1812">URLs no longer support quoted path components</a></li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1802"><code>Optional/{fold,build}</code> are no longer built-ins</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1812">Record fields now permit empty labels</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1825">Fail instead of hanging when deriving <code>FromDhall</code> for recursive types</a>
+<ul>
+<li>This is a breaking change as now the <code>expected</code> type returns an
+<code>Expector (Expr Src Void)</code> (essentially an <code>Either</code>) instead of
+<code>Expr Src Void</code></li>
+<li>If you really don’t want to handle the new error-related wrapper, you can
+get the old behavior using a partial pattern match (which will be partial,
+still an improvement over the previous behavior, which was hanging)</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1793">Fix invalid cache entries</a>
+<ul>
+<li>The interpreter will now correct cached expressions that are incorrect
+and warn you when this happens</li>
+<li>Specifically, if there is a hash mismatch from the cached expression the
+interpreter will resolve the import again and fix the cache if the
+resolved import matches the expected hash</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1789">Make <code>encodeExpression</code> polymorphic</a>
+<ul>
+<li><code>encodeExpression</code> now has a more general type, which means that you
+can use it to serialise expressions without imports (i.e.
+ones of type <code>Expr Void Void</code>)</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1803">Add <code>--quiet</code> option for <code>dhall decode</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1843">Add <code>--noted</code> flag for <code>dhall haskell-syntax-tree</code></a></li>
+<li>Performance improvements:
+<ul>
+<li>There were several performance improvements related to binary decoding,
+which should improve cache lookup speed</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1807">#1807</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1809">#1809</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1857">#1857</a></li>
+</ul>
+</li>
+<li>Improvements to error messages
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1824">#1824</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1849">#1849</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1851">#1851</a></li>
+</ul>
+</li>
+<li>Fixes to haddocks
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1815">#1815</a></li>
+</ul>
+</li>
+</ul>
+<p>1.32.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v16.0.0">Supports version 16.0.0 of the standard</a>
+<ul>
+<li>BREAKING CHANGE: Change the precedence of <code>with</code> and <code>===</code>
+<ul>
+<li>The precedence change to <code>with</code> means that some old expressions that
+were valid now require explicit parentheses</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Use RFC7049bis encoding for <code>Double</code>s
+<ul>
+<li>This is a breaking change because the hashes of expressions with small
+<code>Double</code> literals will change now</li>
+</ul>
+</li>
+<li>Add support for unions mixing terms and types
+<ul>
+<li>For example, <code>&lt; A : Bool | B : Type &gt;</code> is legal now</li>
+<li>You can now write <code>someRecord with a.b.c = x</code> to update a nested
+fields</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>DEPRECATION: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1740">Deprecate <code>Dhall.Parser.exprA</code></a>
+<ul>
+<li><code>Dhall.Parser</code> module will eventually drop support for parsing custom
+import types</li>
+<li>This is necessary in order to fix several parsing bugs and improve
+parsing error messages</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1725">GHC Generics instance for <code>:+:</code> now uses <code>union</code></a>
+<ul>
+<li>This fixes a few subtle bugs in how Dhall unions are marshalled into
+Haskell types, and also improves the error messages</li>
+</ul>
+</li>
+<li>Formatting improvements
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1767">Change formatting of <code>if</code> expressions</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1759">Change formatting for functions and their types</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1736">Prefer puns when formatting record completions</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1757">Convert union alternatives to directory tree</a>
+<ul>
+<li><code>dhall to-directory-tree</code> now supports unions which are automatically
+unwrapped</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1772">Fix <code>dhall freeze --cache</code> to better handle protected imports</a>
+<ul>
+<li><code>dhall freeze --cache</code> will now also update imports that already have
+integrity checks</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1742">Don’t normalized partially saturated <code>{List,Natural}/fold</code></a>
+<ul>
+<li>The behavior now matches the standard.  Previously, the Haskell
+implementation was not standards-compliant because it would normalize
+these partially saturated built-ins</li>
+</ul>
+</li>
+</ul>
+<p>1.31.1</p>
+<ul>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1733">Allow whitespace after record pun entry</a>
+<ul>
+<li>The record pun feature introduced in the previous release did not
+correctly parse record puns with trailing whitespace, which this change
+fixes.</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1727">Expose <code>{default,}InputNormalizer</code></a>
+<ul>
+<li>The previous version introduced a breaking change to the <code>autoWith</code> type
+that required access to the implementation of <code>InputNormalizer</code>, which was
+not exported.  This change fixes that.</li>
+</ul>
+</li>
+<li>Build against latest dependencies
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1721"><code>QuickCheck-2.14</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1730"><code>haskell-lsp-0.21</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1717"><code>repline-0.3</code> / <code>haskeline-0.8</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1719"><code>template-haskell-2.16</code></a></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1729">Prefer to format using record puns when possible</a>
+<ul>
+<li><code>dhall format</code> will now reformat code to use record puns when applicable</li>
+</ul>
+</li>
+<li>Fixes and improvements to error messages:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1724">#1721</a></li>
+</ul>
+</li>
+</ul>
+<p>1.31.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v15.0.0">Supports version 15.0.0 of the standard</a>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1685">Implement <code>with</code> keyword</a>
+<ul>
+<li>You can now write <code>someRecord with a.b.c = x</code> to update a nested
+fields</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1710">Add support for record puns</a>
+<ul>
+<li>You can now write <code>{ x, y }</code> as a shorthand for <code>{ x = x, y = y }</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1682">Auto-derive <code>Generic</code>/<code>FromDhall</code>/<code>ToDhall</code> with Template Haskell</a>
+<ul>
+<li>Now the <code>Dhall.TH.makeHaskell*</code> utilities will include these derived
+instances in the generated declarations</li>
+<li>This is a breaking change since users were likely already generating these
+instances separately, which will now conflict with the included instances</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1696"><code>From/ToDhall</code> no longer takes <code>InterpretOptions</code> argument</a>
+<ul>
+<li>The types of the <code>autoWith</code> and <code>injectWith</code> methods have changed to
+take an <code>InputNormalizer</code> instead of an <code>InterpretOptions</code>
+<ul>
+<li>Note that <code>InputNormalizer</code> is a subset of <code>InterpretOptions</code></li>
+</ul>
+</li>
+<li>This is a breaking change to how derived <code>FromDhall</code> / <code>ToDhall</code> instances
+are customized to more closely match how other Haskell packages customize
+derived instances (e.g. <code>aeson</code> with <code>FromJSON</code> / <code>ToJSON</code>)
+<ul>
+<li>Previously you would customize the behavior globally by passing in
+a top-level <code>InterpretOptions</code> record to <code>autoWith</code></li>
+<li>Now you can customize the behavior locally on a per-instance basis</li>
+</ul>
+</li>
+<li>This change enables the following change …</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1700">Add <code>Dhall.Deriving</code> module for <code>deriving-via</code> helpers</a>
+<ul>
+<li>Now you can take advantage of the <code>-XDerivingVia</code> language extension to
+customize derived <code>FromDhall</code>/<code>ToDhall</code> instances, like this:
+<ul>
+<li><code>deriving (FromDhall, ToDhall) via Codec (SetSingletonConstructors Bare) Name</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1673">Match standard with respect to <code>using toMap</code></a>
+<ul>
+<li><code>https://example.com using toMap customHeaders</code> is now a parse error
+and needs to be explicitly parenthesized as
+<code>https://example.com using (toMap customHeaders)</code></li>
+<li>The language standard had always required the parentheses, but the Haskell
+implementation was not correctly matching the standard</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1688">Fix formatting of indented comments containing empty lines</a>
+<ul>
+<li><code>dhall format</code> was previously not idempotent when formatting indented
+comments with empty lines</li>
+<li>Specifically, the formatter kept indenting things further with each
+format, which this change fixes</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1674">Fix pretty-printer to preserve original numeric literals</a>
+<ul>
+<li>Now <code>dhall format</code> will preserve numeric literals exactly how you wrote
+them</li>
+<li>For example, <code>0xFF</code> will no longer be reformatted as <code>255</code></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1705">Add <code>dhall to-directory-tree</code> support for <code>Map</code>s</a>
+<ul>
+<li><code>Map</code>s are now converted to directories (just like records)</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1677">Add manpage</a>
+<ul>
+<li>… mainly for the benefit of people packaging Dhall for various
+distributions</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1692">Group commands in CLI</a>
+<ul>
+<li>The command-line <code>--help</code> output now groups commands into useful
+sections</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1681">Fix numeric parsing for GHCJS</a>
+<ul>
+<li>The GHCJS backend for Dhall was failing to parse numbers, which this
+change fixes</li>
+</ul>
+</li>
+<li>Fixes and improvements to error messages:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1656">#1656</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1698">#1698</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1702">#1702</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to the haddocks:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1708">#1708</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1712">#1712</a></li>
+</ul>
+</li>
+</ul>
+<p>1.30.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v14.0.0">Supports version 14.0.0 of the standard</a></li>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1636">Add <code>--check</code> flag to <code>dhall {lint,freeze}</code></a>
+<ul>
+<li>You can now use the <code>--check</code> flag to verify that a file has already been
+linted or frozen</li>
+<li>This is a breaking change to the types used by the <code>Dhall.Format</code> module</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1658">Disallow <code>Natural</code> literals with leading zeros</a>
+<ul>
+<li>Now a literal like <code>042</code> is no longer valid</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v14.0.0">changelog for standard version 14.0.0</a> for more details</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1647">Fix parsing of <code>Double</code> literal trailing whitespace</a>
+<ul>
+<li>Certain expressions using <code>Double</code> literals would fail to parse, which this
+change fixes</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1640">Use <code>DeriveLift</code> instead of GHC Generics to derive <code>Lift</code> </a>
+<ul>
+<li>This fixes a build failure on GHC 8.10</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1649">Drop support for GHC 7.10.3</a>
+<ul>
+<li>GHC 8.0.2 is now the earliest supported version</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1651">Add support for dotted field syntax</a>
+<ul>
+<li><code>{ x.y.z = 1 }</code> now legal syntax for nested fields</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v14.0.0">changelog for standard version 14.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1643">Add support for duplicate record fields</a>
+<ul>
+<li>This combines with the previous feature to let you write
+<code>{ x.y = 1, x.z = True }</code>, which is equivalent to
+<code>{ x = { y = 1, z = True } }</code></li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v14.0.0">changelog for standard version 14.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1628">Add <code>dhall lint</code> support for deprecating <code>Optional/{fold,build}</code></a>
+<ul>
+<li>The <code>Optional/{fold,build}</code> built-ins are deprecated and can be implemented
+in terms of other language features</li>
+<li><code>Optional/fold</code> can be implemented in terms of <code>merge</code> (which now works on
+<code>Optional</code> values)</li>
+<li><code>Optional/build</code> could always be implemented using <code>Some</code>/<code>None</code></li>
+<li><code>dhall lint</code> now transforms the deprecated built-ins to use their
+equivalent built-in-free versions</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1664">Support Template Haskell for multiple datatypes</a>
+<ul>
+<li>This extends the Template Haskell support added in the previous release to
+work for datatypes that refer to one another</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1650">Add support for custom substitutions</a>
+<ul>
+<li>You can now add custom substitutions, which are like <code>let</code> bindings that
+propagate to transitive imports</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1652">Small formatting fixes</a></li>
+</ul>
+<p>1.29.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v13.0.0">Supports version 13.0.0 of the standard</a></li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/commit/b0280826790930d18a5498fb802120478fa11767#diff-a9729dccf50be61ce3d8c68c16f0fd50">Generate Haskell datatype declarations from Dhall types</a>
+<ul>
+<li>You can now use the <code>makeHaskellTypeFromUnion</code> Template Haskell utility
+to generate a Haskell datatype declaration from a Dhall union type</li>
+<li>This helps ensure that your Haskell types and Dhall types stay in sync,
+when you want the Dhall type to be the source of truth</li>
+<li>This is a breaking change because the default <code>InterpretOptions</code> changed
+the default handling of singleton constructors from <code>Wrapped</code> to <code>Smart</code></li>
+<li>You can preserve the old behavior using:
+<code>autoWith defaultInterpretOptions{ singletonConstructors = Wrapped }</code></li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1597">Fix <code>dhall freeze --cache</code> and <code>dhall lint</code> to preserve <code>let</code>-related comments</a>
+<ul>
+<li>Now they match the behavior of <code>dhall format</code> with regard to preserving
+these comments</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1598">Fix escaping of significant leading whitespace when formatting code</a>
+<ul>
+<li>The formatter would sometimes unnecessarily escape significant leading
+whitespace for the final line of multiline string literals, which this
+change fixes</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/issues/1350">Fix <code>dhall encode --json</code> for <code>Double</code> values</a></li>
+<li>NEW FEATURE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1606"><code>dhall to-directory-tree</code> command</a>
+<ul>
+<li>You can now generate a directory tree from a Dhall expression</li>
+<li>Specifically:
+<ul>
+<li>records are converted to directories</li>
+<li><code>Text</code> fields are converted to files named after the field</li>
+<li><code>Optional</code> values are omitted if <code>None</code></li>
+<li>Everything else is rejected</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NEW FEATURE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1607">Hexadecimal literals</a>
+<ul>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v13.0.0">changelog for standard version 13.0.0</a> for more details</li>
+</ul>
+</li>
+<li>NEW FEATURE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1608"><code>merge</code> works on <code>Optional</code> values</a>
+<ul>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v13.0.0">changelog for standard version 13.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1609">Improve formatter</a>
+<ul>
+<li><code>dhall format</code> will now render expressions nested inside record fields or
+alternatives more compactly, including:
+<ul>
+<li>Records</li>
+<li>Record completion expressions</li>
+<li>Expressions wrapped in <code>Some</code></li>
+<li>Lists</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1603">Exclude the <code>using ...</code> suffix from imports listed by <code>dhall resolve</code></a>
+<ul>
+<li>Specifically when using the <code>--{immediate,transitive}-dependencies</code> flags</li>
+</ul>
+</li>
+</ul>
+<p>1.28.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v12.0.0">Supports version 12.0.0 of the standard</a></li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1486">Add <code>Integer/{clamp,negate}</code> built-ins</a>
+<ul>
+<li>This is a technically breaking change API since this adds a new
+constructor to the <code>Expr</code> type</li>
+<li>This is also a technically breaking change to the language.  See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v12.0.0">changelog for standard version 12.0.0</a> for more details</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1478">Remove support for fusion</a>
+<ul>
+<li>This is also a technically breaking change to the language.  See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v12.0.0">changelog for standard version 12.0.0</a> for more details</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1483">Parse whitespace more precisely</a>
+<ul>
+<li>The Haskell implementation now matches the official grammar much more
+closely, but as a result will now reject some programs that it used to
+accept</li>
+<li>For example, <code>1:Natural</code> used to be valid and now is no longer valid as
+the standard requires mandatory whitespace after the <code>:</code></li>
+<li>Consult the <a href="https://github.com/dhall-lang/dhall-lang/blob/master/standard/dhall.abnf">standard grammar</a> if you run into a new parsing error as a result of this change</li>
+<li>This is also a parsing performance regression (specifically for parsing
+comments), but should not be noticeable in practice.  See <a href="https://github.com/dhall-lang/dhall-haskell/pull/1512">#1512</a> for more details</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Rename <code>Type</code> to <code>Decoder</code> and <code>InputType</code> to <code>Encoder</code> <a href="https://github.com/dhall-lang/dhall-haskell/pull/1485">#1483</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1489">#1489</a></li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1462">Fix <code>dhall format --check</code></a>
+<ul>
+<li>Before this change <code>dhall format --check</code> would fail due to attempting to
+read all of standard input in twice</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1471">Fix <code>dhall freeze</code> to always re-freeze an import</a>
+<ul>
+<li>Before this fix, <code>dhall freeze</code> would not attempt to refreeze an already
+frozen import</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1532">Permit spaces around completion operator</a>
+<ul>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v12.0.0">changelog for standard version 12.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1509">Make <code>missing</code> referentially transparent</a>
+<ul>
+<li><code>missing</code> can now be imported transitively via a remote import</li>
+<li>Normally resolving <code>missing</code> would still still fail, except for
+<code>missing as Location</code>, which is now a valid transitive import</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v12.0.0">changelog for standard version 12.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1544">Write cache files atomically</a>
+<ul>
+<li>This is a resilience improvement so that the cache is not left in a
+corrupt state in the event of a power outage or exhausting disk/memory</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1507">New <code>Dhall.function</code> utility</a>
+<ul>
+<li>This is provides the same functionality as the <code>Interpret</code> instance for
+<code>(-&gt;)</code>, except without the use of typeclasses</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1553">New <code>dhall haskell-syntax-tree</code> command</a>
+<ul>
+<li>This command displays the Haskell syntax tree of an expression
+(primarily for debugging purposes)</li>
+<li>Note that this is highly-volatile and subject to change, so don’t depend
+on this programmatically.  We may break the output of this command without
+any notice.</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1567">Add <code>instance Show Ann</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1452">Move normalization code from <code>Dhall.Core</code> to <code>Dhall.Normalize</code></a>
+<ul>
+<li>Note that this is not a breaking change.  The relocated utilities are
+still re-exported from <code>Dhall.Core</code></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1539">Fix <code>dhall resolve --transitive-dependencies</code> to list dependencies in “post-order”</a></li>
+<li>Performance improvements
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1500">#1500</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1522">#1522</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1568">#1568</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1578">#1580</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to code formatting
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1460">#1460</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1466">#1466</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1508">#1508</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1527">#1527</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1422">#1422</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1552">#1552</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1543">#1543</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1554">#1554</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1569">#1569</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to code linting
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1518">#1518</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1531">#1531</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to error messages
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1443">#1443</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1448">#1448</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1482">#1482</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1519">#1519</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1556">#1556</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1528">#1528</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to the parser
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1473">#1473</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1549">#1549</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1563">#1563</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1584">#1584</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to diffs
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1585">#1585</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to the REPL
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1573">#1573</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to documentation
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1530">#1530</a></li>
+</ul>
+</li>
+</ul>
+<p>1.27.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v11.0.0">Supports version 11.0.0 of the standard</a></li>
+<li>BREAKING CHANGE: Rename <code>Inject</code>/<code>Interpret</code> to <code>ToDhall</code>/<code>FromDhall</code>
+<ul>
+<li>This change <code>ConstraintKinds</code> to minimize disruption by keeping around
+<code>Inject</code>/<code>Interpret</code> as synonyms for <code>ToDhall</code>/<code>FromDhall</code></li>
+<li>In other words, constraints and derived instances using <code>Inject</code> or
+<code>Interpret</code> will still work</li>
+<li>However, manual instances using <code>Inject</code> or <code>Interpret</code> won’t work
+unless you rename them to <code>ToDhall</code>/<code>FromDhall</code> or enable the
+<code>TypeSynonymInstances</code> extension</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Fix <code>Eq</code> instance for <code>Expr</code>s with special <code>Double</code>s
+<ul>
+<li>This fixes the <code>Eq</code> instance for <code>Expr</code>s to match the standard regarding
+<code>Double</code> comparisons</li>
+<li>Specifically: <code>NaN == NaN</code> and <code>-0.0 /= 0.0</code></li>
+<li>This is a breaking change because the <code>DoubleLit</code> constructor of <code>Expr</code>
+now stores a <code>DhallDouble</code> instead of a <code>Double</code></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1445">Add <code>--file</code> option for <code>dhall hash</code></a>
+<ul>
+<li>This is a breaking change because it also removes the <code>Dhall.Hash</code> module,
+which wasn’t really carrying its own weight</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1355">Add support for leading separators</a>
+<ul>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v11.0.0">changelog for standard version 11.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1375">Add record completion operator</a>
+<ul>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v11.0.0">changelog for standard version 11.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1398">Add <code>dhall tags</code> subcommand</a>
+<ul>
+<li>This generates an ETags file from an input file or directory</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1353">Add <code>dhall lint</code> support for fixing malformed assertions</a>
+<ul>
+<li><code>dhall lint</code> now fixes <code>let example = foo === bar</code> to be
+<code>let example = assert : foo === bar</code></li>
+</ul>
+</li>
+<li>Normalize inferred types <a href="https://github.com/dhall-lang/dhall-haskell/pull/1337">#1337</a></li>
+<li>New <code>FromDhall</code>/<code>ToDhall</code> (previously <code>Interpret</code>/<code>Inject</code>) instances for:
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1382"><code>Void</code></a></li>
+<li><code>Map</code> <a href="https://github.com/dhall-lang/dhall-haskell/pull/1391">#1391</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1412">#1412</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1426"><code>HashMap</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1405"><code>Set</code> and <code>HashSet</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1388"><code>()</code></a></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1399">Add <code>--output</code> option to <code>dhall</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1440">Move syntax things from <code>Dhall.Core</code> to a new <code>Dhall.Syntax</code> module</a>
+<ul>
+<li>This is not a breaking change.  <code>Dhall.Core</code> still re-exports the same
+API as before</li>
+</ul>
+</li>
+<li>Performance improvements
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1362">#1362</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1366">#1366</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1368">#1368</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1397">#1397</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1401">#1401</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to code formatting
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1360">#1360</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1372">#1372</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1380">#1380</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1415">#1415</a></li>
+</ul>
+</li>
+</ul>
+<p>1.26.1</p>
+<ul>
+<li>TECHNICALLY BREAKING CHANGES: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1283">Simplify <code>⫽</code> within projection</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1307">Simplify nested record projections</a>
+<ul>
+<li>These are technically breaking changes because you will need to update
+integrity checks that protect code simplified in this way</li>
+<li>We’re not bumping the major version since the likelihood that you’re
+affected is quite low</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1335">Fix performance regression</a>
+<ul>
+<li>This change fixes the performance regression introduced in the previous
+release (version 1.26.0)</li>
+</ul>
+</li>
+<li>BUG FIX: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1318">Prevent REPL from inserting inferred <code>Sort</code>s into context</a>
+<ul>
+<li>This protects the REPL from getting hosed if you define an expression
+using <code>:let</code> that has an inferred type of <code>Sort</code></li>
+</ul>
+</li>
+<li>NEW FEATURE: Improved <code>Inject</code>/<code>Interpret</code> support for 1-field constructors - (<a href="https://github.com/dhall-lang/dhall-haskell/pull/1315">#1315</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1321">#1321</a>)
+<ul>
+<li>This adds a new <code>singletonConstructors</code> field to <code>InterpretOptions</code> that
+lets you control what Dhall type 1-field Haskell constructors correspond
+to</li>
+<li>The default (<code>Wrapped</code>) is backwards compatible with the old behavior</li>
+<li>The <code>Smart</code> option is probably what you want: it will strip the
+Haskell constructor from the Dhall type if the constructor has one
+anonymous field</li>
+<li>The <code>Bare</code> option always strips 1-field Haskell constructors from the
+Dhall type</li>
+</ul>
+</li>
+<li>NEW FEATURE: <code>--censor</code> flag that disables source code display (<a href="https://github.com/dhall-lang/dhall-haskell/pull/1312">#1312</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1329">#1329</a>)
+<ul>
+<li>Use this flag when you don’t want sensitive <code>Text</code> literals showing up in
+parsing or type-checking error messages</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1314">Format record fields more compactly if they fit on 1 line</a>
+<ul>
+<li>The formatter will now format record fields on a field-by-field basis to
+avoid unnecessary vertical sprawl of formatted records</li>
+<li>Specifically, record fields that fit on one line will now be formatted
+on one line</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1325">Add <code>--quiet</code> option to <code>dhall type</code></a>
+<ul>
+<li>This lets you use <code>dhall type</code> in “check only” mode (e.g. for CI for
+for development feedback)</li>
+</ul>
+</li>
+<li>Improved GHCJS support - (<a href="https://github.com/dhall-lang/dhall-haskell/pull/1311">#1311</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1330">#1330</a>)</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1334">Fix all executables to accept <code>--version</code></a>
+<ul>
+<li>Note that the <code>dhall version</code> subcommand is still supported, too</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1332">New <code>Dhall.Version</code> module</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1317">Don’t normalize inferred types</a>
+<ul>
+<li>This fixes <code>dhall type</code> to more accurately follow the standard</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1324">Initial changes for GHC 8.8 support</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1316">Fix Haddock formatting for <code>dhallFromJSON</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1272">Improved Windows caching support</a>
+<ul>
+<li><code>dhall</code> will now prefer the <code>%LOCALAPPDATA%</code> directory for caching if it is
+available</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1320">Warn about missing cache directories</a></li>
+</ul>
+<p>1.26.0</p>
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">Supports version 10.0.0 of the standard</a></li>
+<li>BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1176">Remove old union literal syntax</a>
+<ul>
+<li>Union literals of the form <code>&lt; x = e | ... &gt;</code> are no longer valid</li>
+<li>For more details, see: <a href="https://github.com/dhall-lang/dhall-lang/wiki/Migration%3A-Deprecation-of-old-union-literal-syntax">Migration: Deprecation of old union literal syntax</a></li>
+<li>Also see the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">changelog for standard version 10.0.0</a> for more details</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1172">Change <code>X</code> to be a type synonym for <code>Data.Void</code></a>
+<ul>
+<li>This is a breaking change if you were previously pattern matching on the
+<code>X</code> constructor.  You can replace that with the use of <code>Data.Void.absurd</code></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1242">Treat multi-<code>let</code>s as syntactic sugar</a>
+<ul>
+<li>This is a breaking change because the <code>Let</code> constructor now only stores
+one <code>Binding</code> instead of a <code>NonEmpty</code> list of <code>Binding</code>s</li>
+</ul>
+</li>
+<li>PERFORMANCE REGRESSION &amp; TECHNICALLY BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1164">Dependent types</a>
+<ul>
+<li>You can now write functions from terms to types</li>
+<li>There is also now language support for tests of the form
+<code>assert : x === y</code></li>
+<li>This deteriorates the performance of large multi-<code>let</code> expressions
+(See: <a href="https://github.com/dhall-lang/dhall-haskell/issues/1306">#1306</a>)</li>
+<li>Splitting large multi-<code>let</code> expressions into smaller files may mitigate
+the problem as a work-around for now</li>
+<li>Follow <a href="https://github.com/dhall-lang/dhall-haskell/issues/1129">#1129</a>
+for work to fix this performance regression</li>
+<li>This is also a technically breaking change because <code>assert</code> is now a
+reserved keyword</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">changelog for standard version 10.0.0</a> for more details</li>
+</ul>
+</li>
+<li>TECHNICALLY BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1133">Add <code>Natural/subtract</code> built-in</a>
+<ul>
+<li>The language now supports machine subtraction, which can be used to
+support several other high-performance operations (like <code>Natural</code>
+comparisons)</li>
+<li>This is a technically breaking change if you used <code>Natural/subtract</code> as an
+identifier in your code</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">changelog for standard version 10.0.0</a> for more details</li>
+</ul>
+</li>
+<li>TECHNICALLY BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1174">More simplifications for field selection</a>
+<ul>
+<li>Now the interpreter will more intelligently simplify certain field
+projections</li>
+<li>For example: <code>λ(x : { a : Bool, b : Bool }) → (x ⫽ { c = 0 }).{ a, c }.c</code>
+will now simplify to <code>λ(x : { a : Bool, b : Bool }) → 0 </code></li>
+<li>This is a technically breaking change because you will need to update
+integrity checks that protect code simplified in this way</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">changelog for standard version 10.0.0</a> for more details</li>
+</ul>
+</li>
+<li>TECHNICALLY BREAKING CHANGE TO THE LANGUAGE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1196">Simplify <code>⫽</code> when its arguments are equivalent</a>
+<ul>
+<li>This is a technically breaking change for the same reason: this will
+perturb semantic integrity checks for affected code</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">changelog for standard version 10.0.0</a> for more details</li>
+</ul>
+</li>
+<li>NEW FEATURE: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1173">Restore support for records containing both types and terms</a>
+<ul>
+<li>In other words <code>{ foo = 1, bar = Bool }</code> is now valid again</li>
+<li>This means that you now can export a single package containing both types
+and terms</li>
+<li>See the <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v10.0.0">changelog for standard version 10.0.0</a> for more details</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1273"><code>dhall format</code> now preserves <code>let</code> comments</a>
+<ul>
+<li><code>dhall</code> format will now preserve comments in the following locations of
+a <code>let</code> binding:</li>
+<li><code>let {- HERE -} x {- HERE -} : {- HERE -} Bool = {- HERE -} True in x</code></li>
+<li>This support handles both single-line and multi-line comments and also
+takes care of correctly indenting/dedenting them</li>
+<li>Note that comments before the <code>let</code> keyword are still not preserved
+(unless it is the beginning of the file)</li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1195">Add API support for marshalling recursive types</a>
+<ul>
+<li>You can now marshal recursive types from Dhall into Haskell using the
+newly-added utilities</li>
+<li>See also: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1298">#1298</a></li>
+</ul>
+</li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1237">New <code>:help</code> command for <code>dhall repl</code></a></li>
+<li>New <code>--no-cache</code> flag <a href="https://github.com/dhall-lang/dhall-haskell/pull/1290">#1290</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1434">#1434</a> / <a href="https://github.com/dhall-lang/dhall-haskell/pull/1436">#1436</a>
+<ul>
+<li>You can now disable use of the cache with this flag</li>
+<li>This comes in handy if you want to disable α-normalization for imports
+protected by a semantic integrity check</li>
+</ul>
+</li>
+<li>Bug fixes
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1210">Fix <code>isNormalized</code> for field selections</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1220">Simplify <code>Natural/subtract</code> when its arguments are equivalent</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1231">Fix <code>NaN</code> to be judgmentally equivalent to itself</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1261">Fix <code>Inject</code> instance for lists</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1279">Fix typechecking of <code>toMap</code></a></li>
+</ul>
+</li>
+<li>Performance optimizations
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1184">Optimize a few <code>Set</code> instances</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1228">Remove some redundant sorting during normalization</a></li>
+</ul>
+</li>
+<li>Improvements to error messages
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1188">Improve error reporting for failed remote imports</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1253">Improve HTTP errors</a></li>
+</ul>
+</li>
+<li>Improvements to formatting
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1167">Indent function arguments when formatting</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1235">Prefer unquoted URLs</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1270">Strip leading whitespace</a></li>
+</ul>
+</li>
+<li>Improvements to diffs
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1213">Fix diffs for lists</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1244">Improve diff for non-empty lists</a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1263">Small fixes to <code>dhall diff</code></a></li>
+</ul>
+</li>
+<li>Improvements to documentation
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1230">Fix documentation for <code>UnionInputType</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1247">Document support for caching protected imports</a></li>
+</ul>
+</li>
+<li>Improvements to command-line interface
+<ul>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1264">Improve description of <code>dhall lint</code></a></li>
+<li><a href="https://github.com/dhall-lang/dhall-haskell/pull/1281">Change <code>dhall type</code> to resolve imports</a></li>
+</ul>
+</li>
+</ul>
+<p>1.25.0</p>
+<ul>
+<li>Supports version 9.0.0 of the standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v9.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v9.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Remove support for old-style <code>List</code>-like <code>Optional</code> literals
+<ul>
+<li>List-like <code>Optional</code> Literals (i.e. <code>[ 1 ] : Optional Natural</code>) are no
+longer valid</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1002">https://github.com/dhall-lang/dhall-haskell/pull/1002</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add support for semi-semantic caching
+<ul>
+<li>This change significantly improves the performance of imports</li>
+<li>This change also automatically caches imports without an integrity check</li>
+<li>This changes several types in <code>Dhall.Import</code> to support this new
+feature</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1113">https://github.com/dhall-lang/dhall-haskell/pull/1113</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Implement new Unicode braced escape sequence
+<ul>
+<li>Escape sequences encoding surrogate pairs are no longer valid</li>
+<li>Instead, characters previously encoded as surrogate pairs can instead be
+encoded as a braced sequence</li>
+<li>For example: “\uD834\uDD1E” must now be written as “\u{1D11E}”</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/987">https://github.com/dhall-lang/dhall-haskell/pull/987</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1104">https://github.com/dhall-lang/dhall-haskell/pull/1104</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Make the type of extract richer:
+<ul>
+<li><code>Dhall.extract</code> can now return a detailed error instead of just a <code>Maybe</code></li>
+<li>This is a breaking chnage because the type of <code>extract</code> changed</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1011">https://github.com/dhall-lang/dhall-haskell/pull/1011</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add support for importing expressions <code>as Location</code>
+<ul>
+<li>This is a breaking change because a new <code>Location</code> constructor was added
+to <code>ImportMode</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1019">https://github.com/dhall-lang/dhall-haskell/pull/1019</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Switch <code>Var</code> to use an <code>Int</code>
+<ul>
+<li>This is a performance improvement, but also a breaking change since the
+<code>Integer</code> in the <code>Var</code> constructor was changed to an <code>Int</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1044">https://github.com/dhall-lang/dhall-haskell/pull/1044</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add new <code>toMap</code> keyword
+<ul>
+<li>This is a breaking change to the API because a new <code>ToMap</code> constructor
+was added to the <code>Expr</code> type</li>
+<li>This is also a technically breaking change to the language because <code>toMap</code>
+is now a reserved keyword, although most code should be unaffected in
+practice</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1041">https://github.com/dhall-lang/dhall-haskell/pull/1041</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Sort the fields of a record projection during normalization
+<ul>
+<li>This is a technically breaking change to the language because any
+expressions with an uninterpreted record projection will have a different
+semantic integrity check.  However, most could should be unaffected in
+practice</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1111">https://github.com/dhall-lang/dhall-haskell/pull/1111</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix substitution into record projection by type
+<ul>
+<li>An expression like this one was being incorrectly rejected:
+<code>let e = { a = 10, b = &quot;Text&quot; } let s = { a : Natural } in e.(s)</code>, which
+this change fixes</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1012">https://github.com/dhall-lang/dhall-haskell/pull/1012</a></li>
+</ul>
+</li>
+<li>BUG FIX: Reject record projection when there is a field type mismatch
+<ul>
+<li>Record projection by type was previously not checking the expected
+field types, which this change fixes</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1027">https://github.com/dhall-lang/dhall-haskell/pull/1027</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix linting of unused let bindings
+<ul>
+<li>Certain let bindings were not correctly detected as unused, which this
+change fixes</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1001">https://github.com/dhall-lang/dhall-haskell/pull/1001</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix <code>--file</code> option
+<ul>
+<li>The <code>--file</code> option from the previous release did not work, due to not
+computing relative paths correctly, which this change fixes</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1004">https://github.com/dhall-lang/dhall-haskell/pull/1004</a></li>
+</ul>
+</li>
+<li>BUG FIX: Minor fix to <code>dhall diff</code>
+<ul>
+<li><code>dhall diff</code> was incorrectly displaying spurious differences for
+identical lists that were function arguments, which this change fixes</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1006">https://github.com/dhall-lang/dhall-haskell/pull/1006</a></li>
+</ul>
+</li>
+<li>BUG FIX: Allow <code>Sort</code> as type annotation
+<ul>
+<li>This should have been implemented in the previous release as part of
+supporting version 8.0.0 of the standard, but was missed</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1024">https://github.com/dhall-lang/dhall-haskell/pull/1024</a></li>
+</ul>
+</li>
+<li>BUG FIX: <code>Dhall.Map</code>: Reflect original key ordering in <code>Ord</code> instance
+<ul>
+<li><code>Dhall.Map</code> now considers key order when comparing <code>Map</code>s, which it should
+have done before, but didn’t</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1050">https://github.com/dhall-lang/dhall-haskell/pull/1050</a></li>
+</ul>
+</li>
+<li>BUG FIX: Consistently format multi-line strings
+<ul>
+<li>The formatter now formats naked multi-line strings the same as nested
+multi-line strings</li>
+<li>Specifically, naked multi-line strings can now be formatted on a single
+(just like nested multi-line strings)</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1056">https://github.com/dhall-lang/dhall-haskell/pull/1056</a></li>
+</ul>
+</li>
+<li>BUG FIX: Make <code>isNormalized</code> consistent with <code>normalize</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1115">https://github.com/dhall-lang/dhall-haskell/pull/1115</a></li>
+</ul>
+</li>
+<li>BUG FIX: Make <code>normalizeWithM</code> consistent with <code>normalize</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1126">https://github.com/dhall-lang/dhall-haskell/pull/1126</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix import alternatives to recover from type errors
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1152">https://github.com/dhall-lang/dhall-haskell/pull/1152</a></li>
+</ul>
+</li>
+<li>Feature: Semi-semantic caching
+<ul>
+<li>The Haskell implementation now implicitly caches <em>all</em> local imports, not
+just imports frozen by integrity checks, so that you don’t have to freeze
+them when doing local development</li>
+<li>These cached imports are still correctly invalidated if they or any of
+their dependencies change</li>
+<li>This new implicit cache is stored underneath <code>~/.cache/dhall-haskell</code> by
+default</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1154">https://github.com/dhall-lang/dhall-haskell/pull/1154</a></li>
+</ul>
+</li>
+<li>Feature: New <code>dhall text</code> subcommand
+<ul>
+<li>This new subcommand supersedes the old <code>dhall-to-text</code> executable</li>
+</ul>
+</li>
+<li>Feature: Add <code>instance Lift (Expr s a)</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1119">https://github.com/dhall-lang/dhall-haskell/pull/1119</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to error messages:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1030">https://github.com/dhall-lang/dhall-haskell/pull/1030</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1137">https://github.com/dhall-lang/dhall-haskell/pull/1137</a></li>
+</ul>
+</li>
+<li>Fixes and improvements to tests:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1155">https://github.com/dhall-lang/dhall-haskell/pull/1155</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1159">https://github.com/dhall-lang/dhall-haskell/pull/1159</a></li>
+</ul>
+</li>
+<li>Performance improvements
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1036">https://github.com/dhall-lang/dhall-haskell/pull/1036</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1051">https://github.com/dhall-lang/dhall-haskell/pull/1051</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1048">https://github.com/dhall-lang/dhall-haskell/pull/1048</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1057">https://github.com/dhall-lang/dhall-haskell/pull/1057</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1065">https://github.com/dhall-lang/dhall-haskell/pull/1065</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1066">https://github.com/dhall-lang/dhall-haskell/pull/1066</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/1085">https://github.com/dhall-lang/dhall-haskell/pull/1085</a></li>
+</ul>
+</li>
+</ul>
+<p>1.24.0</p>
+<ul>
+<li>Supports version 8.0.0 of the standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v8.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v8.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Allow tabs and blank lines in multi-line strings
+<ul>
+<li>Blank lines are now ignored for the purpose of dedenting multiline strings</li>
+<li>Lines with leading tabs (or mixed tabs and spaces) are now dedented, too,
+so long as they all share the same prefix</li>
+<li>This is technically a breaking change, but unlikely to affect programs
+in practice, especially if they were formatted with <code>dhall format</code>.  This
+change mainly affects programs that were not indented correctly.</li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Simplify bare interpolations
+<ul>
+<li>Expressions like <code>λ(x : Text) → &quot;${x}&quot;</code> now simplify to <code>λ(x : Text) → x</code></li>
+<li>This is a technically breaking change because it changes how these sorts
+of expressions are serialized.  This does not affect semantic integrity
+checks and the new simplified expressions are extensionally equivalent to
+their older counterpart expressions.</li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Encode integrity check as multihash
+<ul>
+<li>Semantic integrity checks are now encoded using the multihash spec</li>
+<li>This is a technically breaking change that does not perturb the hash for
+user-facing semantic integrity checks.  This only affects how expressions
+with unresolved imports are serialized, but semantic integrity checks are
+only computed for fully-resolved imports.</li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>BUG FIX: Fix type-checker to reject invalid record type annotations
+<ul>
+<li>e.g. <code>{ x = 1 } : { x : Text }</code> was not properly rejected by the type
+checker</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/965">https://github.com/dhall-lang/dhall-haskell/pull/965</a></li>
+</ul>
+</li>
+<li>BUG FIX: Custom header forwarding fixed
+<ul>
+<li>Forwarding custom headers could previously fail in various ways, such as:
+<ul>
+<li>Cyclic imports leading to endless network requests</li>
+<li>Resolving a non-existent import for the custom headers</li>
+<li>Resolving an existing but incorrect import for the custom headers</li>
+</ul>
+</li>
+<li>This change fixes that by forwarding custom headers by value instead of
+by reference</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/967">https://github.com/dhall-lang/dhall-haskell/pull/967</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix GHCJS support
+<ul>
+<li><code>Natural/fold</code> was broken in version 1.22, which this change fixes</li>
+<li>Specifically, it would hang for <code>Natural</code> numbers greater than 1</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/985">https://github.com/dhall-lang/dhall-haskell/pull/985</a></li>
+</ul>
+</li>
+<li>BUG FIX: <code>dhall diff</code> no longer double-prints key-value separators
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/952">https://github.com/dhall-lang/dhall-haskell/pull/952</a></li>
+</ul>
+</li>
+<li>Feature: Record projection by expression
+<ul>
+<li>You can now project out a subset of record fields by the expected type</li>
+<li><code>let t = { x : Natural } let p = { x = 1, y = 2 } in p.(t) = { x = 1 }</code></li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>Feature: Inline headers
+<ul>
+<li>You no longer need to specify custom headers in a separate import.  You
+can now specify them inline within the same file.</li>
+<li>e.g.: <code>https://example.com/x using [ { header = &quot;Foo&quot;, value = &quot;Bar&quot; } ]</code></li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>Feature: Allow <code>Sort</code> as a type annotation
+<ul>
+<li>An expression such as <code>Kind → Kind : Sort</code> will now type-check</li>
+<li><code>Sort</code> is still disallowed outside of a type annotation</li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>Feature: Allow self-describe-cbor when decoding
+<ul>
+<li>Dhall expressions serialized as CBOR can be tagged to describe themselves
+as CBOR without affecting decoding</li>
+<li>See the changelog for standard version 8.0.0 for more details</li>
+</ul>
+</li>
+<li>Feature: New <code>--file</code> option for <code>dhall</code> commands
+<ul>
+<li>In other words, instead of <code>dhall &lt;&lt;&lt; './some/file</code> you can now use
+<code>dhall --file some/file</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/949">https://github.com/dhall-lang/dhall-haskell/pull/949</a></li>
+</ul>
+</li>
+<li>Feature: New <code>--cache</code> flag for <code>dhall freeze</code> command
+<ul>
+<li>This automates the idiom used by the Prelude to optimistically cache
+imports but gracefully degrade if the semantic integrity check fails</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/980">https://github.com/dhall-lang/dhall-haskell/pull/980</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>:clear</code> command to <code>dhall repl</code>
+<ul>
+<li>This deletes previous bindings from the history so that they can be
+garbage collected</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/966">https://github.com/dhall-lang/dhall-haskell/pull/966</a></li>
+</ul>
+</li>
+<li>Feature: New <code>chunkExprs</code> <code>Traversal</code> added to <code>Dhall.Core</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/954">https://github.com/dhall-lang/dhall-haskell/pull/954</a></li>
+</ul>
+</li>
+<li>Feature: New <code>Dhall.Optics</code> module
+<ul>
+<li>This re-exports some convenient @lens@ utilities used internally for
+packages trying to avoid a @lens@ dependency</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/986">https://github.com/dhall-lang/dhall-haskell/pull/986</a></li>
+</ul>
+</li>
+<li>More GHC 8.8 support
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/961">https://github.com/dhall-lang/dhall-haskell/pull/961</a></li>
+</ul>
+</li>
+</ul>
+<p>1.23.0</p>
+<ul>
+<li>BREAKING CHANGE: Fix marshaling union literals
+<ul>
+<li>1.22.0 introduced two separate bugs in marshaling union literals between
+Dhall and Haskell, which this release fixes:
+<ul>
+<li>Dhall enums did not correctly map onto Haskell enums</li>
+<li>New-style union literals (i.e. <code>&lt; A : T &gt;.A x</code>) were not correctly
+supported</li>
+</ul>
+</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/918">https://github.com/dhall-lang/dhall-haskell/pull/918</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/927">https://github.com/dhall-lang/dhall-haskell/pull/927</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/936">https://github.com/dhall-lang/dhall-haskell/pull/936</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix α-normalization
+<ul>
+<li>Version 1.22.0 introduced a new faster evaluation algorithm, but the new
+algorithm introduced two α-normalization regression, which this release
+fixes</li>
+<li>The primary effect of this bug was that semantic integrity checks would
+fail for expressions that contain an <code>if</code>/<code>then</code>/else` expression in their
+normal form</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/931">https://github.com/dhall-lang/dhall-haskell/pull/931</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/938">https://github.com/dhall-lang/dhall-haskell/pull/938</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix merging of sort-level record types
+<ul>
+<li>The language standard requires that <code>{ a : Kind } ⩓ { b : Kind }</code> is
+valid, which this change fixes</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/891">https://github.com/dhall-lang/dhall-haskell/pull/891</a></li>
+</ul>
+</li>
+<li>BUG FIX: <code>dhall freeze</code> respects the <code>--ascii</code> flag
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/934">https://github.com/dhall-lang/dhall-haskell/pull/934</a></li>
+</ul>
+</li>
+<li>BUG FIX: Don’t autocomplete fields for record types
+<ul>
+<li>This prevents the REPL from expanding <code>{ x : T }.&lt;TAB&gt;</code> to <code>{ x : T }.x</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/937">https://github.com/dhall-lang/dhall-haskell/pull/937</a></li>
+</ul>
+</li>
+<li>Support <code>MonadFail</code>-related changes in GHC 8.8
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/912">https://github.com/dhall-lang/dhall-haskell/pull/912</a></li>
+</ul>
+</li>
+<li>Add <code>cross</code> flag to simplify cross-compilation
+<ul>
+<li>This allows the <code>dhall</code> package to be built without using
+<code>TemplateHaskell</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/928">https://github.com/dhall-lang/dhall-haskell/pull/928</a></li>
+</ul>
+</li>
+<li>Increase lines of context for error messages
+<ul>
+<li>Error messages now provide at least 20 lines of context instead of 3
+before truncating large expressions</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/916">https://github.com/dhall-lang/dhall-haskell/pull/916</a></li>
+</ul>
+</li>
+<li>Add line numbers to error messages
+<ul>
+<li>The bottom of every Dhall type error includes the original source code,
+which now has line numbers on the left margin</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/919">https://github.com/dhall-lang/dhall-haskell/pull/919</a></li>
+</ul>
+</li>
+<li>Expand lower bounds on <code>megaparsec</code>/<code>transformers-compat</code> dependencies
+<ul>
+<li>This is to support <code>dhall</code> on Debian Sid</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/939">https://github.com/dhall-lang/dhall-haskell/pull/939</a></li>
+</ul>
+</li>
+</ul>
+<p>1.22.0</p>
+<ul>
+<li>Supports version 7.0.0 of the standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v7.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v7.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add support for empty alternatives
+<ul>
+<li>The <code>Union</code> type now has an optional (<code>Maybe</code>) type for each alternative</li>
+<li>See the changelog for standard version 7.0.0 for more details</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/863">https://github.com/dhall-lang/dhall-haskell/pull/863</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Remove support for URL fragments
+<ul>
+<li>The <code>URL</code> type no longer has a field for a URL fragment since the language
+no longer supports fragments</li>
+<li>See the changelog for standard version 7.0.0 for more details</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/851">https://github.com/dhall-lang/dhall-haskell/pull/851</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Remove deprecated <code>Path</code> type synonym
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/858">https://github.com/dhall-lang/dhall-haskell/pull/858</a></li>
+</ul>
+</li>
+<li>BUG FIX: Correctly parse identifiers beginning with <code>http</code>
+<ul>
+<li>i.e. <code>httpPort</code> was supposed to be a valid identifier name and now is</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/870">https://github.com/dhall-lang/dhall-haskell/pull/870</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix <code>dhall encode</code> bug
+<ul>
+<li><code>dhall encode</code> bug was generating binary expressions that were valid
+(i.e. they would decode correctly) but were non-standard (i.e. hashing
+them would not match the hash you would normally get from a semantic
+integrity check)</li>
+<li>Semantic integrity checks were not affected by this bug since they used
+a slightly different code path that generated the correct binary input to
+the hash.  Only the <code>dhall decode</code> subcommand was affected</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/859">https://github.com/dhall-lang/dhall-haskell/pull/859</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix for <code>Dhall.UnionType</code>
+<ul>
+<li>This fixes some expressions that would previously fail to marshal into
+Haskell, specifically those were the marshalling logic was built using
+the <code>UnionType</code> utilities</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/857">https://github.com/dhall-lang/dhall-haskell/pull/857</a></li>
+</ul>
+</li>
+<li>Feature: New <code>--alpha</code> flag to α-normalize command-line output
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/855">https://github.com/dhall-lang/dhall-haskell/pull/855</a></li>
+</ul>
+</li>
+<li>Performance improvements
+<ul>
+<li>The normalizer is now <em>much</em> faster</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/876">https://github.com/dhall-lang/dhall-haskell/pull/876</a></li>
+</ul>
+</li>
+</ul>
+<p>1.21.0</p>
+<ul>
+<li>Supports version 6.0.0 of the language standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v6.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v6.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Remove the <code>constructors</code> keyword
+<ul>
+<li>… as standardized in version 6.0.0 of the language standard</li>
+<li>The deprecation cycle is over, so the keyword is no longer supported</li>
+<li>For more details, see: <a href="https://github.com/dhall-lang/dhall-lang/wiki/Migration%3A-Deprecation-of-constructors-keyword">https://github.com/dhall-lang/dhall-lang/wiki/Migration%3A-Deprecation-of-constructors-keyword</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/829">https://github.com/dhall-lang/dhall-haskell/pull/829</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: CBOR-encode only special <code>Double</code>s as half-floats
+<ul>
+<li>… as standardized in version 6.0.0 of the language standard</li>
+<li>CBOR <code>Double</code>s except <code>Infinity</code>/<code>-Infinity</code>/<code>NaN</code>/<code>0.0</code> are now encoded in at
+least 32 bits</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/822">https://github.com/dhall-lang/dhall-haskell/pull/822</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Sort record and union fields when CBOR-encoding
+<ul>
+<li>Fields and alternatives are now sorted when serialized</li>
+<li>This does not affect semantic integrity checks, which already sorted these
+fields/alternatives before hashing expressions</li>
+<li>This does affect the serialization of expressions that have not been
+normalized (e.g. uninterpreted expressions transmitted over the wire)</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/835">https://github.com/dhall-lang/dhall-haskell/pull/835</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix non-exhaustive pattern match in <code>dhall lint</code>
+<ul>
+<li>This fixes: <code>Irrefutable pattern failed for pattern Let (l' :| ls') d'</code></li>
+<li>This bug would cause <code>dhall lint</code> to fail on some nested <code>let</code>/<code>in</code>
+expressions</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/780">https://github.com/dhall-lang/dhall-haskell/pull/780</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/784">https://github.com/dhall-lang/dhall-haskell/pull/784</a></li>
+</ul>
+</li>
+<li>BUG FIX: Don’t fail if <code>$HOME</code> environment variable is unset
+<ul>
+<li>The interpreter was incorrectly throwing an exception if <code>HOME</code> was unset</li>
+<li>The standard requires that implementations should handle the <code>HOME</code>
+environment variable being missing</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/789">https://github.com/dhall-lang/dhall-haskell/pull/789</a></li>
+</ul>
+</li>
+<li>Feature: Remove version tag from semantic integrity check
+<ul>
+<li>… as standardized in version 6.0.0 of the language standard</li>
+<li>This is not a breaking change because this change also includes
+backwards-compatible support for semantic integrity checks produced by
+older versions of the interpreter</li>
+</ul>
+</li>
+<li>Feature: Support Unicode path components
+<ul>
+<li>… as standardized in version 6.0.0 of the language standard</li>
+<li>You can now use Unicode in path components if they are quoted</li>
+<li>i.e. <code>./families/&quot;禺.dhall&quot;</code> is now legal</li>
+</ul>
+</li>
+<li>Feature: Add <code>Text/show</code> built-in
+<ul>
+<li>… as standardized in version 6.0.0 of the language standard</li>
+<li>You can now convert a <code>Text</code> literal to its equivalent Dhall source code
+(which is itself a <code>Text</code> literal)</li>
+<li>This comes in handy when using Dhall code to generate JSON or Dhall code</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/811">https://github.com/dhall-lang/dhall-haskell/pull/811</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>--immediate-dependencies</code>/<code>--transitive-dependencies</code> flags for
+<code>dhall resolve</code>
+<ul>
+<li>You can now retrieve all of your immediate or transitive dependencies as a
+textual list</li>
+<li>This simplifies integration with other command-line tools (such as file
+watchers)</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/795">https://github.com/dhall-lang/dhall-haskell/pull/795</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/803">https://github.com/dhall-lang/dhall-haskell/pull/803</a></li>
+</ul>
+</li>
+<li>Feature: <code>dhall freeze</code> now only freezes remote imports by default
+<ul>
+<li><code>dhall freeze</code> used to freeze all imports (including local imports and
+environment variables)</li>
+<li>Now <code>dhall freeze</code> only freezes remote imports by default, which is what
+most users want</li>
+<li>You can install freeze all imports using the <code>--all</code> flag</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/808">https://github.com/dhall-lang/dhall-haskell/pull/808</a></li>
+</ul>
+</li>
+<li>Feature: <code>:save</code> and <code>:load</code> REPL state
+<ul>
+<li><code>:save</code> with no arguments now saves the REPL state to a <code>.dhall-repl-N</code>
+file</li>
+<li>The file format is a list of <code>dhall repl</code> commands</li>
+<li>You can use <code>:load</code> to load the saved state back into the REPL</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/807">https://github.com/dhall-lang/dhall-haskell/pull/807</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>:hash</code> command to <code>dhall repl</code>
+<ul>
+<li>This lets you conveniently hash expressions within the <code>dhall repl</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/806">https://github.com/dhall-lang/dhall-haskell/pull/806</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>--check</code> flag to <code>dhall format</code>
+<ul>
+<li>Use this to check if the input is already formatted</li>
+<li>Useful for continuous integration when you want to ensure that all code
+under version control remains formatted</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/810">https://github.com/dhall-lang/dhall-haskell/pull/810</a></li>
+</ul>
+</li>
+<li>Feature: Add  <code>UnionInputType</code> builder for <code>InputType</code>s
+<ul>
+<li>This is the union analog of <code>RecordInputType</code>, letting you build a
+record explicitly instead of deriving the instance using GHC generics</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/775">https://github.com/dhall-lang/dhall-haskell/pull/775</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>:set</code>/<code>:unset</code> commands to <code>dhall repl</code>
+<ul>
+<li>You can use these commands to set or unset command-line options</li>
+<li>Currently only setting/unsetting <code>--explain</code> is supported</li>
+</ul>
+</li>
+<li>Standards-compliance fixes:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/779">https://github.com/dhall-lang/dhall-haskell/pull/779</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/804">https://github.com/dhall-lang/dhall-haskell/pull/804</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/833">https://github.com/dhall-lang/dhall-haskell/pull/833</a></li>
+</ul>
+</li>
+<li>Documentation fixes:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/792">https://github.com/dhall-lang/dhall-haskell/pull/792</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/825">https://github.com/dhall-lang/dhall-haskell/pull/825</a></li>
+</ul>
+</li>
+<li>Test fixes:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/782">https://github.com/dhall-lang/dhall-haskell/pull/782</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/836">https://github.com/dhall-lang/dhall-haskell/pull/836</a></li>
+</ul>
+</li>
+<li>Improved error messages:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/812">https://github.com/dhall-lang/dhall-haskell/pull/812</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/815">https://github.com/dhall-lang/dhall-haskell/pull/815</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/824">https://github.com/dhall-lang/dhall-haskell/pull/824</a></li>
+</ul>
+</li>
+<li>Formatting fixes:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/831">https://github.com/dhall-lang/dhall-haskell/pull/831</a></li>
+</ul>
+</li>
+<li>REPL fixes:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/837">https://github.com/dhall-lang/dhall-haskell/pull/837</a></li>
+</ul>
+</li>
+</ul>
+<p>1.20.1</p>
+<ul>
+<li>BUG FIX: Fix binary encoding to use correct standard version
+<ul>
+<li>This fixes computed hashes to correctly match standard version 5.0.0</li>
+<li>This is not marked as a breaking change since it is a bug fix.  The
+1.20.0 release will be blacklisted on Hackage and users should upgrade
+from 1.19.* directly to 1.20.1</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/771">https://github.com/dhall-lang/dhall-haskell/pull/771</a></li>
+</ul>
+</li>
+</ul>
+<p>1.20.0</p>
+<ul>
+<li>Supports version 5.0.0 of the language standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v5.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v5.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: Implement standardized support for multi-line
+literals
+<ul>
+<li>This updates the multi-line support to match the standard</li>
+<li>This is a breaking change because empty lines within the multi-line
+literal now require leading whitespace whereas previously they did not</li>
+<li>This is also a breaking change because now a newline is required after
+the opening <code>''</code> quotes whereas previously it was not required</li>
+<li>If you use <code>dhall format</code> then your multi-line literals already have the
+necessary leading whitespace</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: <code>constructors x = x</code>
+<ul>
+<li>Now the <code>constructors</code> keyword behaves like an identity function, since
+constructors can already be accessed as fields off the original union
+type.</li>
+<li>This is a breaking change since any record of terms that contains a
+<code>constructors</code> field will now be a forbidden mixed record of types and
+terms.</li>
+<li>This is also a breaking change if you annotated the type of what used to
+be a <code>constructors</code> record.</li>
+<li><code>dhall lint</code> will now remove the obsolete <code>constructors</code> keyword for you</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/693">https://github.com/dhall-lang/dhall-haskell/pull/693</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/701">https://github.com/dhall-lang/dhall-haskell/pull/701</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Restore <code>Parent</code> constructor for <code>Local</code> type
+<ul>
+<li>This more closely matches the standard and also enables <code>dhall format</code> to
+produce a leading <code>../</code> for imports instead of <code>./../</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/718">https://github.com/dhall-lang/dhall-haskell/pull/718</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix type-checking bug for unions
+<ul>
+<li>The first fix was that the inferred type was wrong for unions where
+alternatives were types or kinds</li>
+<li>The second fix was that unions that mixed terms/types/kinds were not
+properly rejected</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/763">https://github.com/dhall-lang/dhall-haskell/pull/763</a></li>
+</ul>
+</li>
+<li>BUG FIX: Change how <code>dhall repl</code> handles prior definitions
+<ul>
+<li>This changes the REPL to handle previous bindings as if they were
+defined using a large <code>let</code> expression instead of adding them to the
+context</li>
+<li>This fixes some type-checking false negatives</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/729">https://github.com/dhall-lang/dhall-haskell/pull/729</a></li>
+</ul>
+</li>
+<li>Feature: Autocomplete for <code>dhall repl</code>
+<ul>
+<li>You can now auto-complete record fields, union constructors, and
+identifiers that are in scope</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/727">https://github.com/dhall-lang/dhall-haskell/pull/727</a></li>
+</ul>
+</li>
+<li>Feature: GHCJS support
+<ul>
+<li><code>dhall</code> can now be built using GHCJS, although some features are still
+not supported for GHCJS, such as:
+<ul>
+<li>Semantic integrity checks</li>
+<li>Custom HTTP headers</li>
+</ul>
+</li>
+<li>Also, HTTP imports only work for URLs that support CORS</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/739">https://github.com/dhall-lang/dhall-haskell/pull/739</a></li>
+</ul>
+</li>
+<li>Feature: Add support for records of records of types
+<ul>
+<li>You can now nest records of types</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/700">https://github.com/dhall-lang/dhall-haskell/pull/700</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>:quit</code> command for <code>dhall repl</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/719">https://github.com/dhall-lang/dhall-haskell/pull/719</a></li>
+</ul>
+</li>
+<li>Feature: Add <code>--json</code> flag for <code>dhall {encode,decode}</code>
+<ul>
+<li>You can now produce/consume CBOR expressions via JSON instead of binary</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/717">https://github.com/dhall-lang/dhall-haskell/pull/717</a></li>
+</ul>
+</li>
+<li>Feature: Add decoding logic for <code>as Text</code>
+<ul>
+<li>You can now preserve the <code>as Text</code> qualifier on imports when serializing
+them</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/712">https://github.com/dhall-lang/dhall-haskell/pull/712</a></li>
+</ul>
+</li>
+<li>Prenormalize substituted expressions
+<ul>
+<li>This is a performance improvement that reduces the time and memory
+consumption when normalizing expressions</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/765">https://github.com/dhall-lang/dhall-haskell/pull/765</a></li>
+</ul>
+</li>
+</ul>
+<p>1.19.1</p>
+<ul>
+<li>BUG FIX: Fix serious <code>dhall lint</code> bug
+<ul>
+<li><code>dhall lint</code> would sometimes remove <code>let</code> expressions that were still
+in use</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/703">https://github.com/dhall-lang/dhall-haskell/pull/703</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix import caching efficiency bug
+<ul>
+<li>Some imports were being wastefully fetched multiple times</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/702">https://github.com/dhall-lang/dhall-haskell/pull/702</a></li>
+</ul>
+</li>
+<li>Feature: Generate dot graph to visualize import graph
+<ul>
+<li>Use the <code>dhall resolve --dot</code> command</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/698">https://github.com/dhall-lang/dhall-haskell/pull/698</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/713">https://github.com/dhall-lang/dhall-haskell/pull/713</a></li>
+</ul>
+</li>
+<li>Improve HTTP error messages
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/710">https://github.com/dhall-lang/dhall-haskell/pull/710</a></li>
+</ul>
+</li>
+</ul>
+<p>1.19.0</p>
+<ul>
+<li>Supports version 4.0.0 of the language standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v4.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v4.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE AND API: Prevent Hurkens’ paradox
+<ul>
+<li>This fixes a type-checking soundness bug which permitted infinite loops</li>
+<li>This is a breaking change because infinite loops are no longer possible</li>
+<li>This is also a breaking change because a record of types is now treated as
+a kind instead of a type</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/680">https://github.com/dhall-lang/dhall-haskell/pull/680</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE AND API: <code>Double</code>s are now double-precision
+floating point numbers
+<ul>
+<li>This restricts the range of <code>Double</code>s to IEEE 754 double-precision
+floating point</li>
+<li>This also implies that you can no longer convert <code>Scientific</code> values to
+<code>Dhall</code> expressions (i.e. no <code>Inject</code> instance for <code>Scientific</code>)</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/667">https://github.com/dhall-lang/dhall-haskell/pull/667</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Preserve field order for record projection
+<ul>
+<li>The API uses a new <code>Dhall.Set.Set</code> type instead of <code>Data.Set.Set</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/670">https://github.com/dhall-lang/dhall-haskell/pull/670</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Add support for multi-<code>let</code> expressions
+<ul>
+<li>This changes the <code>Let</code> constructor to now support storing multiple
+bindings per <code>let</code> expression</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/675">https://github.com/dhall-lang/dhall-haskell/pull/675</a></li>
+</ul>
+</li>
+<li>Access constructors as if they were fields of the union type
+<ul>
+<li>In other words: <code>&lt; Left : Bool | Right : Natural &gt;.Left</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/657">https://github.com/dhall-lang/dhall-haskell/pull/657</a></li>
+</ul>
+</li>
+<li>Support GHC 8.6
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/669">https://github.com/dhall-lang/dhall-haskell/pull/669</a></li>
+</ul>
+</li>
+<li>Add support for quoted path components
+<ul>
+<li>i.e. <code>/&quot;foo&quot;/bar/&quot;baz qux&quot;</code> or <code>https://example.com/foo/&quot;bar?baz&quot;?qux</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/690">https://github.com/dhall-lang/dhall-haskell/pull/690</a></li>
+</ul>
+</li>
+<li>Fix parsing of <code>//\\</code> operator
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/commit/9d0fd42d95ab69fa64da4afd8b60d69aca8e65a6">https://github.com/dhall-lang/dhall-haskell/commit/9d0fd42d95ab69fa64da4afd8b60d69aca8e65a6</a></li>
+</ul>
+</li>
+<li>Preserve Unicode characters when formatting code
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/679">https://github.com/dhall-lang/dhall-haskell/pull/679</a></li>
+</ul>
+</li>
+<li>Allow identifier names to begin with <code>Some</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/658">https://github.com/dhall-lang/dhall-haskell/pull/658</a></li>
+</ul>
+</li>
+<li>Add <code>subExpressions</code> <code>Traversal</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/660">https://github.com/dhall-lang/dhall-haskell/pull/660</a></li>
+</ul>
+</li>
+<li>Add <code>normalizeWithM</code> for monadic normalization
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/371">https://github.com/dhall-lang/dhall-haskell/pull/371</a></li>
+</ul>
+</li>
+<li>Custom normalizers now take precedence over default normalization logic
+<ul>
+<li>This allows one to override the implementation of built-in operators</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/684">https://github.com/dhall-lang/dhall-haskell/pull/684</a></li>
+</ul>
+</li>
+</ul>
+<p>1.18.0</p>
+<ul>
+<li>Supports version 3.0.0 of the language standard:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/releases/tag/v3.0.0">https://github.com/dhall-lang/dhall-lang/releases/tag/v3.0.0</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE AND API: New <code>Some</code>/<code>None</code> constructors for
+<code>Optional</code> values
+<ul>
+<li>Example: <code>[ Some 1, None Natural ]</code></li>
+<li>This is a breaking change to the language because <code>Some</code> and <code>None</code> are
+now reserved keywords</li>
+<li>This is a breaking change to the API because <code>Some</code> and <code>None</code> are new
+constructors for the <code>Expr</code> type</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE AND API: Support for kind polymorphism
+<ul>
+<li>This adds a new <code>Sort</code> constant above <code>Kind</code> in the hierarchy</li>
+<li>i.e. <code>Type : Kind : Sort</code></li>
+<li>This is a breaking change to the language because <code>Sort</code> is now a
+reserved keyword</li>
+<li>This is a breaking change to the API because <code>Sort</code> is a new
+constructor for the <code>Expr</code> type</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: New <code>Dhall.Map</code> module
+<ul>
+<li>This replaces <code>InsOrdHashMap</code> in the API</li>
+<li>The primary motivation is to improve performance and to remove the
+dependency on <code>insert-ordered-containers</code></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Use standard version instead of protocol version
+<ul>
+<li>The binary protocol is now versioned alongside the standard</li>
+<li>The <code>ProtocolVersion</code> type is renamed to <code>StandardVersion</code> and the</li>
+<li><code>--protocol-version</code> option is renamed to <code>--standard-version</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/634">https://github.com/dhall-lang/dhall-haskell/pull/634</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix import chaining for custom header imports
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/618">https://github.com/dhall-lang/dhall-haskell/pull/618</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix import chaining for imports protected by semantic integrity
+checks
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/584">https://github.com/dhall-lang/dhall-haskell/pull/584</a></li>
+</ul>
+</li>
+<li>BUG FIX: Record literals and types produced by <code>∧</code>/<code>⫽</code>/<code>⩓</code> are now sorted
+<ul>
+<li>This ensures that β-normalization is idempotent</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/572">https://github.com/dhall-lang/dhall-haskell/pull/572</a></li>
+</ul>
+</li>
+<li>BUG FIX: <code>dhall freeze</code> now correctly handles the starting file being
+located outside the current working directory
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/commit/a22aa79d1957be9ecf166ea066e2a9a5b309e1ae">https://github.com/dhall-lang/dhall-haskell/commit/a22aa79d1957be9ecf166ea066e2a9a5b309e1ae</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix parsing of IPv4-mapped IPv6 addresses
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/632">https://github.com/dhall-lang/dhall-haskell/pull/632</a></li>
+</ul>
+</li>
+<li>FEATURE: New <code>--ascii</code> flag for ASCII output
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/570">https://github.com/dhall-lang/dhall-haskell/pull/570</a></li>
+</ul>
+</li>
+<li>FEATURE: New <code>dhall encode</code> and <code>dhall decode</code> subcommands
+<ul>
+<li>These allow you to transform Dhall source code to and from its binary
+representation</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/588">https://github.com/dhall-lang/dhall-haskell/pull/588</a></li>
+</ul>
+</li>
+<li>LARGE parsing performance improvements
+<ul>
+<li>Parsing is about 10x-100x faster on most code</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/591">https://github.com/dhall-lang/dhall-haskell/pull/591</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/592">https://github.com/dhall-lang/dhall-haskell/pull/592</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/597">https://github.com/dhall-lang/dhall-haskell/pull/597</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/601">https://github.com/dhall-lang/dhall-haskell/pull/601</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/602">https://github.com/dhall-lang/dhall-haskell/pull/602</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/604">https://github.com/dhall-lang/dhall-haskell/pull/604</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/606">https://github.com/dhall-lang/dhall-haskell/pull/606</a></li>
+</ul>
+</li>
+<li>Type-checking performance improvements:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/566">https://github.com/dhall-lang/dhall-haskell/pull/566</a></li>
+</ul>
+</li>
+<li>Normalization performance improvements:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/610">https://github.com/dhall-lang/dhall-haskell/pull/610</a></li>
+</ul>
+</li>
+<li><code>dhall freeze</code> now caches the imports as it freezes them
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/587">https://github.com/dhall-lang/dhall-haskell/pull/587</a></li>
+</ul>
+</li>
+<li><code>dhall freeze</code> now refreezes imports with invalid semantic integrity checks
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/637">https://github.com/dhall-lang/dhall-haskell/pull/637</a></li>
+</ul>
+</li>
+<li><code>dhall freeze</code> now adds a trailing newline
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/629">https://github.com/dhall-lang/dhall-haskell/pull/629</a></li>
+</ul>
+</li>
+<li>Build against <code>megaparsec-7.0.*</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/565">https://github.com/dhall-lang/dhall-haskell/pull/565</a></li>
+</ul>
+</li>
+<li>Support GHC 8.6
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/599">https://github.com/dhall-lang/dhall-haskell/pull/599</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/623">https://github.com/dhall-lang/dhall-haskell/pull/623</a></li>
+</ul>
+</li>
+<li>Support GHC all the way back to 7.10.3
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/595">https://github.com/dhall-lang/dhall-haskell/pull/595</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/621">https://github.com/dhall-lang/dhall-haskell/pull/621</a></li>
+</ul>
+</li>
+<li>Improvements to error messages:
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/563">https://github.com/dhall-lang/dhall-haskell/pull/563</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/576">https://github.com/dhall-lang/dhall-haskell/pull/576</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/583">https://github.com/dhall-lang/dhall-haskell/pull/583</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/589">https://github.com/dhall-lang/dhall-haskell/pull/589</a></li>
+</ul>
+</li>
+</ul>
+<p>1.17.0</p>
+<ul>
+<li>This release corresponds to version 2.0.0 of the language standard</li>
+<li>BREAKING CHANGE TO THE LANGUAGE AND API: Binary serialization support
+<ul>
+<li>This is a breaking change to the hash for all semantic integrity checks</li>
+<li>The hash used by the semantic integrity check is now based on the
+binary representation instead of a text representation of the
+expression</li>
+<li>You can pin the new hashes by supplying the <code>--protocol-version 1.0</code>
+option on the command line until you need support for newer language
+features</li>
+<li>This also includes a breaking change to <code>ImportType</code> in the API</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: Disallow combining records of terms and
+types
+<ul>
+<li>This is mainly for consistency and to improve type errors that would
+have otherwise happened further downstream</li>
+<li>This should not affect the vast majority of code</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/538">https://github.com/dhall-lang/dhall-haskell/pull/538</a></li>
+</ul>
+</li>
+<li>BUG FIX: Semantic integrity checks now work for imported expression using
+the <code>constructors</code> keyword
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/554">https://github.com/dhall-lang/dhall-haskell/pull/554</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix α-normalization of expressions with bound variables named <code>_</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/524">https://github.com/dhall-lang/dhall-haskell/pull/524</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix <code>isNormalized</code> to match <code>normalize</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/522">https://github.com/dhall-lang/dhall-haskell/pull/522</a></li>
+</ul>
+</li>
+<li>BUG FIX: <code>dhall lint</code> now correctly handles nested <code>let</code> expressions
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/555">https://github.com/dhall-lang/dhall-haskell/pull/555</a></li>
+</ul>
+</li>
+<li>FEATURE: Imports protected by a semantic integrity check are now cached
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/533">https://github.com/dhall-lang/dhall-haskell/pull/533</a></li>
+</ul>
+</li>
+<li>The default <code>dhall</code> command no longer outputs the type to <code>stderr</code>
+<ul>
+<li>You can add back the type as a type annotation using the
+<code>--annotate</code> switch</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/544">https://github.com/dhall-lang/dhall-haskell/pull/544</a></li>
+</ul>
+</li>
+<li>New utilities for building <code>InputTypes</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/530">https://github.com/dhall-lang/dhall-haskell/pull/530</a></li>
+</ul>
+</li>
+<li>Improve parsing performance for long variable names
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/526">https://github.com/dhall-lang/dhall-haskell/pull/526</a></li>
+</ul>
+</li>
+<li>More succinct type diffs for function types
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/540">https://github.com/dhall-lang/dhall-haskell/pull/540</a></li>
+</ul>
+</li>
+<li>Identifier names can now begin with keywords
+<ul>
+<li>i.e. <code>ifChanged</code> and <code>lettuce</code> are now legal identifiers</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/551">https://github.com/dhall-lang/dhall-haskell/pull/551</a></li>
+</ul>
+</li>
+</ul>
+<p>1.16.1</p>
+<ul>
+<li>Fix test failure due to missing test data file</li>
+</ul>
+<p>1.16.0</p>
+<ul>
+<li>BREAKING CHANGE: Consolidate <code>input</code> family of functions
+<ul>
+<li>These now take a record of options</li>
+<li>This also <code>_stack</code> field of the <code>Status</code> type from <code>[Import]</code> to
+<code>NonEmpty Import</code></li>
+</ul>
+</li>
+<li>Permit <code>$</code> in quoted variable names
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/510">https://github.com/dhall-lang/dhall-haskell/pull/510</a></li>
+</ul>
+</li>
+</ul>
+<p>1.15.1</p>
+<ul>
+<li>Fix infinite loop when formatting expressions containing <code>?</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/491">https://github.com/dhall-lang/dhall-haskell/pull/491</a></li>
+</ul>
+</li>
+</ul>
+<p>1.15.0</p>
+<ul>
+<li>BREAKING CHANGE TO THE API: Support alternative imports using new <code>?</code> operator
+<ul>
+<li>This adds a new constructor which affects exhaustive pattern matches</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/473">https://github.com/dhall-lang/dhall-haskell/pull/473</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Add <code>Integer/toDouble</code> built-in function
+<ul>
+<li>This adds a new constructor which affects exhaustive pattern matches</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/434">https://github.com/dhall-lang/dhall-haskell/pull/434</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Use strict <code>Text</code> instead of lazy <code>Text</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/455">https://github.com/dhall-lang/dhall-haskell/pull/455</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Remove <code>Buildable</code> in favor of <code>Pretty</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/459">https://github.com/dhall-lang/dhall-haskell/pull/459</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Removed the <code>Parent</code> constructor from <code>FilePrefix</code>
+<ul>
+<li>Instead, use <code>Here</code> with a <code>&quot;..&quot;</code> prefix.</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/407">https://github.com/dhall-lang/dhall-haskell/pull/407</a></li>
+</ul>
+</li>
+<li>BUG FIX: Disallow duplicate fields in records
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/430">https://github.com/dhall-lang/dhall-haskell/pull/430</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix stripping of leading whitespace in multi-line strings
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/469">https://github.com/dhall-lang/dhall-haskell/pull/469</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix formatting field access of an import
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/471">https://github.com/dhall-lang/dhall-haskell/pull/471</a></li>
+</ul>
+</li>
+<li>Add <code>dhall freeze</code> command
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/486">https://github.com/dhall-lang/dhall-haskell/pull/486</a></li>
+</ul>
+</li>
+<li>Add <code>dhall diff</code> command
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/442">https://github.com/dhall-lang/dhall-haskell/pull/442</a></li>
+</ul>
+</li>
+<li>Add <code>dhall lint</code> command
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/484">https://github.com/dhall-lang/dhall-haskell/pull/484</a></li>
+</ul>
+</li>
+<li>Change <code>dhall-repl</code>/<code>dhall-hash</code>/<code>dhall-format</code> to <code>dhall</code> subcommands
+<ul>
+<li>i.e. <code>dhall repl</code>/<code>dhall hash</code>/<code>dhall format</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/435">https://github.com/dhall-lang/dhall-haskell/pull/435</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/452">https://github.com/dhall-lang/dhall-haskell/pull/452</a></li>
+</ul>
+</li>
+<li>Add <code>with-http</code> cabal flag to disable support for remote imports
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/482">https://github.com/dhall-lang/dhall-haskell/pull/482</a></li>
+</ul>
+</li>
+<li>Added <code>inputFrom</code> and <code>inputFromWith</code>
+<ul>
+<li>These allow naming the file that the expression is coming from for better
+error messages</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/464">https://github.com/dhall-lang/dhall-haskell/pull/464</a></li>
+</ul>
+</li>
+<li>Performance improvements
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/420">https://github.com/dhall-lang/dhall-haskell/pull/420</a></li>
+</ul>
+</li>
+<li>Tutorial recommends GitHub for Prelude instead of IPFS
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/479">https://github.com/dhall-lang/dhall-haskell/pull/479</a></li>
+</ul>
+</li>
+<li>Pretty-print expressions in type errors
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/429">https://github.com/dhall-lang/dhall-haskell/pull/429</a></li>
+</ul>
+</li>
+<li>Formatting improvements
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/398">https://github.com/dhall-lang/dhall-haskell/pull/398</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/458">https://github.com/dhall-lang/dhall-haskell/pull/458</a></li>
+</ul>
+</li>
+<li>Diff improvements
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/455">https://github.com/dhall-lang/dhall-haskell/pull/455</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/470">https://github.com/dhall-lang/dhall-haskell/pull/470</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/478">https://github.com/dhall-lang/dhall-haskell/pull/478</a></li>
+</ul>
+</li>
+</ul>
+<p>1.14.0</p>
+<ul>
+<li>BREAKING CHANGE TO THE LANGUAGE: Switch grammar of <code>Natural</code> and <code>Integer</code>
+<ul>
+<li><code>Natural</code> number literals are now unsigned and <code>Integer</code> literals always
+require a sign</li>
+<li>This is a <strong>VERY</strong> disruptive change to most Dhall code in the wild but
+was unanimously agreed upon here:
+<a href="https://github.com/dhall-lang/dhall-lang/issues/138">https://github.com/dhall-lang/dhall-lang/issues/138</a></li>
+<li>See also: <a href="https://github.com/dhall-lang/dhall-haskell/pull/381">https://github.com/dhall-lang/dhall-haskell/pull/381</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: Drop support for importing directories
+<ul>
+<li>Importing <code>dir/</code> used to resolve to <code>dir/@</code>, which is no longer supported</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/384">https://github.com/dhall-lang/dhall-haskell/pull/384</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: Change to the grammar for imports
+<ul>
+<li>File path components can no longer contain <code>#</code> or <code>?</code> characters</li>
+<li>URL imports must now contain at least one path component</li>
+<li>URL path components must match the grammar for file path components</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/390">https://github.com/dhall-lang/dhall-haskell/pull/390</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Rename <code>Path{,Mode,Hashed,Type}</code> to
+<code>Import{,Mode,Hashed,Type}</code>
+<ul>
+<li>In practice this change is not breaking for the most common use cases
+since this also provides a <code>Path</code> type synonym for backwards compatibility</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/376">https://github.com/dhall-lang/dhall-haskell/pull/376</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix α-equivalence bug when type-checking <code>merge</code>
+<ul>
+<li><code>merge</code> expressions would sometimes reject valid code due to a
+type-checking bug</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/394">https://github.com/dhall-lang/dhall-haskell/pull/394</a></li>
+</ul>
+</li>
+<li>Improve import caching
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/388">https://github.com/dhall-lang/dhall-haskell/pull/388</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/392">https://github.com/dhall-lang/dhall-haskell/pull/392</a></li>
+</ul>
+</li>
+<li>Increase upper bound on <code>tasty</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/382">https://github.com/dhall-lang/dhall-haskell/pull/382</a></li>
+</ul>
+</li>
+<li>Fix lower bound on <code>insert-ordered-containers</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/377">https://github.com/dhall-lang/dhall-haskell/pull/377</a></li>
+</ul>
+</li>
+</ul>
+<p>1.13.1</p>
+<ul>
+<li>Increase upper bound on <code>ansi-terminal</code> and <code>megaparsec</code></li>
+</ul>
+<p>1.13.0</p>
+<ul>
+<li>BUG FIX: Fix semantic integrity hashing support
+<ul>
+<li>Both parsing and pretty-printing semantic hashes were broken since version
+1.11.0</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/345">https://github.com/dhall-lang/dhall-haskell/pull/345</a></li>
+</ul>
+</li>
+<li>BUG FIX: Allow leading whitespace in interpolated expresssions
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/369">https://github.com/dhall-lang/dhall-haskell/pull/369</a></li>
+</ul>
+</li>
+<li>BUG FIX: Fix <code>deriving (Interpret)</code> for sum types
+<ul>
+<li>The types of alternatives were not correctly included in the corresponding
+Dhall type</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/348">https://github.com/dhall-lang/dhall-haskell/pull/348</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO LANGUAGE: Records cannot store both types and terms
+<ul>
+<li>Records can also not store type-level functions (like <code>List</code>)
+<ul>
+<li>Records might be allowed to store type-level functions again in the
+future</li>
+</ul>
+</li>
+<li>This fixes a potential soundness bug</li>
+<li>The primarily practical consequence of this change is that if you are
+hosting a “package” then you will need to split terms and types from your
+package into different records for your users to import</li>
+<li>This also implies removing the <code>./Monoid</code> type-level function from the
+<code>./Prelude/package.dhall</code> record</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/335">https://github.com/dhall-lang/dhall-haskell/pull/335</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Replace <code>trifecta</code> with <code>megaparsec</code>
+<ul>
+<li>This change the API to use the <code>Parser</code> type from <code>megaparsec</code></li>
+<li>This also slightly changes the type of <code>exprFromText</code></li>
+<li>If you program using the type classes provided by the <code>parsers</code> library
+then this is not a breaking change as that interface is preserved</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/268">https://github.com/dhall-lang/dhall-haskell/pull/268</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: New <code>⩓</code> operator for merging record types
+<ul>
+<li>Example: <code>{ foo : Text } ⩓ { bar : Bool } = { foo : Text, bar : Bool }</code></li>
+<li>This is breaking because it adds a new constructor to the <code>Expr</code> type</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/342">https://github.com/dhall-lang/dhall-haskell/pull/342</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: New support for projecting a subset of fields
+<ul>
+<li>Example: <code>{ x = 1, y = 2, z = 3 }.{ x, y } = { x = 1, y = 2 }</code></li>
+<li>This is breaking because it adds a new constructor to the <code>Expr</code> type</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/350">https://github.com/dhall-lang/dhall-haskell/pull/350</a></li>
+</ul>
+</li>
+<li>API+UX feature: New support for pretty-printing diffs of Dhall expressions
+<ul>
+<li>Error messages also use this feature to simplify large type mismatches</li>
+<li>There is also a new <code>Dhall.Diff</code> module</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/336">https://github.com/dhall-lang/dhall-haskell/pull/336</a></li>
+</ul>
+</li>
+<li>Add <code>version</code>, <code>resolve</code>, <code>type</code>, and <code>normalize</code> sub-commands to interpreter
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/352">https://github.com/dhall-lang/dhall-haskell/pull/352</a></li>
+</ul>
+</li>
+<li>Support GHC 7.10.3
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/340">https://github.com/dhall-lang/dhall-haskell/pull/340</a></li>
+</ul>
+</li>
+<li><code>:type</code> command in <code>dhall-repl</code> now only displays the type
+<ul>
+<li>Before it would also display the original expression</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/344">https://github.com/dhall-lang/dhall-haskell/pull/344</a></li>
+</ul>
+</li>
+<li>Trim dependency tree
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/351">https://github.com/dhall-lang/dhall-haskell/pull/351</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/268">https://github.com/dhall-lang/dhall-haskell/pull/268</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/355">https://github.com/dhall-lang/dhall-haskell/pull/355</a></li>
+</ul>
+</li>
+</ul>
+<p>1.12.0</p>
+<ul>
+<li>Additional changes to support GHC 8.4
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/331">https://github.com/dhall-lang/dhall-haskell/pull/331</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO API: Replace dependency on <code>text-format</code> with <code>formatting</code>
+<ul>
+<li>This replace the <code>Data.Text.Buildable.Buildable</code> instances with
+<code>Formatting.Buildable.Buildable</code> instances, which is why this is a
+breaking change</li>
+<li><code>text-format</code> is no longer maintained and blocking GHC 8.4 support</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/330">https://github.com/dhall-lang/dhall-haskell/pull/330</a></li>
+</ul>
+</li>
+</ul>
+<p>1.11.1</p>
+<ul>
+<li>Support GHC 8.4
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/321">https://github.com/dhall-lang/dhall-haskell/pull/321</a></li>
+</ul>
+</li>
+<li>Fix α-normalization bug
+<ul>
+<li>Note that this is not a type-checking bug.  This only affects users who
+were directly using the <code>alphaNormalize</code> function from the Haskell API
+because <code>let</code> expressions were not correctly α-normalized</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/319">https://github.com/dhall-lang/dhall-haskell/pull/319</a></li>
+</ul>
+</li>
+<li>Slight tweak to syntax highlighting
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/324">https://github.com/dhall-lang/dhall-haskell/pull/324</a></li>
+</ul>
+</li>
+<li>Increase upper bound on <code>ansi-terminal</code> and <code>exceptions</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/322">https://github.com/dhall-lang/dhall-haskell/pull/322</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/325">https://github.com/dhall-lang/dhall-haskell/pull/325</a></li>
+</ul>
+</li>
+</ul>
+<p>1.11.0</p>
+<ul>
+<li>BREAKING CHANGE TO THE API: Fix <code>{Natural,Optional,List}/build</code> semantics to
+match standard
+<ul>
+<li>This is a breaking change because the <code>OptionalLit</code> and <code>ListLit</code>
+constructors changed their representations to efficiently support the
+standard semantics</li>
+<li><code>ListLit</code> now stores a <code>Data.Sequence.Seq</code> instead of a
+<code>Data.Vector.Vector</code></li>
+<li><code>OptionalLit</code> now stores a <code>Maybe</code> instead of a <code>Data.Vector.Vector</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/300">https://github.com/dhall-lang/dhall-haskell/pull/300</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE COMMAND LINE: <code>dhall</code> executable always formats output
+<ul>
+<li>Previously you had to opt into formatting using <code>--pretty</code></li>
+<li>Now formatting is obligatory and the <code>--pretty</code> flag is gone</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/303">https://github.com/dhall-lang/dhall-haskell/pull/303</a></li>
+</ul>
+</li>
+<li>Feature: New <code>:save</code> command for <code>dhall-repl</code>
+<ul>
+<li>Now you can save an expression to a file: <code>./yourFile = someExpression</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/309">https://github.com/dhall-lang/dhall-haskell/pull/309</a></li>
+</ul>
+</li>
+<li>Improvement: Add new simplifications to match standard
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/312">https://github.com/dhall-lang/dhall-haskell/pull/312</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/316">https://github.com/dhall-lang/dhall-haskell/pull/316</a></li>
+</ul>
+</li>
+<li>Improvement: Fix equivalence check to match standard
+<ul>
+<li>Practically this means that more corner cases of the language correctly
+type-check than before</li>
+</ul>
+</li>
+<li>Improvement: New <code>--plain</code> flag to disable syntax highlighting
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/310">https://github.com/dhall-lang/dhall-haskell/pull/310</a></li>
+</ul>
+</li>
+<li>Improvement: Prelude now provides an umbrella <code>package.dhall</code> import
+<ul>
+<li>This is primarily for convenience</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/298">https://github.com/dhall-lang/dhall-haskell/pull/298</a></li>
+</ul>
+</li>
+<li>Improvement: Context is now normalized
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/302">https://github.com/dhall-lang/dhall-haskell/pull/302</a></li>
+</ul>
+</li>
+<li>Replace <code>cryptohash</code> dependency with <code>cryptonite</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/commit/5d2012927a062ec8bdf2bbaba77150344f38db77">https://github.com/dhall-lang/dhall-haskell/commit/5d2012927a062ec8bdf2bbaba77150344f38db77</a></li>
+</ul>
+</li>
+<li>Increase upper bound on exceptions
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/306">https://github.com/dhall-lang/dhall-haskell/pull/306</a></li>
+</ul>
+</li>
+<li>Fix type error in tutorial
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/commit/5a9126b2f684d3236fc1e8e20e206cfaf47d97db">https://github.com/dhall-lang/dhall-haskell/commit/5a9126b2f684d3236fc1e8e20e206cfaf47d97db</a></li>
+</ul>
+</li>
+</ul>
+<p>1.10.0</p>
+<ul>
+<li>Feature: Records/unions can now have fields/alternatives that are types
+<ul>
+<li>i.e. <code>{ foo = Text, bar = List }</code> is legal now</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/273">https://github.com/dhall-lang/dhall-haskell/pull/273</a></li>
+</ul>
+</li>
+<li>Feature: New <code>dhall-repl</code> for interactively evaluating Dhall expressions
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/266">https://github.com/dhall-lang/dhall-haskell/pull/266</a></li>
+</ul>
+</li>
+<li>Feature: Syntax highlighting
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/260">https://github.com/dhall-lang/dhall-haskell/pull/260</a></li>
+</ul>
+</li>
+<li>Feature: BREAKING CHANGE TO THE API: <code>dhall-format</code> preserves field order
+<ul>
+<li>This changes the syntax tree to use an <code>InsOrdHashMap</code> instead of a <code>Map</code></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Use Haskell’s <code>Scientific</code> type
+<ul>
+<li>This is fixes the interpreter to correct handle really large/small numbers</li>
+<li>This also allows marshaling into Haskell’s <code>Scientific</code> type</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/256">https://github.com/dhall-lang/dhall-haskell/pull/256</a></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Remove <code>system-filepath</code>/<code>system-fileio</code> dependencies
+<ul>
+<li>Now the library uses <code>Prelude.FilePath</code></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/248">https://github.com/dhall-lang/dhall-haskell/pull/248</a></li>
+</ul>
+</li>
+<li>Feature: Labels can now begin with reserved names
+<ul>
+<li>i.e. <code>List/map</code> is now a legal label</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/255">https://github.com/dhall-lang/dhall-haskell/pull/255</a></li>
+</ul>
+</li>
+<li>Fix: Rendered labels are now correctly escaped if they are numbers
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/252">https://github.com/dhall-lang/dhall-haskell/pull/252</a></li>
+</ul>
+</li>
+<li>Add the instance <code>Interpret String</code>.
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/247">https://github.com/dhall-lang/dhall-haskell/pull/247</a></li>
+</ul>
+</li>
+<li>Fix: Custom contexts passed to <code>typeWith</code> are now checked
+<ul>
+<li>This prevents a custom context from triggering an infinite loop</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/259">https://github.com/dhall-lang/dhall-haskell/pull/259</a></li>
+</ul>
+</li>
+</ul>
+<p>1.9.1</p>
+<ul>
+<li><code>dhall-format</code> now emits single-quoted strings for multi-line strings
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/237">https://github.com/dhall-lang/dhall-haskell/pull/237</a></li>
+</ul>
+</li>
+<li>Improved error messages for list elements with the wrong type
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/236">https://github.com/dhall-lang/dhall-haskell/pull/236</a></li>
+</ul>
+</li>
+<li>Change <code>lens</code> dependency to <code>lens-family-core</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/238">https://github.com/dhall-lang/dhall-haskell/pull/238</a></li>
+</ul>
+</li>
+</ul>
+<p>1.9.0</p>
+<ul>
+<li>Feature: BREAKING CHANGE TO LANGUAGE AND API: Add <code>constructors</code> keyword
+<ul>
+<li>This new keyword generates constructors from a union type
+<ul>
+<li>See the updated Haskell tutorial for more details</li>
+</ul>
+</li>
+<li>This means that <code>constructors</code> is now a reserved keyword</li>
+<li>This adds a new <code>Constructors</code> constructor to the <code>Expr</code> type</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/199">https://github.com/dhall-lang/dhall-haskell/pull/199</a></li>
+</ul>
+</li>
+<li>Feature: BREAKING CHANGE TO THE API: <code>dhall-format</code> preserves interpolation
+<ul>
+<li>This changes the <code>TextLit</code> constructor to represent an interpolated <code>Text</code>
+literal</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/220">https://github.com/dhall-lang/dhall-haskell/pull/220</a></li>
+</ul>
+</li>
+<li>Feature: You can now define type synonyms using <code>let</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/202">https://github.com/dhall-lang/dhall-haskell/pull/202</a></li>
+</ul>
+</li>
+<li>Feature: Extend valid set of quoted labels
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/pull/65">https://github.com/dhall-lang/dhall-lang/pull/65</a></li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-lang/pull/77">https://github.com/dhall-lang/dhall-lang/pull/77</a></li>
+</ul>
+</li>
+<li>Performance: Improve startup time when importing files, but not URLs
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/194">https://github.com/dhall-lang/dhall-haskell/pull/194</a></li>
+</ul>
+</li>
+<li>Security: <code>localhost</code>/<code>127.0.0.1</code> imports no longer count as local imports
+<ul>
+<li>Specifically: they cannot import environment variables or files</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/197">https://github.com/dhall-lang/dhall-haskell/pull/197</a></li>
+</ul>
+</li>
+<li>Security: Fix potential type-checking bug
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/198">https://github.com/dhall-lang/dhall-haskell/pull/198</a></li>
+</ul>
+</li>
+<li>Fix: BREAKING CHANGE TO API: Improve localization of error messages
+<ul>
+<li>This required fixing the type of <code>normalize</code>/<code>shift</code>/<code>subst</code> to preserve
+the first type parameter of <code>Expr</code> (i.e. they no longer delete <code>Note</code>
+constructors)</li>
+<li>A new <code>denote</code> function was added for the explicit purpose of deleting
+<code>Note</code> constructors</li>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/218">https://github.com/dhall-lang/dhall-haskell/pull/218</a></li>
+</ul>
+</li>
+<li>Expose <code>MissingEnvironmentVariable</code> exception type
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/196">https://github.com/dhall-lang/dhall-haskell/pull/196</a></li>
+</ul>
+</li>
+<li>Add <code>genericAuto</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/195">https://github.com/dhall-lang/dhall-haskell/pull/195</a></li>
+</ul>
+</li>
+<li>Add <code>inputWith</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/222">https://github.com/dhall-lang/dhall-haskell/pull/222</a></li>
+</ul>
+</li>
+<li>Add<code>loadWithContext</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/215">https://github.com/dhall-lang/dhall-haskell/pull/215</a></li>
+</ul>
+</li>
+<li>Add <code>pair</code>/<code>unit</code>/<code>string</code>/<code>list</code>
+<ul>
+<li>See: <a href="https://github.com/dhall-lang/dhall-haskell/pull/227">https://github.com/dhall-lang/dhall-haskell/pull/227</a></li>
+</ul>
+</li>
+</ul>
+<p>1.8.2</p>
+<ul>
+<li>Add <code>typeWithA</code> for type-checking custom <code>Embed</code>ded values</li>
+<li>Fix <code>dhall{,-*}</code> executables to ignore ambient locale and use UTF8</li>
+<li>Increase upper bound on <code>tasty</code> dependency</li>
+</ul>
+<p>1.8.1</p>
+<ul>
+<li><code>dhall</code> executable can now format output using <code>--pretty</code></li>
+<li>Improved Unicode suppport on Windows</li>
+</ul>
+<p>1.8.0</p>
+<ul>
+<li>BREAKING CHANGE TO LANGUAGE: Add support for import integrity checks
+<ul>
+<li>In practice, the likelihood of this breaking code in the wild is
+astronomically low</li>
+<li>This would only break code of the form <code>sha256:aaa...aaa</code> (i.e. a
+variabled named <code>sha256</code> with a type annotation for a type with a name
+64 characters long drawn from the first 6 characters of the alphabet)</li>
+</ul>
+</li>
+<li>BUG FIX: Fix parsing of single quotes in single-quoted strings</li>
+<li>BUG FIX: Fix superfluous parentheses introduced by <code>dhall-format</code></li>
+<li>New <code>dhall-hash</code> executable
+<ul>
+<li>This goes hand-in-hand with the added support for integrity checks since
+the executable lets you compute the current hash of an import</li>
+</ul>
+</li>
+</ul>
+<p>1.7.0</p>
+<ul>
+<li>BREAKING CHANGE TO LANGUAGE: Update parser to match standardized grammar
+<ul>
+<li>Trailing commas and bars no longer supported for union and record literals</li>
+<li>Paths no longer permit commas</li>
+<li>URL grammar is now RFC-compliant</li>
+<li>Environment variables can now be quoted to support full range of
+POSIX-compliant names</li>
+<li>Text literals support full set of JSON escape sequences (such as <code>\u2192</code>)</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO LANGUAGE: Single quoted strings strip leading newlines</li>
+<li>BUG FIX: Fixed type-checking infinite loops due to non-type-checked variables
+in context</li>
+<li>BUG FIX: Fixed type-checking bug due to missing context when type-checking
+certain expressions</li>
+<li>BUG FIX: Fixed type-checking bug due to off-by-one errors in name shadowing
+logic</li>
+<li>New <code>dhall-format</code> executable to automatically format code</li>
+<li>Performance optimizations to <code>Natural/fold</code> and <code>List/fold</code></li>
+<li>Improved parsing performance (over 3x faster)</li>
+<li>Union literals can now specify the set value anywhere in the literal
+<ul>
+<li>i.e. <code>&lt; A : Integer | B = False | C : Text &gt;</code></li>
+</ul>
+</li>
+<li>New <code>Inject</code> instance for <code>()</code></li>
+<li>Several tutorial fixes and improvements</li>
+</ul>
+<p>1.6.0</p>
+<ul>
+<li>BREAKING CHANGE TO THE API: Drop support for GHC 7.*</li>
+<li>BREAKING CHANGE TO THE API: Add support for customizing Dhall import
+<ul>
+<li>This is a breaking change because this changes the type of <code>loadWith</code></li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE API: Add field to <code>UnboundVariable</code> error containing</li>
+<li>BUG FIX: Fix parsing single quotes in string literals
+the name of the unbound variable</li>
+<li>Add <code>List/concatMap</code> to the Prelude</li>
+<li>You can now derive <code>Inject</code> and <code>Interpret</code> for types with unlabeled fields</li>
+<li>Add new instances for <code>Interpret</code>:
+<ul>
+<li><code>[]</code></li>
+<li><code>(,)</code></li>
+</ul>
+</li>
+<li>Add new instance for <code>Inject</code>
+<ul>
+<li><code>[]</code>, <code>Data.Set.Set</code>, <code>Data.Sequence.Seq</code></li>
+<li><code>(,)</code></li>
+<li><code>Int</code>, <code>Word8</code>, <code>Word16</code>, <code>Word32</code>, <code>Word64</code></li>
+</ul>
+</li>
+<li>Add <code>Eq</code> instance for <code>Src</code></li>
+</ul>
+<p>1.5.1</p>
+<ul>
+<li>Increase upper bound on <code>vector</code> and <code>optparse-generic</code></li>
+</ul>
+<p>1.5.0</p>
+<ul>
+<li>BREAKING CHANGE: Add list concatenation operator: <code>(#)</code>
+<ul>
+<li>This is a breaking change because it adds a new constructor to the <code>Expr</code>
+type which breaks exhaustive pattern matches</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add <code>Interpret</code> support for lazy <code>Text</code>
+<ul>
+<li>This is a breaking change because it renames <code>text</code> to <code>strictText</code></li>
+</ul>
+</li>
+<li>Add <code>Interpret</code> instance for decoding (a limited subset of) Dhall functions</li>
+<li>Dhall no longer requires Template Haskell to compile
+<ul>
+<li>This helps with cross-compilation</li>
+</ul>
+</li>
+<li>Add <code>rawInput</code> utility for decoding a Haskell value from the <code>Expr</code> type</li>
+<li>Add <code>loadWith</code>/<code>normalizeWith</code> utilities for normalizing/importing modules
+with a custom context</li>
+<li>Export <code>Type</code> constructor</li>
+</ul>
+<p>1.4.2</p>
+<ul>
+<li>Fix missing <code>Prelude</code> files in package archive uploaded to Hackage</li>
+</ul>
+<p>1.4.1</p>
+<ul>
+<li>Fix missing <code>tests/Tutorial.hs</code> module in package archive uploaded to Hackage</li>
+</ul>
+<p>1.4.0</p>
+<ul>
+<li>BREAKING CHANGE TO THE LANGUAGE AND API: You can now supply custom headers for
+URL imports with the new <code>using</code> keyword
+<ul>
+<li>This is a breaking change to the language because this adds a new reserved
+<code>using</code> keyword</li>
+<li>This is a breaking change to the API because this adds a new field to the
+<code>URL</code> constructor to store optional custom headers</li>
+</ul>
+</li>
+<li>BUG FIX: <code>:</code> is no longer a disallowed path character
+<ul>
+<li>This was breaking URL imports with a port</li>
+</ul>
+</li>
+<li>BUG FIX: If you import a home-anchored path (i.e. <code>~/foo</code>) and that imports a
+relative path (like <code>./bar</code>), then the canonical path of the relative import
+should be home-anchored (i.e. <code>~/bar</code>).  However, there was a bug that made
+lose the home anchor (i.e. <code>./foo/bar</code>), which this release fixes
+likely fail due to no longer being home-anchored (i.e. `./foob</li>
+<li>Add support for string interpolation</li>
+<li><code>merge</code> no longer requires a type annotation if you are merging at least one
+alternative</li>
+<li>Expanded Prelude
+<ul>
+<li><code>./Prelude/Optional/all</code></li>
+<li><code>./Prelude/Optional/any</code></li>
+<li><code>./Prelude/Optional/filter</code></li>
+<li><code>./Prelude/Optional/length</code></li>
+<li><code>./Prelude/Optional/null</code></li>
+<li><code>./Prelude/Text/concatMap</code></li>
+<li><code>./Prelude/Text/concatMapSep</code></li>
+<li><code>./Prelude/Text/concatSep</code></li>
+</ul>
+</li>
+<li>Rearrange detailed error messages to put summary information at the bottom of
+the message</li>
+</ul>
+<p>1.3.0</p>
+<ul>
+<li>BREAKING CHANGE TO THE API: Add support for new primitives, specifically:
+<ul>
+<li><code>(//)</code> - Right-biased and shallow record merge</li>
+<li><code>Optional/build</code> (now a built-in in order to support build/fold fusion)</li>
+<li><code>Natural/show</code></li>
+<li><code>Integer/show</code></li>
+<li><code>Double/show</code></li>
+<li><code>Natural/toInteger</code></li>
+<li>These all add new constructors to the <code>Expr</code> type, which would break
+exhaustive pattern matches</li>
+</ul>
+</li>
+<li>BREAKING CHANGE TO THE LANGUAGE: Imported paths and URLs no longer support
+the characters: “()[]{}&lt;&gt;:”
+<ul>
+<li>This reduces the number of cases where you have to add a space after
+imports</li>
+<li>Note that this does not exclude the <code>:</code> in the URL scheme (i.e. <code>http://</code>)</li>
+</ul>
+</li>
+<li>Increase connection timeout for imports</li>
+<li>Variable names now allow the <code>-</code> character for all but the first character</li>
+<li>You can now escape identifiers with backticks
+<ul>
+<li>This lets you name identifiers so that they don’t conflict with reserved
+key words</li>
+<li>This is most useful when converting Dhall to other file formats (like
+JSON) where you might need to emit a field that conflicts with one of
+Dhall’s reserved keywords</li>
+</ul>
+</li>
+<li>New <code>--version</code> flag for the <code>dhall</code> executable</li>
+</ul>
+<p>1.2.0</p>
+<ul>
+<li>BREAKING CHANGE: Add support for customizing derived <code>Interpret</code> instances
+<ul>
+<li>This is a breaking change to the Dhall library API since this changes the
+signature of the <code>Interpret</code> class by replacing the <code>auto</code> method with a
+more general <code>autoWith</code> method.  This <code>autoWith</code> now takes an
+<code>InterpretOptions</code> argument that lets you customize derived field and
+constuctor names</li>
+<li>In practice user programs that use the common path will be unaffected by
+this change</li>
+<li>This is not a breaking change to the Dhall language</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Type annotations now bind more tightly than lambda
+abstraction
+<ul>
+<li>
+<p>This is a breaking change to the Dhall language.  An expression like this:</p>
+<pre><code>λ(x : A) → y : B
+</code></pre>
+<p>… used to parenthesized implicitly as:</p>
+<pre><code>(λ(x : A) → y) : T
+</code></pre>
+<p>… but is now parenthesized implicitly as:</p>
+<pre><code>λ(x : A) → (y : T)
+</code></pre>
+<p>This is now consistent with Haskell’s precedence and also consistent with
+the precedence of <code>List</code> and <code>Optional</code> type annotations</p>
+</li>
+<li>
+<p>This change affects programs with an expression like this:</p>
+<pre><code>-- Assuming that `y : B`
+λ(x : A) → y : A → B
+</code></pre>
+<p>The above program would type-check before this change but not type-check
+after this change.  You would you need to fix the above program by either
+changing the type signature to annotate just the type of <code>y</code> like this:</p>
+<pre><code>λ(x : A) → y : B
+</code></pre>
+<p>… or by adding explicit parentheses like this:</p>
+<pre><code>(λ(x : A) → y) : A → B
+</code></pre>
+</li>
+<li>
+<p>This is not a breaking change to the Dhall library API</p>
+</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add support for importing a path’s contents as raw <code>Text</code> by
+adding <code>as Text</code> after the import
+<ul>
+<li>
+<p>This is a breaking change to the Dhall language</p>
+</li>
+<li>
+<p>This is technically a breaking change, but is extremely unlikely to affect
+you program.  This only changes the behavior of old programs that had an
+expression of the form:</p>
+<pre><code>/some/imported/function as Text
+</code></pre>
+<p>… where <code>/some/imported/function</code> is an imported function being applied
+to two arguments, the first of which is a bound variable named <code>as</code> and
+the second of which is the type <code>Text</code></p>
+</li>
+<li>
+<p>This is not a breaking change to the Dhall library API</p>
+</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Add support for importing environment variables using
+<code>env:VAR</code> syntax
+<ul>
+<li>
+<p>This is a breaking change to the Dhall library API since it adds a new
+<code>Path</code> constructor</p>
+</li>
+<li>
+<p>This also technically a breaking change to the Dhall language but
+extremely unlikely to affect your program.  This only changes the behavior
+of old programs that had an expression of the form:</p>
+<pre><code>env:VAR
+</code></pre>
+<p>… where <code>env</code> was the name of a bound variable and <code>:VAR</code> was a type
+annotation without spaces around the type annotation operator</p>
+<p>After this change the program would be interpreted as an import of the
+contents for the environment variable named <code>VAR</code></p>
+</li>
+</ul>
+</li>
+<li>BREAKING CHANGE: Support importing paths relative to home directory using
+<code>~/some/path</code> syntax
+<ul>
+<li>This is a breaking change to the Dhall library API since it adds a new
+field to the <code>File</code> constructor indicating whether or not the imported
+path is relative to the home directory</li>
+<li>This is not a breaking change to the Dhall language and the new syntax
+does not override any old syntax</li>
+</ul>
+</li>
+<li>Permit trailing commas and bars in record/union syntax</li>
+<li>Improve location information for parsing errors</li>
+</ul>
+<p>1.1.0</p>
+<ul>
+<li>BREAKING CHANGE: Non-empty lists no longer require a type annotation
+<ul>
+<li>This is a breaking change to the Haskell library, not the Dhall language</li>
+<li>This change does not break existing Dhall programs</li>
+<li>The <code>Expr</code> type was modified in a non-backwards-compatible way</li>
+</ul>
+</li>
+<li>Add new <code>exprA</code> parser</li>
+<li>Add new <code>InvalidType</code> exception if <code>input</code> fails on an invalid <code>Type</code></li>
+<li>Improve documentation and tutorial</li>
+</ul>
+<p>1.0.2</p>
+<ul>
+<li>Add support for Nix-style “double single-quote” multi-line string literals</li>
+<li>Add <code>isNormalized</code></li>
+<li>Improve documentation and tutorial</li>
+<li>Build against wider range of <code>http-client</code> versions</li>
+</ul>
+<p>1.0.1</p>
+<ul>
+<li>Initial release</li>
+</ul>
+<p>1.0.0</p>
+<ul>
+<li>Accidental premature upload to Hackage.  This release was blacklisted</li>
+</ul>
+<div class="bottom-gradient"><i class="fa fa-angle-down"></i></div></div></div></div></div></div>
+<div class="footer"><div class="container"><div class="row"><div class="span12">A service provided by
+<a href="http://www.fpcomplete.com/">FP Complete</a>
+</div>
+</div>
+</div>
+</div>
+<script src="https://www.stackage.org/static/combined/KkkNZOBL.js"></script><script src="https://www.stackage.org/static/combined/bPfKWATx.js"></script><script>$(function(){
+  hljs.initHighlightingOnLoad();
+
+  $('.expanding').each(function(){
+    var $this = $(this);
+    if ($this.height() > 300) {
+      $this.addClass('collapsed');
+      $this.find('.bottom-gradient').click(function(){
+        $this.removeClass('collapsed');
+      });
+    }
+  });
+});
+</script></div><!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.  chromium.org/developers/how-tos/chrome-frame-getting-started --><!--[if lt IE 7 ]><script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script><script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script><![endif]--><script async src="https://www.googletagmanager.com/gtag/js?id=UA-36928035-2"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-36928035-2');</script></body></html>
