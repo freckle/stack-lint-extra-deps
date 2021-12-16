@@ -3,21 +3,7 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages:
-- completed:
-    hackage: rss-conduit-0.6.0.1@sha256:583a6e85e08aca5b219c14441214fb0e217402245d9fc0c1497080ff14d36077,3105
-    pantry-tree:
-      size: 1277
-      sha256: 528856b2df3f5326f95f71051a907c6d2b1113bef7ef09245f1ee2d4b206caab
-  original:
-    hackage: rss-conduit-0.6.0.1@sha256:583a6e85e08aca5b219c14441214fb0e217402245d9fc0c1497080ff14d36077,3105
-- completed:
-    hackage: atom-conduit-0.9.0.1@sha256:2f6308511b22afd8972908ca103e4a128710ed7483cbd3b704115e8c36b906de,2680
-    pantry-tree:
-      size: 812
-      sha256: 997141bd8c7edd1fd127a3d39946f1785dc30d35901410ade623c852f524751f
-  original:
-    hackage: atom-conduit-0.9.0.1@sha256:2f6308511b22afd8972908ca103e4a128710ed7483cbd3b704115e8c36b906de,2680
+packages: []
 snapshots:
 - completed:
     size: 586296

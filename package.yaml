@@ -33,7 +33,6 @@ library:
     - http-types
     - mtl
     - optparse-applicative
-    - rss-conduit
     - transformers
     - xdg-basedir
     - xml-conduit

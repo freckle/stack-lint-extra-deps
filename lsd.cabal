@@ -65,7 +65,6 @@ library
     , mtl
     , optparse-applicative
     , rio
-    , rss-conduit
     , transformers
     , xdg-basedir
     , xml-conduit
