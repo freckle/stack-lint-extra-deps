@@ -33,23 +33,21 @@ url=$(curl --silent https://api.github.com/repos/freckle/lsd/releases/latest |
 
 ```console
 % lsd --help
-Usage: lsd [-r|--resolver ARG] [--exclude ARG] [--checks ARG] [-f|--format ARG]
-           [--no-exit] [--cache-dir ARG] [--no-cache] [-c|--color ARG]
-           [-v|--verbose] [PATH]
+Usage: lsd [-r|--resolver ARG] [--exclude PATTERN] [--checks ARG]
+           [-f|--format ARG] [--no-exit] [-c|--color ARG] [-v|--verbose] [PATH]
+           [PATTERN]
   Lint Stackage (extra) Deps
 
 Available options:
   -r,--resolver ARG        Override resolver from stack.yaml
-  --exclude ARG            Exclude deps by glob
+  --exclude PATTERN        Exclude deps by glob
   --checks ARG             Checks to run, one of all, git, hackage
   -f,--format ARG          Output format, one of detailed
   --no-exit                Exit successfully even if suggestions found
-  --cache-dir ARG          Overide cache directory, default follows XDG
-                           (default: "/home/patrick/.cache/lsd")
-  --no-cache               Ignore caches
   -c,--color ARG           When to use color: auto, always, never
   -v,--verbose             Log verbosely
   PATH                     Path to config to lint (default: "stack.yaml")
+  PATTERN                  Limit deps matching glob
   -h,--help                Show this help text
 ```
 
@@ -68,11 +66,8 @@ new resolver (such as redundant Hackage deps).
 - [ ] Confirm all Hackage `extra-deps` use sha-pinning
 - [x] Suggest update when there are newer commits in a git dep
 - [x] Suggest replacement when there is a Hackage version of a git dep at a
-      same-or-newer version\*
+      same-or-newer version
 - [ ] Apply custom rules
-
-\*For now we just look for a same-or-newer, version-like tag in the repository.
-We don't yet confirm they exist on Hackage.
 
 ---
 
