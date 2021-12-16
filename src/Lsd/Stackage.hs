@@ -37,9 +37,19 @@ getStackageDetails
 getStackageDetails resolver package = do
   mHtml <- cachedFile cachePath $ getStackageHtml resolver package
 
-  pure $ do
-    versions <- parseVersionsTable . fromDocument . parseLBS <$> mHtml
+  let
+    mVersions = parseVersionsTable . fromDocument . parseLBS <$> mHtml
+    showVersionPair (k, v) =
+      "\n  " <> display k <> " => " <> fromString (showVersion v)
 
+  logDebug
+    $ "Stackage versions found for "
+    <> display package
+    <> ": "
+    <> maybe "none" (mconcat . map showVersionPair . Map.toList) mVersions
+
+  pure $ do
+    versions <- mVersions
     StackageDetails
       <$> Map.lookup "Version on this page:" versions
       <*> Map.lookup "Latest on Hackage:" versions
