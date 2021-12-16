@@ -12,7 +12,8 @@ import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
 import qualified RIO.ByteString.Lazy as BSL
-import RIO.Text (unpack)
+import RIO.Text (pack, unpack)
+import qualified RIO.Text as T
 
 -- | <https://hackage.haskell.org/api#versions>
 data HackageVersions = HackageVersions
@@ -62,7 +63,9 @@ getHackageVersions package = do
     <> "\n  Response: "
     <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
     <> "\n  Versions: "
-    <> maybe "none" displayShow mVersions
+    <> maybe "none" (displayVersions . hvNormal) mVersions
 
   pure mVersions
 
+displayVersions :: [Version] -> Utf8Builder
+displayVersions = display . T.intercalate ", " . map (pack . showVersion)

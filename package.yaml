@@ -23,18 +23,12 @@ dependencies:
 library:
   source-dirs: src
   dependencies:
-    - conduit
     - Glob
     - aeson
-    - errors
-    - extra
     - html-conduit
     - http-conduit
     - http-types
-    - mtl
     - optparse-applicative
-    - transformers
-    - xdg-basedir
     - xml-conduit
     - yaml
 

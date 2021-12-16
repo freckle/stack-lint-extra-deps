@@ -12,7 +12,6 @@ import Lsd.StackageResolver
 import Lsd.Version
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
-import qualified RIO.ByteString.Lazy as BSL
 import qualified RIO.Map as Map
 import RIO.Text (unpack)
 import Text.HTML.DOM (parseLBS)
@@ -52,8 +51,6 @@ getStackageVersions resolver package = do
     <> ": "
     <> "\n  Status: "
     <> displayShow (getResponseStatus resp)
-    <> "\n  Response: "
-    <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
     <> "\n  Versions: "
     <> maybe "none" displayVersions mVersions
 

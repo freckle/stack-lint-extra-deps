@@ -13,7 +13,7 @@ import qualified RIO.ByteString.Lazy as BSL
 import RIO.Char (isSpace)
 import RIO.Directory (withCurrentDirectory)
 import RIO.Process
-import RIO.Text (unpack)
+import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
 
 data GitDetails = GitDetails
@@ -36,20 +36,32 @@ getGitDetails GitExtraDep {..} = do
       countToVersionTags <- do
         pairs <- gitTaggedVersions
         forMaybeM pairs $ \(sha, version) -> do
-          mCount <- gitCountRevisionBetween gedCommit sha
+          mCountBehind <- gitCountRevisionBetween sha gedCommit
+          mCountAhead <- gitCountRevisionBetween gedCommit sha
+
+          let
+            mCount = do
+              behind <- mCountBehind
+              ahead <- mCountAhead
+              pure $ if behind > ahead then negate behind else ahead
+
           pure $ (, version) <$> mCount
 
       logDebug
         $ "Git details for "
         <> display gedRepository
         <> ":"
-        <> "\n  Count to HEAD: "
-        <> displayShow countToHead
-        <> "\n  Count to version tags: "
-        <> displayShow countToVersionTags
+        <> "\n  Commits to HEAD: "
+        <> maybe "unknown" displayShow countToHead
+        <> "\n  Versions by tags: "
+        <> displayVersions countToVersionTags
 
       pure $ GitDetails <$> countToHead <*> pure countToVersionTags
   where cloneUrl = unpack $ unRepository gedRepository
+
+displayVersions :: [(Int, Version)] -> Utf8Builder
+displayVersions = display . T.intercalate ", " . map
+  (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
 
 gitCountRevisionBetween
   :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
@@ -72,7 +84,7 @@ gitTaggedVersions = do
   toPair x = case T.words x of
     [ref, sha] -> do
       tag <- T.stripPrefix "refs/tags/" ref
-      version <- parseVersion $ unpack tag
+      version <- parseVersion $ unpack $ T.dropPrefix "v" tag
       pure (CommitSHA sha, version)
 
     _ -> Nothing

@@ -1,6 +1,6 @@
 module Lsd.ExtraDep
   ( ExtraDep(..)
-  , matchExclude
+  , matchPattern
   ) where
 
 import RIO
@@ -31,8 +31,8 @@ instance Display ExtraDep where
     Git x -> display x
     Other{} -> "<other>"
 
-matchExclude :: Pattern -> ExtraDep -> Bool
-matchExclude p = \case
+matchPattern :: Pattern -> ExtraDep -> Bool
+matchPattern p = \case
   Hackage HackageExtraDep {..} -> p `match` unpack (unPackageName hedPackage)
   Git GitExtraDep {..} -> p `match` unpack (repositoryBase gedRepository)
   Other{} -> False

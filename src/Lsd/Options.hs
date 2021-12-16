@@ -23,6 +23,7 @@ data Options = Options
   , oColor :: ColorOption
   , oVerbose :: Bool
   , oPath :: FilePath
+  , oFilter :: Maybe Pattern
   }
 
 optionsLogOptions :: MonadIO m => Options -> Handle -> m LogOptions
@@ -55,6 +56,7 @@ options stackYaml = Options
     <*> many (strOption
         (  long "exclude"
         <> help "Exclude deps by glob"
+        <> metavar "PATTERN"
         ))
     <*> option (eitherReader readChecksName)
         (  long "checks"
@@ -88,6 +90,10 @@ options stackYaml = Options
         <> value stackYaml
         <> showDefault
         )
+    <*> optional (argument str
+        (  metavar "PATTERN"
+        <> help "Limit deps matching glob"
+        ))
 
 data ColorOption
     = ColorAuto

@@ -33,4 +33,5 @@ testExampleOptions name checks = Options
   , oColor = ColorNever
   , oVerbose = False
   , oPath = "test/examples/" <> name <> ".yaml"
+  , oFilter = Nothing
   }

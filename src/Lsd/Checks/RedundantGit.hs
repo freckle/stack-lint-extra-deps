@@ -5,7 +5,6 @@ module Lsd.Checks.RedundantGit
 import RIO
 
 import Lsd.Check
-import Lsd.Version
 import RIO.List (headMaybe, intersect, sortOn)
 
 checkRedundantGit :: Check
@@ -14,28 +13,28 @@ checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
   GitDetails {..} <- edGitDetails
 
   let
-    versions = map snd $ takeWhile ((> 0) . fst) $ sortOn
-      (Down . fst)
-      gdCommitCountToVersionTags
+    versions = sortOn (Down . fst) gdCommitCountToVersionTags
+    equalVersions = map snd $ takeWhile ((>= 0) . fst) versions
+    newerVersions = map snd $ takeWhile ((> 0) . fst) versions
 
-  suggestHackage edHackageVersions versions <|> suggestGit versions
+    -- Attempt to suggest a version tag that exists on Hackage
+    suggestHackage = do
+      HackageVersions {..} <- edHackageVersions
+      version <- headMaybe $ hvNormal `intersect` equalVersions
+      pure $ Suggestion
+        { sAction = Replace
+        , sDetails =
+          "Same-or-newer version (" <> display version <> ") exists on Hackage"
+        }
 
--- Attempt to suggest a version tag that exists on Hackage
-suggestHackage :: Maybe HackageVersions -> [Version] -> Maybe Suggestion
-suggestHackage hackageVersions versions = do
-  HackageVersions {..} <- hackageVersions
-  version <- headMaybe $ hvNormal `intersect` versions
-  pure $ Suggestion
-    { sAction = Replace
-    , sDetails = "Newer version (" <> display version <> ") exists on Hackage"
-    }
+    -- Fall-back for when we can't find Hackage info, so just suggest if there
+    -- are newer version-like tags
+    suggestGit = do
+      version <- headMaybe newerVersions
+      pure $ Suggestion
+        { sAction = Replace
+        , sDetails =
+          "Newer, version-like tag (" <> display version <> ") exists"
+        }
 
--- Fall-back for when we can't find Hackage info, so just suggest if there are
--- newer version-like tags
-suggestGit :: [Version] -> Maybe Suggestion
-suggestGit versions = do
-  version <- headMaybe versions
-  pure $ Suggestion
-    { sAction = Replace
-    , sDetails = "Newer, version-like tag (" <> display version <> ") exists"
-    }
+  suggestHackage <|> suggestGit

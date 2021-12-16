@@ -19,6 +19,7 @@ runLsd
   -> m Int
 runLsd Options {..} StackYaml {..} report = do
   results <- for extraDeps $ \extraDep -> do
+    logDebug $ "Fetching external details for " <> display extraDep
     details <- getExternalDetails resolver extraDep
 
     for checks $ \check -> do
@@ -27,9 +28,10 @@ runLsd Options {..} StackYaml {..} report = do
 
   pure $ length $ catMaybes $ concat results
  where
-  extraDeps = filterExcludes oExcludes syExtraDeps
+  extraDeps = filterExcludes oExcludes
+    $ maybe id (filter . matchPattern) oFilter syExtraDeps
   resolver = fromMaybe syResolver oResolver
   checks = checksByName oChecks
 
 filterExcludes :: [Pattern] -> [ExtraDep] -> [ExtraDep]
-filterExcludes excludes = filter $ \e -> not $ any (`matchExclude` e) excludes
+filterExcludes excludes = filter $ \e -> not $ any (`matchPattern` e) excludes

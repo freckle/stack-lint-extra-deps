@@ -2,6 +2,7 @@ module Lsd.GitExtraDep
   ( GitExtraDep(..)
   , Repository(..)
   , repositoryBase
+  , repositoryBaseName
   , CommitSHA(..)
   ) where
 
@@ -30,6 +31,9 @@ newtype Repository = Repository
 
 repositoryBase :: Repository -> Text
 repositoryBase = T.dropPrefix "https://github.com/" . unRepository
+
+repositoryBaseName :: Repository -> Text
+repositoryBaseName = T.drop 1 . T.dropWhile (/= '/') . repositoryBase
 
 newtype CommitSHA = CommitSHA
     { unCommitSHA :: Text

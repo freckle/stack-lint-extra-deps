@@ -44,4 +44,4 @@ getExternalDetails resolver = \case
   Other _ -> pure $ ExternalDetails Nothing Nothing Nothing
 
 inferGitHackageName :: Repository -> PackageName
-inferGitHackageName = packageName . repositoryBase
+inferGitHackageName = packageName . repositoryBaseName

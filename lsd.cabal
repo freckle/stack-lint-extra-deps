@@ -56,17 +56,11 @@ library
       Glob
     , aeson
     , base
-    , conduit
-    , errors
-    , extra
     , html-conduit
     , http-conduit
     , http-types
-    , mtl
     , optparse-applicative
     , rio
-    , transformers
-    , xdg-basedir
     , xml-conduit
     , yaml
   default-language: Haskell2010
