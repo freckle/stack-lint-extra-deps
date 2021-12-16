@@ -7,7 +7,6 @@ module Lsd.Options
 
 import RIO
 
-import Lsd.Cache
 import Lsd.Checks
 import Lsd.Report
 import Lsd.StackageResolver
@@ -21,16 +20,10 @@ data Options = Options
   , oChecks :: ChecksName
   , oFormat :: Format
   , oNoExit :: Bool
-  , oCacheDirectory :: FilePath
-  , oNoCache :: Bool
   , oColor :: ColorOption
   , oVerbose :: Bool
   , oPath :: FilePath
   }
-
-instance HasCache Options where
-  cacheEnabledL = lens (not . oNoCache) $ \x y -> x { oNoCache = not y }
-  cacheDirectoryL = lens oCacheDirectory $ \x y -> x { oCacheDirectory = y }
 
 optionsLogOptions :: MonadIO m => Options -> Handle -> m LogOptions
 optionsLogOptions Options {..} h = do
@@ -47,16 +40,13 @@ optionsLogOptions Options {..} h = do
 parseOptions :: IO Options
 parseOptions = do
   envStackYaml <- fromMaybe "stack.yaml" <$> lookupEnv "STACK_YAML"
-  envCacheDir <- defaultCacheDirectory
-  execParser
-    $ info (options envStackYaml envCacheDir <**> helper)
-    $ fullDesc
-    <> progDesc "Lint Stackage (extra) Deps"
+  execParser $ info (options envStackYaml <**> helper) $ fullDesc <> progDesc
+    "Lint Stackage (extra) Deps"
 
 -- brittany-disable-next-binding
 
-options :: FilePath -> FilePath -> Parser Options
-options stackYaml cacheDir = Options
+options :: FilePath -> Parser Options
+options stackYaml = Options
     <$> optional (option (eitherReader stackageResolver)
         (  short 'r'
         <> long "resolver"
@@ -80,16 +70,6 @@ options stackYaml cacheDir = Options
     <*> switch
         (  long "no-exit"
         <> help "Exit successfully even if suggestions found"
-        )
-    <*> strOption
-        (  long "cache-dir"
-        <> help "Overide cache directory, default follows XDG"
-        <> value cacheDir
-        <> showDefault
-        )
-    <*> switch
-        (  long "no-cache"
-        <> help "Ignore caches"
         )
     <*> option (eitherReader readColorOption)
         (  short 'c'

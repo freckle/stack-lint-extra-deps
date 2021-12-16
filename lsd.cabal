@@ -17,7 +17,6 @@ extra-source-files:
 library
   exposed-modules:
       Lsd.App
-      Lsd.Cache
       Lsd.Check
       Lsd.Checks
       Lsd.Checks.GitVersion
