@@ -1,6 +1,6 @@
 module Lsd.Hackage
-  ( HackageDetails(..)
-  , getHackageDetails
+  ( HackageVersions(..)
+  , getHackageVersions
   ) where
 
 import RIO
@@ -12,18 +12,28 @@ import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
 import qualified RIO.ByteString.Lazy as BSL
-import RIO.List (headMaybe)
 import RIO.Text (unpack)
 
-newtype HackageDetails = HackageDetails
-  { hdVersion :: Version
+-- | <https://hackage.haskell.org/api#versions>
+data HackageVersions = HackageVersions
+  { hvNormal :: [Version]
+  , hvUnpreferred :: [Version]
+  , hvDeprecated :: [Version]
   }
+  deriving stock Show
 
-getHackageDetails
+instance FromJSON HackageVersions where
+  parseJSON = withObject "HackageVersions" $ \o ->
+    HackageVersions
+      <$> (o .:? "normal-version" .!= [])
+      <*> (o .:? "unpreferred-version" .!= [])
+      <*> (o .:? "deprecated-version" .!= [])
+
+getHackageVersions
   :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
   => PackageName
-  -> m (Maybe HackageDetails)
-getHackageDetails package = do
+  -> m (Maybe HackageVersions)
+getHackageVersions package = do
   req <-
     liftIO
     $ parseRequest
@@ -39,34 +49,20 @@ getHackageDetails package = do
     mBody = do
       guard $ getResponseStatus resp == status200
       pure $ getResponseBody resp
-    mVersion = do
+    mVersions = do
       body <- mBody
-      HackageVersionsPreferred {..} <- decode body
-      headMaybe hvpNormalVersion
+      decode body
 
   logDebug
-    $ "Hackage details found for "
+    $ "Hackage versions for "
     <> display package
     <> ": "
     <> "\n  Status: "
     <> displayShow (getResponseStatus resp)
     <> "\n  Response: "
     <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
-    <> "\n  Parsed version: "
-    <> maybe "none" display mVersion
+    <> "\n  Versions: "
+    <> maybe "none" displayShow mVersions
 
-  pure $ HackageDetails <$> mVersion
+  pure mVersions
 
--- | <https://hackage.haskell.org/api#versions>
-data HackageVersionsPreferred = HackageVersionsPreferred
-  { hvpNormalVersion :: [Version]
-  , hvpUnpreferredVersion :: [Version]
-  , hvpDeprecatedVersion :: [Version]
-  }
-
-instance FromJSON HackageVersionsPreferred where
-  parseJSON = withObject "HackageVersionsPreferred" $ \o ->
-    HackageVersionsPreferred
-      <$> (o .:? "normal-version" .!= [])
-      <*> (o .:? "unpreferred-version" .!= [])
-      <*> (o .:? "deprecated-version" .!= [])

@@ -1,25 +1,21 @@
 module Lsd.Check
   ( Check(..)
-  , runChecks
+
+  -- * Re-exports useful for authoring 'Check's
+  , module X
   ) where
 
 import RIO
 
-import Lsd.ExtraDep
-import Lsd.Suggestion
+import Lsd.ExternalDetails as X
+import Lsd.ExtraDep as X
+import Lsd.GitDetails as X
+import Lsd.GitExtraDep as X
+import Lsd.Hackage as X
+import Lsd.HackageExtraDep as X
+import Lsd.Stackage as X
+import Lsd.Suggestion as X
 
-newtype Check m = Check
-    { runCheck :: ExtraDep -> m (Maybe Suggestion)
-    }
-
-runChecks
-  :: Monad m
-  => [ExtraDep]
-  -> [Check m]
-  -> (ExtraDep -> Suggestion -> m ())
-  -> m Int
-runChecks extraDeps checks onSuggestion = do
-  fmap (length . catMaybes) $ for pairs $ \(check, extraDep) -> do
-    mSuggestion <- runCheck check extraDep
-    traverse (onSuggestion extraDep) mSuggestion
-  where pairs = (,) <$> checks <*> extraDeps
+newtype Check = Check
+  { runCheck :: ExternalDetails -> ExtraDep -> Maybe Suggestion
+  }

@@ -20,13 +20,14 @@ library
       Lsd.Cache
       Lsd.Check
       Lsd.Checks
-      Lsd.Checks.Git
       Lsd.Checks.GitVersion
       Lsd.Checks.HackageVersion
       Lsd.Checks.RedundantGit
       Lsd.Checks.RedundantHackage
       Lsd.Color
+      Lsd.ExternalDetails
       Lsd.ExtraDep
+      Lsd.GitDetails
       Lsd.GitExtraDep
       Lsd.Hackage
       Lsd.HackageExtraDep

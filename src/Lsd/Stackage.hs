@@ -1,14 +1,12 @@
 {-# LANGUAGE TupleSections #-}
 
 module Lsd.Stackage
-  ( StackageDetails(..)
-  , getStackageDetails
+  ( StackageVersions(..)
+  , getStackageVersions
   ) where
 
 import RIO
 
-import Data.Aeson
-import Lsd.Cache
 import Lsd.PackageName
 import Lsd.StackageResolver
 import Lsd.Version
@@ -20,49 +18,17 @@ import RIO.Text (unpack)
 import Text.HTML.DOM (parseLBS)
 import Text.XML.Cursor
 
-data StackageDetails = StackageDetails
-  { sdStackageVersion :: Version
-  , sdHackageVersion :: Version
+data StackageVersions = StackageVersions
+  { svOnPage :: Version
+  , svOnHackage :: Version
   }
 
-instance FromJSON StackageDetails where
-  parseJSON = withObject "StackageDetails"
-    $ \o -> StackageDetails <$> o .: "x" <*> o .: "y"
-
-getStackageDetails
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasCache env)
+getStackageVersions
+  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
   => StackageResolver
   -> PackageName
-  -> m (Maybe StackageDetails)
-getStackageDetails resolver package = do
-  mHtml <- cachedFile cachePath $ getStackageHtml resolver package
-
-  let
-    mVersions = parseVersionsTable . fromDocument . parseLBS <$> mHtml
-    showVersionPair (k, v) =
-      "\n  " <> display k <> " => " <> fromString (showVersion v)
-
-  logDebug
-    $ "Stackage versions found for "
-    <> display package
-    <> ": "
-    <> maybe "none" (mconcat . map showVersionPair . Map.toList) mVersions
-
-  pure $ do
-    versions <- mVersions
-    StackageDetails
-      <$> Map.lookup "Version on this page:" versions
-      <*> Map.lookup "Latest on Hackage:" versions
- where
-  cachePath =
-    unpack $ unStackageResolver resolver <> "-" <> unPackageName package
-
-getStackageHtml
-  :: (MonadIO m, MonadReader env m, HasLogFunc env)
-  => StackageResolver
-  -> PackageName
-  -> m (Maybe BSL.ByteString)
-getStackageHtml resolver package = do
+  -> m (Maybe StackageVersions)
+getStackageVersions resolver package = do
   req <-
     liftIO
     $ parseRequest
@@ -73,9 +39,29 @@ getStackageHtml resolver package = do
     <> unPackageName package
 
   resp <- httpLBS req
-  pure $ if getResponseStatus resp == status200
-    then Just $ getResponseBody resp
-    else Nothing
+
+  let
+    mBody = do
+      guard $ getResponseStatus resp == status200
+      pure $ getResponseBody resp
+    mVersions = parseVersionsTable . fromDocument . parseLBS <$> mBody
+
+  logDebug
+    $ "Stackage details for "
+    <> display package
+    <> ": "
+    <> "\n  Status: "
+    <> displayShow (getResponseStatus resp)
+    <> "\n  Response: "
+    <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
+    <> "\n  Versions: "
+    <> maybe "none" displayVersions mVersions
+
+  pure $ do
+    versions <- mVersions
+    StackageVersions
+      <$> Map.lookup "Version on this page:" versions
+      <*> Map.lookup "Latest on Hackage:" versions
 
 parseVersionsTable :: Cursor -> Map Text Version
 parseVersionsTable cursor = do
@@ -87,3 +73,9 @@ parseVersionsTable cursor = do
     [k, v] -> (k, ) <$> parseVersion (unpack v)
     [k, _, v] -> (k, ) <$> parseVersion (unpack v)
     (k : v : _) -> (k, ) <$> parseVersion (unpack v)
+
+displayVersions :: Map Text Version -> Utf8Builder
+displayVersions = mconcat . map displayPair . Map.toList
+ where
+  displayPair (k, v) =
+    "\n  " <> display k <> " => " <> fromString (showVersion v)

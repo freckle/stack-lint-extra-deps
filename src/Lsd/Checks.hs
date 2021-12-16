@@ -7,14 +7,11 @@ module Lsd.Checks
 
 import RIO
 
-import Lsd.Cache
 import Lsd.Check
 import Lsd.Checks.GitVersion
 import Lsd.Checks.HackageVersion
 import Lsd.Checks.RedundantGit
 import Lsd.Checks.RedundantHackage
-import Lsd.StackageResolver
-import RIO.Process
 
 data ChecksName
     = AllChecks
@@ -31,23 +28,8 @@ readChecksName = \case
 checksNameList :: String
 checksNameList = "all, git, hackage"
 
-checksByName
-  :: ( MonadUnliftIO m
-     , MonadReader env m
-     , HasLogFunc env
-     , HasProcessContext env
-     , HasCache env
-     )
-  => StackageResolver
-  -> ChecksName
-  -> [Check m]
-checksByName resolver = \case
-  AllChecks ->
-    [ checkRedundantGit
-    , checkGitVersion
-    , checkRedundantHackage resolver
-    , checkHackageVersion resolver
-    ]
+checksByName :: ChecksName -> [Check]
+checksByName = \case
+  AllChecks -> checksByName GitChecks <> checksByName HackageChecks
   GitChecks -> [checkRedundantGit, checkGitVersion]
-  HackageChecks ->
-    [checkRedundantHackage resolver, checkHackageVersion resolver]
+  HackageChecks -> [checkRedundantHackage, checkHackageVersion]
