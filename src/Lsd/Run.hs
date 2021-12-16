@@ -9,8 +9,8 @@ import Lsd.Check
 import Lsd.Checks
 import Lsd.ExtraDep
 import Lsd.Options
-import Lsd.Report
 import Lsd.StackYaml
+import Lsd.Suggestion
 import RIO.Process
 import System.FilePath.Glob
 
@@ -23,9 +23,9 @@ runLsd
      )
   => Options
   -> StackYaml
+  -> (ExtraDep -> Suggestion -> m ())
   -> m Int
-runLsd Options {..} StackYaml {..} = do
-  report <- getReportSuggestion oFormat
+runLsd Options {..} StackYaml {..} report = do
   runChecks extraDeps checks report
  where
   extraDeps = filterExcludes oExcludes syExtraDeps
