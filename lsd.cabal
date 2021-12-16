@@ -110,3 +110,28 @@ test-suite doctest
     , rio
     , yaml
   default-language: Haskell2010
+
+test-suite hspec
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Lsd.RunSpec
+      Paths_lsd
+  hs-source-dirs:
+      test
+  default-extensions:
+      DerivingStrategies
+      FlexibleContexts
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      NoImplicitPrelude
+      OverloadedStrings
+      RecordWildCards
+      TypeApplications
+  build-depends:
+      base
+    , hspec
+    , hspec-expectations-lifted
+    , lsd
+    , rio
+  default-language: Haskell2010
