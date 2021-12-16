@@ -16,12 +16,12 @@ import Test.Hspec.Expectations.Lifted
 spec :: Spec
 spec = do
   describe "runLsd" $ do
-    it "finds 8 Hackage suggestions in the lts-18.18 example" $ example $ do
+    it "finds 9 Hackage suggestions in the lts-18.18 example" $ example $ do
       let opts = testExampleOptions "lts-18.18" HackageChecks
       stackYaml <- loadStackYaml $ oPath opts
       withApp opts $ \app -> runRIO app $ do
         n <- runLsd opts stackYaml $ \_ _ -> pure ()
-        n `shouldBe` 8
+        n `shouldBe` 9
 
 testExampleOptions :: String -> ChecksName -> Options
 testExampleOptions name checks = Options
