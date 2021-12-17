@@ -1,7 +1,6 @@
 module Lsd.Checks
   ( ChecksName(..)
-  , readChecksName
-  , checksNameList
+  , checksNameOption
   , checksByName
   ) where
 
@@ -12,21 +11,30 @@ import Lsd.Checks.GitVersion
 import Lsd.Checks.HackageVersion
 import Lsd.Checks.RedundantGit
 import Lsd.Checks.RedundantHackage
+import Lsd.Options.BoundedEnum
+import Options.Applicative
 
 data ChecksName
     = AllChecks
     | GitChecks
     | HackageChecks
+    deriving stock (Bounded, Enum)
 
-readChecksName :: String -> Either String ChecksName
-readChecksName = \case
-  "all" -> Right AllChecks
-  "git" -> Right GitChecks
-  "hackage" -> Right HackageChecks
-  x -> Left $ "Invalid checks name: " <> x
+checksNameOption :: Parser ChecksName
+checksNameOption = boundedEnumOptionWith
+  showChecksName
+  (\list ->
+    long "checks"
+      <> help ("Checks to run, one of: " <> list)
+      <> metavar "CHECKS"
+      <> value AllChecks
+  )
 
-checksNameList :: String
-checksNameList = "all, git, hackage"
+showChecksName :: ChecksName -> String
+showChecksName = \case
+  AllChecks -> "all"
+  GitChecks -> "git"
+  HackageChecks -> "hackage"
 
 checksByName :: ChecksName -> [Check]
 checksByName = \case

@@ -31,6 +31,7 @@ library
       Lsd.Hackage
       Lsd.HackageExtraDep
       Lsd.Options
+      Lsd.Options.BoundedEnum
       Lsd.PackageName
       Lsd.Report
       Lsd.Run

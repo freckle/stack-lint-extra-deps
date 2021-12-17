@@ -8,6 +8,7 @@ module Lsd.Options
 import RIO
 
 import Lsd.Checks
+import Lsd.Options.BoundedEnum
 import Lsd.Report
 import Lsd.StackageResolver
 import Options.Applicative
@@ -15,14 +16,14 @@ import System.Environment (lookupEnv)
 import System.FilePath.Glob
 
 data Options = Options
-  { oResolver :: Maybe StackageResolver
+  { oPath :: FilePath
+  , oResolver :: Maybe StackageResolver
   , oExcludes :: [Pattern]
   , oChecks :: ChecksName
   , oFormat :: Format
   , oNoExit :: Bool
   , oColor :: ColorOption
   , oVerbose :: Bool
-  , oPath :: FilePath
   , oFilter :: Maybe Pattern
   }
 
@@ -48,35 +49,37 @@ parseOptions = do
 
 options :: FilePath -> Parser Options
 options stackYaml = Options
-    <$> optional (option (eitherReader stackageResolver)
+    <$> strOption
+        (  short 'p'
+        <> long "path"
+        <> metavar "PATH"
+        <> help "Path to config to lint"
+        <> value stackYaml
+        <> showDefault
+        )
+    <*> optional (option (eitherReader stackageResolver)
         (  short 'r'
         <> long "resolver"
-        <> help "Override resolver from stack.yaml"
+        <> metavar "RESOLVER"
+        <> help "Resolver to use, default is read from --path"
         ))
     <*> many (strOption
         (  long "exclude"
-        <> help "Exclude deps by glob"
+        <> help "Exclude deps matching PATTERN"
         <> metavar "PATTERN"
         ))
-    <*> option (eitherReader readChecksName)
-        (  long "checks"
-        <> help ("Checks to run, one of " <> checksNameList)
-        <> value AllChecks
-        )
-    <*> option (eitherReader readFormat)
-        (  short 'f'
-        <> long "format"
-        <> help ("Output format, one of " <> formatList)
-        <> value Detailed
-        )
+    <*> checksNameOption
+    <*> formatOption
     <*> switch
-        (  long "no-exit"
-        <> help "Exit successfully even if suggestions found"
+        (  short 'n'
+        <> long "no-exit"
+        <> help "Exit successfully, even if suggestions found"
         )
-    <*> option (eitherReader readColorOption)
-        (  short 'c'
+    <*> boundedEnumOptionWith showColorOption (\list ->
+           short 'c'
         <> long "color"
-        <> help "When to use color: auto, always, never"
+        <> help ("When to use color, one of: " <> list)
+        <> metavar "COLOR"
         <> value ColorAuto
         )
     <*> switch
@@ -84,25 +87,19 @@ options stackYaml = Options
         <> long "verbose"
         <> help "Log verbosely"
         )
-    <*> argument str
-        (  metavar "PATH"
-        <> help "Path to config to lint"
-        <> value stackYaml
-        <> showDefault
-        )
     <*> optional (argument str
         (  metavar "PATTERN"
-        <> help "Limit deps matching glob"
+        <> help "Limit to deps matching PATTERN"
         ))
 
 data ColorOption
     = ColorAuto
     | ColorAlways
     | ColorNever
+    deriving (Bounded, Enum)
 
-readColorOption :: String -> Either String ColorOption
-readColorOption = \case
-  "auto" -> Right ColorAuto
-  "always" -> Right ColorAlways
-  "never" -> Right ColorNever
-  x -> Left $ "Invalid color option: " <> x
+showColorOption :: ColorOption -> String
+showColorOption = \case
+  ColorAuto -> "auto"
+  ColorAlways -> "always"
+  ColorNever -> "never"

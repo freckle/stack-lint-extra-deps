@@ -1,7 +1,6 @@
 module Lsd.Report
   ( Format(..)
-  , readFormat
-  , formatList
+  , formatOption
   , getReportSuggestion
   ) where
 
@@ -9,17 +8,27 @@ import RIO
 
 import Lsd.Color
 import Lsd.ExtraDep
+import Lsd.Options.BoundedEnum
 import Lsd.Suggestion
+import Options.Applicative
 
 data Format = Detailed
+  deriving stock (Bounded, Enum)
 
-readFormat :: String -> Either String Format
-readFormat = \case
-  "detailed" -> Right Detailed
-  x -> Left $ "Invalid format: " <> x
+formatOption :: Parser Format
+formatOption = boundedEnumOptionWith
+  showFormat
+  (\list ->
+    short 'f'
+      <> long "format"
+      <> help ("Output format, one of: " <> list)
+      <> metavar "FORMAT"
+      <> value Detailed
+  )
 
-formatList :: String
-formatList = "detailed"
+showFormat :: Format -> String
+showFormat = \case
+  Detailed -> "detailed"
 
 getReportSuggestion
   :: (MonadIO m, MonadReader env m, HasLogFunc env)

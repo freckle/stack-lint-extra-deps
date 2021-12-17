@@ -33,21 +33,23 @@ url=$(curl --silent https://api.github.com/repos/freckle/lsd/releases/latest |
 
 ```console
 % lsd --help
-Usage: lsd [-r|--resolver ARG] [--exclude PATTERN] [--checks ARG]
-           [-f|--format ARG] [--no-exit] [-c|--color ARG] [-v|--verbose] [PATH]
-           [PATTERN]
+Usage: lsd [-p|--path PATH] [-r|--resolver RESOLVER] [--exclude PATTERN]
+           [--checks CHECKS] [-f|--format FORMAT] [-n|--no-exit]
+           [-c|--color COLOR] [-v|--verbose] [PATTERN]
   Lint Stackage (extra) Deps
 
 Available options:
-  -r,--resolver ARG        Override resolver from stack.yaml
-  --exclude PATTERN        Exclude deps by glob
-  --checks ARG             Checks to run, one of all, git, hackage
-  -f,--format ARG          Output format, one of detailed
-  --no-exit                Exit successfully even if suggestions found
-  -c,--color ARG           When to use color: auto, always, never
+  -p,--path PATH           Path to config to lint (default: "stack.yaml")
+  -r,--resolver RESOLVER   Resolver to use, default is read from --path
+  --exclude PATTERN        Exclude deps matching PATTERN
+  --checks CHECKS          Checks to run, one of: all, git, hackage
+                           (default: all)
+  -f,--format FORMAT       Output format, one of: detailed (default: detailed)
+  -n,--no-exit             Exit successfully, even if suggestions found
+  -c,--color COLOR         When to use color, one of: auto, always, never
+                           (default: auto)
   -v,--verbose             Log verbosely
-  PATH                     Path to config to lint (default: "stack.yaml")
-  PATTERN                  Limit deps matching glob
+  PATTERN                  Limit to deps matching PATTERN
   -h,--help                Show this help text
 ```
 
