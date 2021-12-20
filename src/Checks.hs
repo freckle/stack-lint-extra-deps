@@ -11,8 +11,8 @@ import Checks.GitVersion
 import Checks.HackageVersion
 import Checks.RedundantGit
 import Checks.RedundantHackage
-import Options.BoundedEnum
 import Options.Applicative
+import Options.BoundedEnum
 
 data ChecksName
     = AllChecks

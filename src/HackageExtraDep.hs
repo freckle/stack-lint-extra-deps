@@ -8,11 +8,11 @@ import RIO
 
 import Data.Aeson
 import PackageName
-import Version
 import RIO.List (elemIndices, headMaybe, splitAt)
 import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
 import qualified RIO.Text.Partial as T (breakOn)
+import Version
 
 data HackageExtraDep = HackageExtraDep
   { hedPackage :: PackageName

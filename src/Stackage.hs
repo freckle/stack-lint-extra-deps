@@ -7,15 +7,15 @@ module Stackage
 
 import RIO
 
-import PackageName
-import StackageResolver
-import Version
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
+import PackageName
 import qualified RIO.Map as Map
 import RIO.Text (unpack)
+import StackageResolver
 import Text.HTML.DOM (parseLBS)
 import Text.XML.Cursor
+import Version
 
 data StackageVersions = StackageVersions
   { svOnPage :: Version

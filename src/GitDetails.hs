@@ -8,13 +8,13 @@ module GitDetails
 import RIO
 
 import GitExtraDep
-import Version
 import qualified RIO.ByteString.Lazy as BSL
 import RIO.Char (isSpace)
 import RIO.Directory (withCurrentDirectory)
 import RIO.Process
 import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
+import Version
 
 data GitDetails = GitDetails
   { gdCommitCountToHead :: Int
