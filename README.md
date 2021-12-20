@@ -1,4 +1,4 @@
-# Lint Stackage (extra) Deps
+# Lint `extra-deps`
 
 Maintaining `extra-deps` in a `stack.yaml` (or `packages` in a `snapshot.yaml`)
 is a pain. If an extra dep has been moved into your resolver, you should remove
@@ -15,27 +15,30 @@ All of these are manual, annoying, and error prone to check by hand.
 Get the Download URL for the latest release,
 
 ```sh
-url=$(curl --silent https://api.github.com/repos/freckle/lsd/releases/latest |
+url=$(curl --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/releases/latest |
   jq '.assets[].browser_download_url | select(.|test("x86_64-linux.tar.gz$"))' --raw-output)
 ```
 
 (You can also just browse [Releases][].)
 
-[releases]: https://github.com/freckle/lsd/releases
+[releases]: https://github.com/freckle/stack-lint-extra-deps/releases
 
 ```console
-% curl -L "$url" | tar xzf - && mv lsd/lsd ~/.local/bin && rmdir lsd
-% which lsd
-~/.local/bin/lsd
+% curl -L "$url" | tar xzf - &&
+  mv stack-lint-extra-deps/stack-lint-extra-deps ~/.local/bin &&
+  rmdir stack-lint-extra-deps
+% which stack-lint-extra-deps
+~/.local/bin/stack-lint-extra-deps
 ```
 
 ## Usage
 
 ```console
-% lsd --help
-Usage: lsd [-p|--path PATH] [-r|--resolver RESOLVER] [--exclude PATTERN]
-           [--checks CHECKS] [-f|--format FORMAT] [-n|--no-exit]
-           [-c|--color COLOR] [-v|--verbose] [PATTERN]
+% stack lint-extra-deps --help
+Usage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER]
+                             [--exclude PATTERN] [--checks CHECKS]
+                             [-f|--format FORMAT] [-n|--no-exit]
+                             [-c|--color COLOR] [-v|--verbose] [PATTERN]
   Lint Stackage (extra) Deps
 
 Available options:

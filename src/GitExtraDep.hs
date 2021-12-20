@@ -1,4 +1,4 @@
-module Lsd.GitExtraDep
+module GitExtraDep
   ( GitExtraDep(..)
   , Repository(..)
   , repositoryBase

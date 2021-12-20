@@ -1,4 +1,4 @@
-module Lsd.StackageResolver
+module StackageResolver
   ( StackageResolver
   , stackageResolver
   , unStackageResolver

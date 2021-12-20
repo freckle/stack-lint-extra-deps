@@ -1,4 +1,4 @@
-module Lsd.Hackage
+module Hackage
   ( HackageVersions(..)
   , getHackageVersions
   ) where
@@ -6,14 +6,14 @@ module Lsd.Hackage
 import RIO
 
 import Data.Aeson
-import Lsd.PackageName
-import Lsd.Version
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
+import PackageName
 import qualified RIO.ByteString.Lazy as BSL
 import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
+import Version
 
 -- | <https://hackage.haskell.org/api#versions>
 data HackageVersions = HackageVersions

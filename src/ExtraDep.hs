@@ -1,4 +1,4 @@
-module Lsd.ExtraDep
+module ExtraDep
   ( ExtraDep(..)
   , matchPattern
   ) where
@@ -6,9 +6,9 @@ module Lsd.ExtraDep
 import RIO
 
 import Data.Aeson
-import Lsd.GitExtraDep
-import Lsd.HackageExtraDep
-import Lsd.PackageName
+import GitExtraDep
+import HackageExtraDep
+import PackageName
 import RIO.Text (unpack)
 import System.FilePath.Glob
 

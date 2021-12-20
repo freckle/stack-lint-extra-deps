@@ -4,11 +4,11 @@ module Main
 
 import RIO
 
-import Lsd.App
-import Lsd.Options
-import Lsd.Report
-import Lsd.Run
-import Lsd.StackYaml
+import App
+import Options
+import Report
+import Run
+import StackYaml
 
 main :: IO ()
 main = do

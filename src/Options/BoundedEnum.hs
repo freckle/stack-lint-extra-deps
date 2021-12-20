@@ -1,4 +1,4 @@
-module Lsd.Options.BoundedEnum
+module Options.BoundedEnum
   ( boundedEnumOption
   , boundedEnumOptionWith
   ) where

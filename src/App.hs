@@ -1,11 +1,11 @@
-module Lsd.App
+module App
   ( App(..)
   , withApp
   ) where
 
 import RIO
 
-import Lsd.Options
+import Options
 import RIO.Process
 
 data App = App

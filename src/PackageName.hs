@@ -1,4 +1,4 @@
-module Lsd.PackageName
+module PackageName
   ( PackageName
   , packageName
   , unPackageName

@@ -1,20 +1,20 @@
 {-# LANGUAGE TupleSections #-}
 
-module Lsd.GitDetails
+module GitDetails
   ( GitDetails(..)
   , getGitDetails
   ) where
 
 import RIO
 
-import Lsd.GitExtraDep
-import Lsd.Version
+import GitExtraDep
 import qualified RIO.ByteString.Lazy as BSL
 import RIO.Char (isSpace)
 import RIO.Directory (withCurrentDirectory)
 import RIO.Process
 import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
+import Version
 
 data GitDetails = GitDetails
   { gdCommitCountToHead :: Int
@@ -28,7 +28,7 @@ getGitDetails
 getGitDetails GitExtraDep {..} = do
   logDebug $ "Cloning " <> fromString cloneUrl <> "..."
 
-  withSystemTempDirectory "lsd" $ \path -> do
+  withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
     proc "git" ["clone", "--quiet", cloneUrl, path] runProcess_
 
     withCurrentDirectory path $ do

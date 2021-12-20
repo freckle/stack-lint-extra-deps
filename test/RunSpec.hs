@@ -1,15 +1,15 @@
-module Lsd.RunSpec
+module RunSpec
   ( spec
   ) where
 
 import RIO
 
-import Lsd.App
-import Lsd.Checks
-import Lsd.Options
-import Lsd.Report
-import Lsd.Run
-import Lsd.StackYaml
+import App
+import Checks
+import Options
+import Report
+import Run
+import StackYaml
 import Test.Hspec (Spec, describe, example, it)
 import Test.Hspec.Expectations.Lifted
 

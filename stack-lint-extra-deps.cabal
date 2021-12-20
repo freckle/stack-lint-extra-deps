@@ -4,8 +4,8 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           lsd
-version:        0.2.0.0
+name:           stack-lint-extra-deps
+version:        1.1.0.0
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple
@@ -16,32 +16,32 @@ extra-source-files:
 
 library
   exposed-modules:
-      Lsd.App
-      Lsd.Check
-      Lsd.Checks
-      Lsd.Checks.GitVersion
-      Lsd.Checks.HackageVersion
-      Lsd.Checks.RedundantGit
-      Lsd.Checks.RedundantHackage
-      Lsd.Color
-      Lsd.ExternalDetails
-      Lsd.ExtraDep
-      Lsd.GitDetails
-      Lsd.GitExtraDep
-      Lsd.Hackage
-      Lsd.HackageExtraDep
-      Lsd.Options
-      Lsd.Options.BoundedEnum
-      Lsd.PackageName
-      Lsd.Report
-      Lsd.Run
-      Lsd.Stackage
-      Lsd.StackageResolver
-      Lsd.StackYaml
-      Lsd.Suggestion
-      Lsd.Version
+      App
+      Check
+      Checks
+      Checks.GitVersion
+      Checks.HackageVersion
+      Checks.RedundantGit
+      Checks.RedundantHackage
+      Color
+      ExternalDetails
+      ExtraDep
+      GitDetails
+      GitExtraDep
+      Hackage
+      HackageExtraDep
+      Options
+      Options.BoundedEnum
+      PackageName
+      Report
+      Run
+      Stackage
+      StackageResolver
+      StackYaml
+      Suggestion
+      Version
   other-modules:
-      Paths_lsd
+      Paths_stack_lint_extra_deps
   hs-source-dirs:
       src
   default-extensions:
@@ -66,10 +66,10 @@ library
     , yaml
   default-language: Haskell2010
 
-executable lsd
+executable stack-lint-extra-deps
   main-is: Main.hs
   other-modules:
-      Paths_lsd
+      Paths_stack_lint_extra_deps
   hs-source-dirs:
       app
   default-extensions:
@@ -83,15 +83,15 @@ executable lsd
       TypeApplications
   build-depends:
       base
-    , lsd
     , rio
+    , stack-lint-extra-deps
   default-language: Haskell2010
 
 test-suite doctest
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
-      Paths_lsd
+      Paths_stack_lint_extra_deps
   hs-source-dirs:
       doctest
   default-extensions:
@@ -115,8 +115,8 @@ test-suite hspec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Lsd.RunSpec
-      Paths_lsd
+      RunSpec
+      Paths_stack_lint_extra_deps
   hs-source-dirs:
       test
   default-extensions:
@@ -132,6 +132,6 @@ test-suite hspec
       base
     , hspec
     , hspec-expectations-lifted
-    , lsd
     , rio
+    , stack-lint-extra-deps
   default-language: Haskell2010

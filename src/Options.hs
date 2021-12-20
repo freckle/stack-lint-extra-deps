@@ -1,4 +1,4 @@
-module Lsd.Options
+module Options
   ( Options(..)
   , parseOptions
   , optionsLogOptions
@@ -7,11 +7,11 @@ module Lsd.Options
 
 import RIO
 
-import Lsd.Checks
-import Lsd.Options.BoundedEnum
-import Lsd.Report
-import Lsd.StackageResolver
+import Checks
 import Options.Applicative
+import Options.BoundedEnum
+import Report
+import StackageResolver
 import System.Environment (lookupEnv)
 import System.FilePath.Glob
 

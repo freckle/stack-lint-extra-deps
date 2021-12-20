@@ -1,10 +1,10 @@
-module Lsd.Checks.HackageVersion
+module Checks.HackageVersion
   ( checkHackageVersion
   ) where
 
 import RIO
 
-import Lsd.Check
+import Check
 import RIO.List (headMaybe)
 
 checkHackageVersion :: Check

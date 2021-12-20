@@ -1,21 +1,21 @@
 {-# LANGUAGE TupleSections #-}
 
-module Lsd.Stackage
+module Stackage
   ( StackageVersions(..)
   , getStackageVersions
   ) where
 
 import RIO
 
-import Lsd.PackageName
-import Lsd.StackageResolver
-import Lsd.Version
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
+import PackageName
 import qualified RIO.Map as Map
 import RIO.Text (unpack)
+import StackageResolver
 import Text.HTML.DOM (parseLBS)
 import Text.XML.Cursor
+import Version
 
 data StackageVersions = StackageVersions
   { svOnPage :: Version
