@@ -1,10 +1,10 @@
-module Lsd.Checks.RedundantHackage
+module Checks.RedundantHackage
   ( checkRedundantHackage
   ) where
 
 import RIO
 
-import Lsd.Check
+import Check
 
 checkRedundantHackage :: Check
 checkRedundantHackage = Check $ \ExternalDetails {..} extraDep -> do

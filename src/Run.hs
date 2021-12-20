@@ -1,13 +1,13 @@
-module Lsd.Run
+module Run
   ( runLsd
   ) where
 
 import RIO
 
-import Lsd.Check
-import Lsd.Checks
-import Lsd.Options
-import Lsd.StackYaml
+import Check
+import Checks
+import Options
+import StackYaml
 import RIO.Process
 import System.FilePath.Glob
 

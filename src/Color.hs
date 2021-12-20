@@ -1,4 +1,4 @@
-module Lsd.Color
+module Color
   ( getColor
   , Color(..)
   ) where

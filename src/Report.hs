@@ -1,4 +1,4 @@
-module Lsd.Report
+module Report
   ( Format(..)
   , formatOption
   , getReportSuggestion
@@ -6,10 +6,10 @@ module Lsd.Report
 
 import RIO
 
-import Lsd.Color
-import Lsd.ExtraDep
-import Lsd.Options.BoundedEnum
-import Lsd.Suggestion
+import Color
+import ExtraDep
+import Options.BoundedEnum
+import Suggestion
 import Options.Applicative
 
 data Format = Detailed

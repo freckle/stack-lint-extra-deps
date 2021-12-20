@@ -1,4 +1,4 @@
-module Lsd.Suggestion
+module Suggestion
   ( Suggestion(..)
   , SuggestionAction(..)
   ) where

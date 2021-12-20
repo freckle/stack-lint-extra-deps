@@ -1,4 +1,4 @@
-module Lsd.Checks
+module Checks
   ( ChecksName(..)
   , checksNameOption
   , checksByName
@@ -6,12 +6,12 @@ module Lsd.Checks
 
 import RIO
 
-import Lsd.Check
-import Lsd.Checks.GitVersion
-import Lsd.Checks.HackageVersion
-import Lsd.Checks.RedundantGit
-import Lsd.Checks.RedundantHackage
-import Lsd.Options.BoundedEnum
+import Check
+import Checks.GitVersion
+import Checks.HackageVersion
+import Checks.RedundantGit
+import Checks.RedundantHackage
+import Options.BoundedEnum
 import Options.Applicative
 
 data ChecksName

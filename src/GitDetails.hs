@@ -1,14 +1,14 @@
 {-# LANGUAGE TupleSections #-}
 
-module Lsd.GitDetails
+module GitDetails
   ( GitDetails(..)
   , getGitDetails
   ) where
 
 import RIO
 
-import Lsd.GitExtraDep
-import Lsd.Version
+import GitExtraDep
+import Version
 import qualified RIO.ByteString.Lazy as BSL
 import RIO.Char (isSpace)
 import RIO.Directory (withCurrentDirectory)

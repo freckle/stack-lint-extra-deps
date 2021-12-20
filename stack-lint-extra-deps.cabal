@@ -16,30 +16,30 @@ extra-source-files:
 
 library
   exposed-modules:
-      Lsd.App
-      Lsd.Check
-      Lsd.Checks
-      Lsd.Checks.GitVersion
-      Lsd.Checks.HackageVersion
-      Lsd.Checks.RedundantGit
-      Lsd.Checks.RedundantHackage
-      Lsd.Color
-      Lsd.ExternalDetails
-      Lsd.ExtraDep
-      Lsd.GitDetails
-      Lsd.GitExtraDep
-      Lsd.Hackage
-      Lsd.HackageExtraDep
-      Lsd.Options
-      Lsd.Options.BoundedEnum
-      Lsd.PackageName
-      Lsd.Report
-      Lsd.Run
-      Lsd.Stackage
-      Lsd.StackageResolver
-      Lsd.StackYaml
-      Lsd.Suggestion
-      Lsd.Version
+      App
+      Check
+      Checks
+      Checks.GitVersion
+      Checks.HackageVersion
+      Checks.RedundantGit
+      Checks.RedundantHackage
+      Color
+      ExternalDetails
+      ExtraDep
+      GitDetails
+      GitExtraDep
+      Hackage
+      HackageExtraDep
+      Options
+      Options.BoundedEnum
+      PackageName
+      Report
+      Run
+      Stackage
+      StackageResolver
+      StackYaml
+      Suggestion
+      Version
   other-modules:
       Paths_stack_lint_extra_deps
   hs-source-dirs:
@@ -115,7 +115,7 @@ test-suite hspec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Lsd.RunSpec
+      RunSpec
       Paths_stack_lint_extra_deps
   hs-source-dirs:
       test

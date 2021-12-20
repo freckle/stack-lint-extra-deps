@@ -1,10 +1,10 @@
-module Lsd.Checks.RedundantGit
+module Checks.RedundantGit
   ( checkRedundantGit
   ) where
 
 import RIO
 
-import Lsd.Check
+import Check
 import RIO.List (headMaybe, intersect, sortOn)
 
 checkRedundantGit :: Check

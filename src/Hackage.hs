@@ -1,4 +1,4 @@
-module Lsd.Hackage
+module Hackage
   ( HackageVersions(..)
   , getHackageVersions
   ) where
@@ -6,8 +6,8 @@ module Lsd.Hackage
 import RIO
 
 import Data.Aeson
-import Lsd.PackageName
-import Lsd.Version
+import PackageName
+import Version
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)

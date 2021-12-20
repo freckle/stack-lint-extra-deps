@@ -1,15 +1,15 @@
 {-# LANGUAGE TupleSections #-}
 
-module Lsd.Stackage
+module Stackage
   ( StackageVersions(..)
   , getStackageVersions
   ) where
 
 import RIO
 
-import Lsd.PackageName
-import Lsd.StackageResolver
-import Lsd.Version
+import PackageName
+import StackageResolver
+import Version
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
 import qualified RIO.Map as Map
