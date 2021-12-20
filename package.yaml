@@ -1,5 +1,5 @@
-name: lsd
-version: 0.2.0.0
+name: stack-lint-extra-deps
+version: 1.1.0.0
 
 extra-source-files:
   - README.md
@@ -33,11 +33,11 @@ library:
     - yaml
 
 executables:
-  lsd:
+  stack-lint-extra-deps:
     source-dirs: app
     main: Main.hs
     dependencies:
-      - lsd
+      - stack-lint-extra-deps
 
 tests:
   doctest:
@@ -54,4 +54,4 @@ tests:
     dependencies:
       - hspec
       - hspec-expectations-lifted
-      - lsd
+      - stack-lint-extra-deps

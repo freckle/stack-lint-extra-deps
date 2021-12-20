@@ -28,7 +28,7 @@ getGitDetails
 getGitDetails GitExtraDep {..} = do
   logDebug $ "Cloning " <> fromString cloneUrl <> "..."
 
-  withSystemTempDirectory "lsd" $ \path -> do
+  withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
     proc "git" ["clone", "--quiet", cloneUrl, path] runProcess_
 
     withCurrentDirectory path $ do
