@@ -8,10 +8,10 @@ module Options
 import RIO
 
 import Checks
+import Options.Applicative
 import Options.BoundedEnum
 import Report
 import StackageResolver
-import Options.Applicative
 import System.Environment (lookupEnv)
 import System.FilePath.Glob
 

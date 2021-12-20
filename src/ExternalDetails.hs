@@ -11,9 +11,9 @@ import GitExtraDep
 import Hackage
 import HackageExtraDep
 import PackageName
+import RIO.Process
 import Stackage
 import StackageResolver
-import RIO.Process
 
 data ExternalDetails = ExternalDetails
   { edStackageVersions :: Maybe StackageVersions

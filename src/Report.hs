@@ -8,9 +8,9 @@ import RIO
 
 import Color
 import ExtraDep
+import Options.Applicative
 import Options.BoundedEnum
 import Suggestion
-import Options.Applicative
 
 data Format = Detailed
   deriving stock (Bounded, Enum)

@@ -7,8 +7,8 @@ import RIO
 import Check
 import Checks
 import Options
-import StackYaml
 import RIO.Process
+import StackYaml
 import System.FilePath.Glob
 
 runLsd
