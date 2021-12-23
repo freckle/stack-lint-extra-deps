@@ -44,5 +44,5 @@ getReportSuggestion = \case
             Replace -> color Yellow "Replace"
         <> " "
         <> color Magenta (display extraDep)
-        <> "\n        ⮡ "
+        <> "\n        ↳ "
         <> sDetails
