@@ -2,7 +2,7 @@
 
 None
 
-## [v0.2.0.0](https://github.com/freckle/stack-lint-extra-deps/compare/v0.2.0.0...v1.1.0.0)
+## [v1.1.0.0](https://github.com/freckle/stack-lint-extra-deps/compare/v0.2.0.0...v1.1.0.0)
 
 - Rename project to `stack-lint-extra-deps`
 
