@@ -14,7 +14,7 @@ packages:
   - hspec-2.8.3@sha256:43a42e23994a6c61a7adead7e8a412016680234f5a14a157f68c020871e59534,1709
   - hspec-junit-formatter-1.0.1.0@sha256:6429871263be4532a3a6d08e72da5a8e4c00e8bfbfd7fc5b8352a3643f867453,2652
 
-  # No suggestions (yet)
+  # New version available
   - network-3.1.2.5@sha256:433a5e076aaa8eb3e4158abae78fb409c6bd754e9af99bc2e87583d2bcd8404a,4888
 
   # Newer commits, version-like tag exists too
