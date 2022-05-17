@@ -1,6 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.1...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.2...main)
 
-None
+## [v1.1.0.2](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.1...v1.1.0.2)
+
+- Support `github` short-hand
 
 ## [v1.1.0.1](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.0...v1.1.0.1)
 
