@@ -18,8 +18,10 @@ data GitExtraDep = GitExtraDep
   deriving stock Show
 
 instance FromJSON GitExtraDep where
-  parseJSON = withObject "GitExtraDep"
-    $ \o -> GitExtraDep <$> o .: "git" <*> o .: "commit"
+  parseJSON = withObject "GitExtraDep" $ \o -> do
+    gh <- o .:? "github"
+    repo <- maybe (o .: "git") (pure . Repository . (ghBase <>)) gh
+    GitExtraDep repo <$> o .: "commit"
 
 instance Display GitExtraDep where
   display GitExtraDep {..} = display gedRepository <> "@" <> display gedCommit
@@ -30,7 +32,7 @@ newtype Repository = Repository
     deriving newtype (Show, Display, FromJSON)
 
 repositoryBase :: Repository -> Text
-repositoryBase = T.dropPrefix "https://github.com/" . unRepository
+repositoryBase = T.dropPrefix ghBase . unRepository
 
 repositoryBaseName :: Repository -> Text
 repositoryBaseName = T.drop 1 . T.dropWhile (/= '/') . repositoryBase
@@ -42,3 +44,6 @@ newtype CommitSHA = CommitSHA
 
 instance Display CommitSHA where
   display (CommitSHA x) = display $ T.take 7 x
+
+ghBase :: Text
+ghBase = "https://github.com/"

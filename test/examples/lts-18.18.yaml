@@ -18,7 +18,7 @@ packages:
   - network-3.1.2.5@sha256:433a5e076aaa8eb3e4158abae78fb409c6bd754e9af99bc2e87583d2bcd8404a,4888
 
   # Newer commits, version-like tag exists too
-  - git: https://github.com/freckle/yesod-routes-flow
+  - github: freckle/yesod-routes-flow
     commit: 2a9cd873880956dd9a0999b593022d3c746324e8
 
   # No suggestions (yet)
