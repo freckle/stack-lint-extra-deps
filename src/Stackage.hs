@@ -12,6 +12,7 @@ import Network.HTTP.Types.Status (status200)
 import PackageName
 import qualified RIO.Map as Map
 import RIO.Text (unpack)
+import qualified RIO.Text as T
 import StackageResolver
 import Text.HTML.DOM (parseLBS)
 import Text.XML.Cursor
@@ -67,9 +68,13 @@ parseVersionsTable cursor = do
   toPair = \case
     [] -> Nothing
     [_] -> Nothing
-    [k, v] -> (k, ) <$> parseVersion (unpack v)
-    [k, _, v] -> (k, ) <$> parseVersion (unpack v)
-    (k : v : _) -> (k, ) <$> parseVersion (unpack v)
+    [k, v] -> (fixNightlyKey k, ) <$> parseVersion (unpack v)
+    [k, _, v] -> (fixNightlyKey k, ) <$> parseVersion (unpack v)
+    (k : v : _) -> (fixNightlyKey k, ) <$> parseVersion (unpack v)
+
+  fixNightlyKey k
+    | "Stackage Nightly " `T.isPrefixOf` k = "Version on this page:"
+    | otherwise = k
 
 displayVersions :: Map Text Version -> Utf8Builder
 displayVersions = mconcat . map displayPair . Map.toList
