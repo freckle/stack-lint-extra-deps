@@ -7,6 +7,7 @@ module Stackage
 
 import RIO
 
+import Data.List (find)
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
 import PackageName
@@ -58,23 +59,37 @@ getStackageVersions resolver package = do
   pure $ do
     versions <- mVersions
     StackageVersions
-      <$> Map.lookup "Version on this page:" versions
-      <*> Map.lookup "Latest on Hackage:" versions
+      <$> Map.lookup currentKey versions
+      <*> Map.lookup latestKey versions
 
 parseVersionsTable :: Cursor -> Map Text Version
 parseVersionsTable cursor = do
-  Map.fromList $ mapMaybe (toPair . ($// content)) $ cursor $// element "tr"
+  fixNightly
+    $ Map.fromList
+    $ mapMaybe (toPair . ($// content))
+    $ cursor
+    $// element "tr"
  where
   toPair = \case
     [] -> Nothing
     [_] -> Nothing
-    [k, v] -> (fixNightlyKey k, ) <$> parseVersion (unpack v)
-    [k, _, v] -> (fixNightlyKey k, ) <$> parseVersion (unpack v)
-    (k : v : _) -> (fixNightlyKey k, ) <$> parseVersion (unpack v)
+    [k, v] -> (k, ) <$> parseVersion (unpack v)
+    [k, _, v] -> (k, ) <$> parseVersion (unpack v)
+    (k : v : _) -> (k, ) <$> parseVersion (unpack v)
 
-  fixNightlyKey k
-    | "Stackage Nightly " `T.isPrefixOf` k = "Version on this page:"
-    | otherwise = k
+  fixNightly m =
+    maybe m (\(_, v) -> Map.insertWith (\_new old -> old) currentKey v m)
+      $ find ((nightlyPrefix `T.isPrefixOf`) . fst)
+      $ Map.toList m
+
+currentKey :: Text
+currentKey = "Version on this page:"
+
+latestKey :: Text
+latestKey = "Latest on Hackage:"
+
+nightlyPrefix :: Text
+nightlyPrefix = "Stackage Nightly "
 
 displayVersions :: Map Text Version -> Utf8Builder
 displayVersions = mconcat . map displayPair . Map.toList
