@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.3...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.4...main)
+
+## [v1.1.0.4](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.3...v1.1.0.4)
+
+- _Really_ fix inability to find current version with `-r nightly`
 
 ## [v1.1.0.3](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.2...v1.1.0.3)
 
