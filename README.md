@@ -34,7 +34,7 @@ url=$(curl --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/r
 ## Usage
 
 ```console
-% stack lint-extra-deps --help
+% stack-lint-extra-deps --help
 Usage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER]
                              [--exclude PATTERN] [--checks CHECKS]
                              [-f|--format FORMAT] [-n|--no-exit]
