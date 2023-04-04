@@ -15,7 +15,8 @@ checkRedundantHackage = Check $ \ExternalDetails {..} extraDep -> do
   guard $ svOnPage >= current
 
   pure $ Suggestion
-    { sAction = Remove
+    { sTarget = extraDep
+    , sAction = Remove
     , sDetails =
       "Same or newer version ("
       <> display svOnPage

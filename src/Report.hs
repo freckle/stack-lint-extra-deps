@@ -7,7 +7,6 @@ module Report
 import RIO
 
 import Color
-import ExtraDep
 import Options.Applicative
 import Options.BoundedEnum
 import Suggestion
@@ -33,16 +32,16 @@ showFormat = \case
 getReportSuggestion
   :: (MonadIO m, MonadReader env m, HasLogFunc env)
   => Format
-  -> m (ExtraDep -> Suggestion -> m ())
+  -> m (Suggestion -> m ())
 getReportSuggestion = \case
   Detailed -> do
     color <- getColor
-    pure $ \extraDep Suggestion {..} ->
+    pure $ \Suggestion {..} ->
       logError
         $ case sAction of
             Remove -> color Green "Remove "
-            Replace -> color Yellow "Replace"
+            ReplaceWith{} -> color Yellow "Replace"
         <> " "
-        <> color Magenta (display extraDep)
+        <> color Magenta (display sTarget)
         <> "\n        ↳ "
         <> sDetails

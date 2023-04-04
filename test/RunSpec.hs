@@ -20,7 +20,7 @@ spec = do
       let opts = testExampleOptions "lts-18.18" HackageChecks
       stackYaml <- loadStackYaml $ oPath opts
       withApp opts $ \app -> runRIO app $ do
-        n <- runLsd opts stackYaml $ \_ _ -> pure ()
+        n <- runLsd opts stackYaml $ \_ -> pure ()
         n `shouldBe` 10
 
 testExampleOptions :: String -> ChecksName -> Options

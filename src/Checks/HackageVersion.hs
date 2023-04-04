@@ -9,7 +9,7 @@ import RIO.List (headMaybe)
 
 checkHackageVersion :: Check
 checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do
-  Hackage HackageExtraDep {..} <- pure extraDep
+  Hackage hed@HackageExtraDep {..} <- pure extraDep
   HackageVersions {..} <- edHackageVersions
 
   current <- hedVersion
@@ -18,6 +18,7 @@ checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do
   guard $ released > current
 
   pure $ Suggestion
-    { sAction = Replace
+    { sTarget = extraDep
+    , sAction = ReplaceWith $ Hackage $ hed { hedVersion = Just released }
     , sDetails = "Newer version (" <> display released <> ") is available"
     }

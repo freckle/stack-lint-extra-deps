@@ -17,7 +17,8 @@ import qualified RIO.Text as T
 import Version
 
 data GitDetails = GitDetails
-  { gdCommitCountToHead :: Int
+  { gdHeadCommit :: CommitSHA
+  , gdCommitCountToHead :: Int
   , gdCommitCountToVersionTags :: [(Int, Version)]
   }
 
@@ -32,6 +33,7 @@ getGitDetails GitExtraDep {..} = do
     proc "git" ["clone", "--quiet", cloneUrl, path] runProcess_
 
     withCurrentDirectory path $ do
+      commit <- gitRevParse "HEAD"
       countToHead <- gitCountRevisionBetween gedCommit $ CommitSHA "HEAD"
       countToVersionTags <- do
         pairs <- gitTaggedVersions
@@ -51,17 +53,27 @@ getGitDetails GitExtraDep {..} = do
         $ "Git details for "
         <> display gedRepository
         <> ":"
+        <> "\n  HEAD: "
+        <> display commit
         <> "\n  Commits to HEAD: "
         <> maybe "unknown" displayShow countToHead
         <> "\n  Versions by tags: "
         <> displayVersions countToVersionTags
 
-      pure $ GitDetails <$> countToHead <*> pure countToVersionTags
+      pure $ GitDetails commit <$> countToHead <*> pure countToVersionTags
   where cloneUrl = unpack $ unRepository gedRepository
 
 displayVersions :: [(Int, Version)] -> Utf8Builder
 displayVersions = display . T.intercalate ", " . map
   (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
+
+gitRevParse
+  :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  => String
+  -> m CommitSHA
+gitRevParse ref = do
+  bs <- proc "git" ["rev-parse", ref] readProcessStdout_
+  pure $ CommitSHA $ T.strip $ bsToText bs
 
 gitCountRevisionBetween
   :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)

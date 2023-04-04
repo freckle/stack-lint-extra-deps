@@ -5,11 +5,12 @@ module Checks.RedundantGit
 import RIO
 
 import Check
+import PackageName
 import RIO.List (headMaybe, intersect, sortOn)
 
 checkRedundantGit :: Check
 checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
-  Git _ <- pure extraDep
+  Git GitExtraDep {..} <- pure extraDep
   GitDetails {..} <- edGitDetails
 
   let
@@ -17,12 +18,19 @@ checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
     equalVersions = map snd $ takeWhile ((>= 0) . fst) versions
     newerVersions = map snd $ takeWhile ((> 0) . fst) versions
 
+    replaceWith v = ReplaceWith $ Hackage HackageExtraDep
+      { hedPackage = packageName $ repositoryBaseName gedRepository
+      , hedVersion = Just v
+      , hedChecksum = Nothing
+      }
+
     -- Attempt to suggest a version tag that exists on Hackage
     suggestHackage = do
       HackageVersions {..} <- edHackageVersions
       version <- headMaybe $ hvNormal `intersect` equalVersions
       pure $ Suggestion
-        { sAction = Replace
+        { sTarget = extraDep
+        , sAction = replaceWith version
         , sDetails =
           "Same-or-newer version (" <> display version <> ") exists on Hackage"
         }
@@ -32,7 +40,8 @@ checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
     suggestGit = do
       version <- headMaybe newerVersions
       pure $ Suggestion
-        { sAction = Replace
+        { sTarget = extraDep
+        , sAction = replaceWith version
         , sDetails =
           "Newer, version-like tag (" <> display version <> ") exists"
         }
