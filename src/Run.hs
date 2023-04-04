@@ -15,7 +15,7 @@ runLsd
   :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
   => Options
   -> StackYaml
-  -> (ExtraDep -> Suggestion -> m ())
+  -> (Suggestion -> m ())
   -> m Int
 runLsd Options {..} StackYaml {..} report = do
   results <- for extraDeps $ \extraDep -> do
@@ -24,7 +24,7 @@ runLsd Options {..} StackYaml {..} report = do
 
     for checks $ \check -> do
       let mSuggestion = runCheck check details extraDep
-      mSuggestion <$ traverse_ (report extraDep) mSuggestion
+      mSuggestion <$ traverse_ report mSuggestion
 
   pure $ length $ catMaybes $ concat results
  where

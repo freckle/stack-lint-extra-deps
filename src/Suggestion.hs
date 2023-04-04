@@ -5,11 +5,14 @@ module Suggestion
 
 import RIO
 
+import ExtraDep
+
 data SuggestionAction
     = Remove
-    | Replace
+    | ReplaceWith ExtraDep
 
 data Suggestion = Suggestion
-  { sAction :: SuggestionAction
+  { sTarget :: ExtraDep
+  , sAction :: SuggestionAction
   , sDetails :: Utf8Builder
   }
