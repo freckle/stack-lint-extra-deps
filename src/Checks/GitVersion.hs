@@ -16,7 +16,7 @@ checkGitVersion = Check $ \ExternalDetails {..} extraDep -> do
   pure $ Suggestion
     { sTarget = extraDep
     , sAction = ReplaceWith $ Git $ ged { gedCommit = gdHeadCommit }
-    , sDetails =
+    , sDescription =
       "There are newer commits ("
       <> displayShow gdCommitCountToHead
       <> ") on the default branch"

@@ -39,9 +39,14 @@ getReportSuggestion = \case
     pure $ \Suggestion {..} ->
       logError
         $ case sAction of
-            Remove -> color Green "Remove "
-            ReplaceWith{} -> color Yellow "Replace"
-        <> " "
-        <> color Magenta (display sTarget)
+            Remove ->
+              color Green "Remove " <> " " <> color Magenta (display sTarget)
+            ReplaceWith r ->
+              color Yellow "Replace"
+                <> " "
+                <> color Magenta (display sTarget)
+                <> " with "
+                <> color Cyan (display r)
+
         <> "\n        ↳ "
-        <> sDetails
+        <> sDescription
