@@ -31,8 +31,7 @@ checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
       pure $ Suggestion
         { sTarget = extraDep
         , sAction = replaceWith version
-        , sDetails =
-          "Same-or-newer version (" <> display version <> ") exists on Hackage"
+        , sDescription = "Same-or-newer version exists on Hackage"
         }
 
     -- Fall-back for when we can't find Hackage info, so just suggest if there
@@ -42,8 +41,7 @@ checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
       pure $ Suggestion
         { sTarget = extraDep
         , sAction = replaceWith version
-        , sDetails =
-          "Newer, version-like tag (" <> display version <> ") exists"
+        , sDescription = "Newer, version-like tag exists"
         }
 
   suggestHackage <|> suggestGit
