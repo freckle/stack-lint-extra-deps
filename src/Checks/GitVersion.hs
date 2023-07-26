@@ -13,11 +13,12 @@ checkGitVersion = Check $ \ExternalDetails {..} extraDep -> do
 
   guard $ gdCommitCountToHead >= 1
 
-  pure $ Suggestion
-    { sTarget = extraDep
-    , sAction = ReplaceWith $ Git $ ged { gedCommit = gdHeadCommit }
-    , sDescription =
-      "There are newer commits ("
-      <> displayShow gdCommitCountToHead
-      <> ") on the default branch"
-    }
+  pure
+    $ Suggestion
+      { sTarget = extraDep
+      , sAction = ReplaceWith $ Git $ ged {gedCommit = gdHeadCommit}
+      , sDescription =
+          "There are newer commits ("
+            <> displayShow gdCommitCountToHead
+            <> ") on the default branch"
+      }

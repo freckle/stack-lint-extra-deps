@@ -17,8 +17,9 @@ checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do
 
   guard $ released > current
 
-  pure $ Suggestion
-    { sTarget = extraDep
-    , sAction = ReplaceWith $ Hackage $ hed { hedVersion = Just released }
-    , sDescription = "Newer version is available"
-    }
+  pure
+    $ Suggestion
+      { sTarget = extraDep
+      , sAction = ReplaceWith $ Hackage $ hed {hedVersion = Just released}
+      , sDescription = "Newer version is available"
+      }

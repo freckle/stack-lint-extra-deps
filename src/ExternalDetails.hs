@@ -1,5 +1,5 @@
 module ExternalDetails
-  ( ExternalDetails(..)
+  ( ExternalDetails (..)
   , getExternalDetails
   ) where
 
@@ -33,14 +33,12 @@ getExternalDetails resolver = \case
       <$> getStackageVersions resolver package
       <*> getHackageVersions package
       <*> pure Nothing
-
   Git dep -> do
     let package = inferGitHackageName $ gedRepository dep
     ExternalDetails
       <$> getStackageVersions resolver package
       <*> getHackageVersions package
       <*> getGitDetails dep
-
   Other _ -> pure $ ExternalDetails Nothing Nothing Nothing
 
 inferGitHackageName :: Repository -> PackageName

@@ -1,5 +1,5 @@
 module StackYaml
-  ( StackYaml(..)
+  ( StackYaml (..)
   , loadStackYaml
   ) where
 
@@ -14,14 +14,14 @@ data StackYaml = StackYaml
   { syResolver :: StackageResolver
   , syExtraDeps :: [ExtraDep]
   }
-  deriving stock Show
+  deriving stock (Show)
 
 instance Display StackYaml where
   display = displayShow
 
 instance FromJSON StackYaml where
   parseJSON = withObject "StackYaml" $ \o -> do
-      -- Support stack.yaml or snapshot.yaml syntax
+    -- Support stack.yaml or snapshot.yaml syntax
     mExtraDeps <- (<|>) <$> o .:? "extra-deps" <*> o .:? "packages"
     StackYaml <$> o .: "resolver" <*> pure (fromMaybe [] mExtraDeps)
 

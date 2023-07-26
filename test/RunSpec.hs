@@ -24,14 +24,15 @@ spec = do
         n `shouldBe` 10
 
 testExampleOptions :: String -> ChecksName -> Options
-testExampleOptions name checks = Options
-  { oResolver = Nothing
-  , oExcludes = []
-  , oChecks = checks
-  , oFormat = Detailed
-  , oNoExit = True
-  , oColor = ColorNever
-  , oVerbose = False
-  , oPath = "test/examples/" <> name <> ".yaml"
-  , oFilter = Nothing
-  }
+testExampleOptions name checks =
+  Options
+    { oResolver = Nothing
+    , oExcludes = []
+    , oChecks = checks
+    , oFormat = Detailed
+    , oNoExit = True
+    , oColor = ColorNever
+    , oVerbose = False
+    , oPath = "test/examples/" <> name <> ".yaml"
+    , oFilter = Nothing
+    }

@@ -12,12 +12,12 @@ import qualified RIO.NonEmpty as NE
 import Text.ParserCombinators.ReadP (ReadP, readP_to_S)
 
 newtype Version = Version V.Version
-    deriving newtype
-        ( Show
-        , Eq
-        , Ord
-        , FromJSON
-        )
+  deriving newtype
+    ( Show
+    , Eq
+    , Ord
+    , FromJSON
+    )
 
 instance Display Version where
   display (Version v) = fromString $ V.showVersion v

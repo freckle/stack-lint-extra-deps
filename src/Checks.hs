@@ -1,5 +1,5 @@
 module Checks
-  ( ChecksName(..)
+  ( ChecksName (..)
   , checksNameOption
   , checksByName
   ) where
@@ -15,20 +15,21 @@ import Options.Applicative
 import Options.BoundedEnum
 
 data ChecksName
-    = AllChecks
-    | GitChecks
-    | HackageChecks
-    deriving stock (Bounded, Enum)
+  = AllChecks
+  | GitChecks
+  | HackageChecks
+  deriving stock (Bounded, Enum)
 
 checksNameOption :: Parser ChecksName
-checksNameOption = boundedEnumOptionWith
-  showChecksName
-  (\list ->
-    long "checks"
-      <> help ("Checks to run, one of: " <> list)
-      <> metavar "CHECKS"
-      <> value AllChecks
-  )
+checksNameOption =
+  boundedEnumOptionWith
+    showChecksName
+    ( \list ->
+        long "checks"
+          <> help ("Checks to run, one of: " <> list)
+          <> metavar "CHECKS"
+          <> value AllChecks
+    )
 
 showChecksName :: ChecksName -> String
 showChecksName = \case
