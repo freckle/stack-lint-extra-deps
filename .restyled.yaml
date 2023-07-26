@@ -1,4 +1,4 @@
 restylers:
-  - brittany
-  - stylish-haskell
+  - "!stylish-haskell"
+  - fourmolu
   - "*"

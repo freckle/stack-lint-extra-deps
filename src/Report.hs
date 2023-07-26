@@ -1,5 +1,5 @@
 module Report
-  ( Format(..)
+  ( Format (..)
   , formatOption
   , getReportSuggestion
   ) where
@@ -15,15 +15,16 @@ data Format = Detailed
   deriving stock (Bounded, Enum)
 
 formatOption :: Parser Format
-formatOption = boundedEnumOptionWith
-  showFormat
-  (\list ->
-    short 'f'
-      <> long "format"
-      <> help ("Output format, one of: " <> list)
-      <> metavar "FORMAT"
-      <> value Detailed
-  )
+formatOption =
+  boundedEnumOptionWith
+    showFormat
+    ( \list ->
+        short 'f'
+          <> long "format"
+          <> help ("Output format, one of: " <> list)
+          <> metavar "FORMAT"
+          <> value Detailed
+    )
 
 showFormat :: Format -> String
 showFormat = \case
@@ -39,14 +40,13 @@ getReportSuggestion = \case
     pure $ \Suggestion {..} ->
       logError
         $ case sAction of
-            Remove ->
-              color Green "Remove " <> " " <> color Magenta (display sTarget)
-            ReplaceWith r ->
-              color Yellow "Replace"
-                <> " "
-                <> color Magenta (display sTarget)
-                <> " with "
-                <> color Cyan (display r)
-
+          Remove ->
+            color Green "Remove " <> " " <> color Magenta (display sTarget)
+          ReplaceWith r ->
+            color Yellow "Replace"
+              <> " "
+              <> color Magenta (display sTarget)
+              <> " with "
+              <> color Cyan (display r)
         <> "\n        ↳ "
         <> sDescription

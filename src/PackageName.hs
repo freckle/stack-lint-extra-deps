@@ -9,7 +9,7 @@ import RIO
 import Data.Aeson
 
 newtype PackageName = PackageName Text
-    deriving newtype (Show, Display, FromJSON)
+  deriving newtype (Show, Display, FromJSON)
 
 packageName :: Text -> PackageName
 packageName = PackageName

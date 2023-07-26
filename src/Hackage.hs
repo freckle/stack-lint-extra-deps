@@ -1,5 +1,5 @@
 module Hackage
-  ( HackageVersions(..)
+  ( HackageVersions (..)
   , getHackageVersions
   ) where
 
@@ -21,7 +21,7 @@ data HackageVersions = HackageVersions
   , hvUnpreferred :: [Version]
   , hvDeprecated :: [Version]
   }
-  deriving stock Show
+  deriving stock (Show)
 
 instance FromJSON HackageVersions where
   parseJSON = withObject "HackageVersions" $ \o ->
@@ -37,11 +37,11 @@ getHackageVersions
 getHackageVersions package = do
   req <-
     liftIO
-    $ parseRequest
-    $ unpack
-    $ "https://hackage.haskell.org/package/"
-    <> unPackageName package
-    <> "/preferred"
+      $ parseRequest
+      $ unpack
+      $ "https://hackage.haskell.org/package/"
+      <> unPackageName package
+      <> "/preferred"
 
   -- We'll parse ourselves because it makes logging more convenient
   resp <- httpLBS $ addRequestHeader hAccept "application/json" req

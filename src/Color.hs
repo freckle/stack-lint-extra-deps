@@ -1,17 +1,17 @@
 module Color
   ( getColor
-  , Color(..)
+  , Color (..)
   ) where
 
 import RIO
 
 data Color
-    = Red
-    | Green
-    | Yellow
-    | Cyan
-    | Magenta
-    | LightGray
+  = Red
+  | Green
+  | Yellow
+  | Cyan
+  | Magenta
+  | LightGray
 
 getColor
   :: (MonadReader env m, HasLogFunc env)
@@ -19,9 +19,10 @@ getColor
 getColor = do
   useColor <- view logFuncUseColorL
 
-  pure $ if useColor
-    then \color text -> escape color <> text <> reset
-    else \_ text -> text
+  pure
+    $ if useColor
+      then \color text -> escape color <> text <> reset
+      else \_ text -> text
 
 escape :: Color -> Utf8Builder
 escape = \case

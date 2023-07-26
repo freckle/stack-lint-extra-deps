@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 
 module Stackage
-  ( StackageVersions(..)
+  ( StackageVersions (..)
   , getStackageVersions
   ) where
 
@@ -32,12 +32,12 @@ getStackageVersions
 getStackageVersions resolver package = do
   req <-
     liftIO
-    $ parseRequest
-    $ unpack
-    $ "https://www.stackage.org/"
-    <> unStackageResolver resolver
-    <> "/package/"
-    <> unPackageName package
+      $ parseRequest
+      $ unpack
+      $ "https://www.stackage.org/"
+      <> unStackageResolver resolver
+      <> "/package/"
+      <> unPackageName package
 
   resp <- httpLBS req
 
@@ -73,9 +73,9 @@ parseVersionsTable cursor = do
   toPair = \case
     [] -> Nothing
     [_] -> Nothing
-    [k, v] -> (k, ) <$> parseVersion (unpack v)
-    [k, _, v] -> (k, ) <$> parseVersion (unpack v)
-    (k : v : _) -> (k, ) <$> parseVersion (unpack v)
+    [k, v] -> (k,) <$> parseVersion (unpack v)
+    [k, _, v] -> (k,) <$> parseVersion (unpack v)
+    (k : v : _) -> (k,) <$> parseVersion (unpack v)
 
   fixNightly m =
     maybe m (\(_, v) -> Map.insertWith (\_new old -> old) currentKey v m)

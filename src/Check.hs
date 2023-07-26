@@ -1,7 +1,7 @@
 module Check
-  ( Check(..)
+  ( Check (..)
 
-  -- * Re-exports useful for authoring 'Check's
+    -- * Re-exports useful for authoring 'Check's
   , module X
   ) where
 

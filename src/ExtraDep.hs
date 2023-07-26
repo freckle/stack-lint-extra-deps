@@ -1,5 +1,5 @@
 module ExtraDep
-  ( ExtraDep(..)
+  ( ExtraDep (..)
   , matchPattern
   ) where
 
@@ -13,13 +13,13 @@ import RIO.Text (unpack)
 import System.FilePath.Glob
 
 data ExtraDep
-    = Hackage HackageExtraDep
-    -- ^ @{package}(-{version})(@{checksum})
-    | Git GitExtraDep
-    -- ^ @{ git: {repository}, commit: {commit} }@
-    | Other Value
-    -- ^ Local path, or any future style Stack adds
-    deriving stock Show
+  = -- | @{package}(-{version})(@{checksum})
+    Hackage HackageExtraDep
+  | -- | @{ git: {repository}, commit: {commit} }@
+    Git GitExtraDep
+  | -- | Local path, or any future style Stack adds
+    Other Value
+  deriving stock (Show)
 
 instance FromJSON ExtraDep where
   parseJSON x =
@@ -29,10 +29,10 @@ instance Display ExtraDep where
   display = \case
     Hackage x -> display x
     Git x -> display x
-    Other{} -> "<other>"
+    Other {} -> "<other>"
 
 matchPattern :: Pattern -> ExtraDep -> Bool
 matchPattern p = \case
   Hackage HackageExtraDep {..} -> p `match` unpack (unPackageName hedPackage)
   Git GitExtraDep {..} -> p `match` unpack (repositoryBase gedRepository)
-  Other{} -> False
+  Other {} -> False

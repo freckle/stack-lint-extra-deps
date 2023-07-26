@@ -1,6 +1,6 @@
 module Suggestion
-  ( Suggestion(..)
-  , SuggestionAction(..)
+  ( Suggestion (..)
+  , SuggestionAction (..)
   ) where
 
 import RIO
@@ -8,8 +8,8 @@ import RIO
 import ExtraDep
 
 data SuggestionAction
-    = Remove
-    | ReplaceWith ExtraDep
+  = Remove
+  | ReplaceWith ExtraDep
 
 data Suggestion = Suggestion
   { sTarget :: ExtraDep

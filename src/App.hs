@@ -1,5 +1,5 @@
 module App
-  ( App(..)
+  ( App (..)
   , withApp
   ) where
 
@@ -15,11 +15,11 @@ data App = App
   }
 
 instance HasLogFunc App where
-  logFuncL = lens appLogFunc $ \x y -> x { appLogFunc = y }
+  logFuncL = lens appLogFunc $ \x y -> x {appLogFunc = y}
 
 instance HasProcessContext App where
   processContextL =
-    lens appProcessContext $ \x y -> x { appProcessContext = y }
+    lens appProcessContext $ \x y -> x {appProcessContext = y}
 
 withApp :: MonadUnliftIO m => Options -> (App -> m b) -> m b
 withApp opts f = do

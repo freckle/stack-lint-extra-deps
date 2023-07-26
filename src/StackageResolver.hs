@@ -10,7 +10,7 @@ import Data.Aeson
 import RIO.Text (pack)
 
 newtype StackageResolver = StackageResolver Text
-    deriving newtype (Show, Display, FromJSON)
+  deriving newtype (Show, Display, FromJSON)
 
 stackageResolver :: String -> Either String StackageResolver
 stackageResolver = Right . StackageResolver . pack

@@ -1,7 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 
 module GitDetails
-  ( GitDetails(..)
+  ( GitDetails (..)
   , getGitDetails
   ) where
 
@@ -41,13 +41,12 @@ getGitDetails GitExtraDep {..} = do
           mCountBehind <- gitCountRevisionBetween sha gedCommit
           mCountAhead <- gitCountRevisionBetween gedCommit sha
 
-          let
-            mCount = do
-              behind <- mCountBehind
-              ahead <- mCountAhead
-              pure $ if behind > ahead then negate behind else ahead
+          let mCount = do
+                behind <- mCountBehind
+                ahead <- mCountAhead
+                pure $ if behind > ahead then negate behind else ahead
 
-          pure $ (, version) <$> mCount
+          pure $ (,version) <$> mCount
 
       logDebug
         $ "Git details for "
@@ -61,11 +60,15 @@ getGitDetails GitExtraDep {..} = do
         <> displayVersions countToVersionTags
 
       pure $ GitDetails commit <$> countToHead <*> pure countToVersionTags
-  where cloneUrl = unpack $ unRepository gedRepository
+ where
+  cloneUrl = unpack $ unRepository gedRepository
 
 displayVersions :: [(Int, Version)] -> Utf8Builder
-displayVersions = display . T.intercalate ", " . map
-  (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
+displayVersions =
+  display
+    . T.intercalate ", "
+    . map
+      (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
 
 gitRevParse
   :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
@@ -82,7 +85,8 @@ gitCountRevisionBetween
   -> m (Maybe Int)
 gitCountRevisionBetween a b =
   bsToInt <$> proc "git" ["rev-list", "--count", spec] readProcessStdout_
-  where spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
+ where
+  spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
 
 gitTaggedVersions
   :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
@@ -98,13 +102,12 @@ gitTaggedVersions = do
       tag <- T.stripPrefix "refs/tags/" ref
       version <- parseVersion $ unpack $ T.dropPrefix "v" tag
       pure (CommitSHA sha, version)
-
     _ -> Nothing
 
   -- https://stackoverflow.com/a/47447334
   refFormat :: String
-  refFormat
-    = "--format=%(refname) %(if)%(*objectname)%(then)%(*objectname)%(else)%(objectname)%(end)"
+  refFormat =
+    "--format=%(refname) %(if)%(*objectname)%(then)%(*objectname)%(else)%(objectname)%(end)"
 
 bsToInt :: BSL.ByteString -> Maybe Int
 bsToInt = readMaybe . unpack . T.dropWhileEnd isSpace . bsToText

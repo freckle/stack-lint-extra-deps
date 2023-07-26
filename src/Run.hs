@@ -28,8 +28,9 @@ runLsd Options {..} StackYaml {..} report = do
 
   pure $ length $ catMaybes $ concat results
  where
-  extraDeps = filterExcludes oExcludes
-    $ maybe id (filter . matchPattern) oFilter syExtraDeps
+  extraDeps =
+    filterExcludes oExcludes
+      $ maybe id (filter . matchPattern) oFilter syExtraDeps
   resolver = fromMaybe syResolver oResolver
   checks = checksByName oChecks
 

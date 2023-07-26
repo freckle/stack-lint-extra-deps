@@ -14,8 +14,9 @@ checkRedundantHackage = Check $ \ExternalDetails {..} extraDep -> do
 
   guard $ svOnPage >= current
 
-  pure $ Suggestion
-    { sTarget = extraDep
-    , sAction = Remove
-    , sDescription = "Same or newer version is now in your resolver"
-    }
+  pure
+    $ Suggestion
+      { sTarget = extraDep
+      , sAction = Remove
+      , sDescription = "Same or newer version is now in your resolver"
+      }
