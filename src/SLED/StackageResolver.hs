@@ -1,16 +1,10 @@
 module SLED.StackageResolver
-  ( StackageResolver
-  , stackageResolver
-  , unStackageResolver
+  ( StackageResolver (..)
   ) where
 
 import SLED.Prelude
 
-newtype StackageResolver = StackageResolver Text
+newtype StackageResolver = StackageResolver
+  { unStackageResolver :: Text
+  }
   deriving newtype (Show, FromJSON, ToJSON)
-
-stackageResolver :: String -> Either String StackageResolver
-stackageResolver = Right . StackageResolver . pack
-
-unStackageResolver :: StackageResolver -> Text
-unStackageResolver (StackageResolver x) = x

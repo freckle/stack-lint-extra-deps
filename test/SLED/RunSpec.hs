@@ -4,18 +4,83 @@ module SLED.RunSpec
 
 import SLED.Prelude
 
-import qualified Data.Yaml as Yaml
+import Blammo.Logging.Logger
 import SLED.Checks
+import SLED.ExtraDep
+import SLED.Hackage
+import SLED.HackageExtraDep
+import SLED.PackageName
 import SLED.Run
+import SLED.StackYaml
+import SLED.StackageResolver
 import SLED.Test
+import SLED.Version
 
 spec :: Spec
 spec = do
   describe "runLsd" $ do
-    it "finds 10 Hackage suggestions in the lts-18.18 example" $ example $ do
-      stackYaml <- Yaml.decodeFileThrow "test/examples/lts-18.18.yaml"
-      testApp <- newTestApp stackYaml
+    describe "HackageChecks" $ do
+      describe "checkHackageVersion" $ do
+        it "suggests newer normal versions" $ example $ do
+          testApp <-
+            TestApp
+              <$> newTestLogger defaultLogSettings
+              <*> pure
+                StackYaml
+                  { syResolver = StackageResolver "lts-18.18"
+                  , syExtraDeps =
+                      [ Hackage
+                          HackageExtraDep
+                            { hedPackage = PackageName "freckle-app"
+                            , hedVersion = parseVersion "1.0.1.1"
+                            , hedChecksum = Nothing
+                            }
+                      ]
+                  }
+              <*> pure
+                ( \case
+                    PackageName "freckle-app" ->
+                      Just
+                        HackageVersions
+                          { hvNormal = catMaybes [parseVersion "1.0.1.2"]
+                          , hvUnpreferred = []
+                          , hvDeprecated = []
+                          }
+                    _ -> Nothing
+                )
+              <*> pure (\_ -> const Nothing)
 
-      flip runTestAppT testApp $ do
-        n <- runLsd "<ignored>" Nothing HackageChecks Nothing []
-        n `shouldBe` 10
+          flip runTestAppT testApp $ do
+            runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 1
+
+        it "doesn't suggest deprecated versions" $ example $ do
+          testApp <-
+            TestApp
+              <$> newTestLogger defaultLogSettings
+              <*> pure
+                StackYaml
+                  { syResolver = StackageResolver "lts-18.18"
+                  , syExtraDeps =
+                      [ Hackage
+                          HackageExtraDep
+                            { hedPackage = PackageName "freckle-app"
+                            , hedVersion = parseVersion "1.0.1.1"
+                            , hedChecksum = Nothing
+                            }
+                      ]
+                  }
+              <*> pure
+                ( \case
+                    PackageName "freckle-app" ->
+                      Just
+                        HackageVersions
+                          { hvNormal = []
+                          , hvUnpreferred = []
+                          , hvDeprecated = catMaybes [parseVersion "1.0.1.2"]
+                          }
+                    _ -> Nothing
+                )
+              <*> pure (\_ -> const Nothing)
+
+          flip runTestAppT testApp $ do
+            runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 0
