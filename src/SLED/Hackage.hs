@@ -28,7 +28,7 @@ instance FromJSON HackageVersions where
       <*> (o .:? "deprecated-version" .!= [])
 
 getHackageVersions
-  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
+  :: (MonadUnliftIO m, MonadLogger m)
   => PackageName
   -> m (Maybe HackageVersions)
 getHackageVersions package = do

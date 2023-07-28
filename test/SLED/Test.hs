@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module SLED.Test
   ( TestAppT (..)
   , runTestAppT
@@ -31,6 +33,9 @@ newtype TestAppT app m a = TestAppT
     , MonadLoggerIO
     , MonadReader app
     )
+
+instance Monad m => MonadStackYaml (TestAppT TestApp m) where
+  loadStackYaml _path = asks taStackYaml
 
 runTestAppT
   :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a

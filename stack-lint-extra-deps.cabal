@@ -144,4 +144,5 @@ test-suite hspec
     , hspec
     , hspec-expectations-lifted
     , stack-lint-extra-deps
+    , yaml
   default-language: Haskell2010

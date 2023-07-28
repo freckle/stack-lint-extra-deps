@@ -23,7 +23,7 @@ data StackageVersions = StackageVersions
   }
 
 getStackageVersions
-  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
+  :: (MonadUnliftIO m, MonadLogger m)
   => StackageResolver
   -> PackageName
   -> m (Maybe StackageVersions)

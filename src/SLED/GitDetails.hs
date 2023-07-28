@@ -24,7 +24,7 @@ data GitDetails = GitDetails
   }
 
 getGitDetails
-  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
+  :: (MonadUnliftIO m, MonadLogger m)
   => GitExtraDep
   -> m (Maybe GitDetails)
 getGitDetails GitExtraDep {..} = do
@@ -62,7 +62,7 @@ getGitDetails GitExtraDep {..} = do
   cloneUrl = unpack $ unRepository gedRepository
 
 gitRevParse
-  :: (MonadIO m, MonadLogger m, MonadReader env m)
+  :: (MonadIO m, MonadLogger m)
   => String
   -> m CommitSHA
 gitRevParse ref = do
@@ -70,7 +70,7 @@ gitRevParse ref = do
   pure $ CommitSHA $ T.strip $ bsToText bs
 
 gitCountRevisionBetween
-  :: (MonadIO m, MonadLogger m, MonadReader env m)
+  :: (MonadIO m, MonadLogger m)
   => CommitSHA
   -> CommitSHA
   -> m (Maybe Int)
@@ -80,7 +80,7 @@ gitCountRevisionBetween a b =
   spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
 
 gitTaggedVersions
-  :: (MonadIO m, MonadLogger m, MonadReader env m)
+  :: (MonadIO m, MonadLogger m)
   => m [(CommitSHA, Version)]
 gitTaggedVersions = do
   bs <- readProcessStdout_ $ proc "git" ["for-each-ref", refFormat, "refs/tags"]
