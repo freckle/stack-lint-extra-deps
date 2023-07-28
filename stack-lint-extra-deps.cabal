@@ -138,7 +138,8 @@ test-suite hspec
       RecordWildCards
       TypeApplications
   build-depends:
-      base
+      Blammo
+    , base
     , hspec
     , hspec-expectations-lifted
     , stack-lint-extra-deps
