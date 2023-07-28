@@ -6,17 +6,20 @@ import SLED.Prelude
 
 import SLED.Check
 import SLED.Checks
-import SLED.Options
 import SLED.StackYaml
+import SLED.StackageResolver
 import System.FilePath.Glob
 
 runLsd
   :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
-  => Options
-  -> StackYaml
+  => StackYaml
+  -> Maybe StackageResolver
+  -> ChecksName
+  -> Maybe Pattern
+  -> [Pattern]
   -> (Suggestion -> m ())
   -> m Int
-runLsd Options {..} StackYaml {..} report = do
+runLsd StackYaml {..} mResolver checksName mFilter excludes report = do
   results <- for extraDeps $ \extraDep -> do
     logDebug
       $ "Fetching external details"
@@ -30,10 +33,10 @@ runLsd Options {..} StackYaml {..} report = do
   pure $ length $ catMaybes $ concat results
  where
   extraDeps =
-    filterExcludes oExcludes
-      $ maybe id (filter . matchPattern) oFilter syExtraDeps
-  resolver = fromMaybe syResolver oResolver
-  checks = checksByName oChecks
+    filterExcludes excludes
+      $ maybe id (filter . matchPattern) mFilter syExtraDeps
+  resolver = fromMaybe syResolver mResolver
+  checks = checksByName checksName
 
 filterExcludes :: [Pattern] -> [ExtraDep] -> [ExtraDep]
 filterExcludes excludes = filter $ \e -> not $ any (`matchPattern` e) excludes
