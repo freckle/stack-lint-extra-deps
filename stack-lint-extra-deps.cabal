@@ -1,11 +1,11 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.35.1.
+-- This file has been generated from package.yaml by hpack version 0.35.2.
 --
 -- see: https://github.com/sol/hpack
 
 name:           stack-lint-extra-deps
-version:        1.1.0.4
+version:        1.1.0.5
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple

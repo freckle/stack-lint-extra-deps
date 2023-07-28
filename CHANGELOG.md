@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.4...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.5...main)
+
+## [v1.1.0.5](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.4...v1.1.0.5)
+
+- Change format to more clearly highlight the actual dependencies
 
 ## [v1.1.0.4](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.3...v1.1.0.4)
 
