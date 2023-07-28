@@ -1,5 +1,6 @@
 module SLED.GitExtraDep
   ( GitExtraDep (..)
+  , gitExtraDepToText
   , Repository (..)
   , repositoryBase
   , repositoryBaseName
@@ -23,13 +24,16 @@ instance FromJSON GitExtraDep where
     repo <- maybe (o .: "git") (pure . Repository . (ghBase <>)) gh
     GitExtraDep repo <$> o .: "commit"
 
-instance Display GitExtraDep where
-  display GitExtraDep {..} = display gedRepository <> "@" <> display gedCommit
+gitExtraDepToText :: GitExtraDep -> Text
+gitExtraDepToText GitExtraDep {..} =
+  unRepository gedRepository
+    <> "@"
+    <> unCommitSHA gedCommit
 
 newtype Repository = Repository
   { unRepository :: Text
   }
-  deriving newtype (Show, Display, FromJSON)
+  deriving newtype (Show, FromJSON, ToJSON)
 
 repositoryBase :: Repository -> Text
 repositoryBase = dropPrefix ghBase . unRepository
@@ -42,8 +46,9 @@ newtype CommitSHA = CommitSHA
   }
   deriving newtype (Show, FromJSON)
 
-instance Display CommitSHA where
-  display (CommitSHA x) = display $ T.take 7 x
+instance ToJSON CommitSHA where
+  toJSON (CommitSHA x) = toJSON $ T.take 7 x
+  toEncoding (CommitSHA x) = toEncoding $ T.take 7 x
 
 ghBase :: Text
 ghBase = "https://github.com/"

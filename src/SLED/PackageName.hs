@@ -6,10 +6,8 @@ module SLED.PackageName
 
 import SLED.Prelude
 
-import Data.Aeson
-
 newtype PackageName = PackageName Text
-  deriving newtype (Show, Display, FromJSON)
+  deriving newtype (Show, FromJSON, ToJSON)
 
 packageName :: Text -> PackageName
 packageName = PackageName

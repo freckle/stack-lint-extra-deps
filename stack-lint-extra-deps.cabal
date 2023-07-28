@@ -24,7 +24,6 @@ library
       SLED.Checks.HackageVersion
       SLED.Checks.RedundantGit
       SLED.Checks.RedundantHackage
-      SLED.Color
       SLED.ExternalDetails
       SLED.ExtraDep
       SLED.GitDetails
@@ -56,7 +55,8 @@ library
       RecordWildCards
       TypeApplications
   build-depends:
-      Glob
+      Blammo
+    , Glob
     , aeson
     , base
     , bytestring
@@ -65,11 +65,13 @@ library
     , html-conduit
     , http-conduit
     , http-types
+    , lens
     , optparse-applicative
-    , rio
+    , relude
     , text
     , typed-process
     , unliftio
+    , unliftio-core
     , xml-conduit
     , yaml
   default-language: Haskell2010
@@ -90,7 +92,8 @@ executable stack-lint-extra-deps
       RecordWildCards
       TypeApplications
   build-depends:
-      base
+      Blammo
+    , base
     , stack-lint-extra-deps
   default-language: Haskell2010
 

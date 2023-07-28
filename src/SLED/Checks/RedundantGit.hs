@@ -4,7 +4,7 @@ module SLED.Checks.RedundantGit
 
 import SLED.Prelude
 
-import Data.List (intersect, sortOn)
+import Data.List (intersect)
 import SLED.Check
 import SLED.PackageName
 

@@ -6,8 +6,10 @@ module SLED.Report
 
 import SLED.Prelude
 
+import Blammo.Logging.Colors
+import Blammo.Logging.Logger (pushLoggerLn)
 import Options.Applicative
-import SLED.Color
+import SLED.ExtraDep
 import SLED.Options.BoundedEnum
 import SLED.Suggestion
 
@@ -31,22 +33,22 @@ showFormat = \case
   Detailed -> "detailed"
 
 getReportSuggestion
-  :: (MonadIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadIO m, MonadLogger m, MonadReader env m, HasLogger env)
   => Format
   -> m (Suggestion -> m ())
 getReportSuggestion = \case
   Detailed -> do
-    color <- getColor
+    Colors {..} <- getColorsLogger
     pure $ \Suggestion {..} ->
-      logError
+      pushLoggerLn
         $ case sAction of
           Remove ->
-            color Green "Remove " <> " " <> color Magenta (display sTarget)
+            green "Remove " <> " " <> magenta (extraDepToText sTarget)
           ReplaceWith r ->
-            color Yellow "Replace"
+            yellow "Replace"
               <> " "
-              <> color Magenta (display sTarget)
+              <> magenta (extraDepToText sTarget)
               <> " with "
-              <> color Cyan (display r)
+              <> cyan (extraDepToText r)
         <> "\n        ↳ "
         <> sDescription

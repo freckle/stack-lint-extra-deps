@@ -19,6 +19,6 @@ checkGitVersion = Check $ \ExternalDetails {..} extraDep -> do
       , sAction = ReplaceWith $ Git $ ged {gedCommit = gdHeadCommit}
       , sDescription =
           "There are newer commits ("
-            <> displayShow gdCommitCountToHead
+            <> pack (show gdCommitCountToHead)
             <> ") on the default branch"
       }

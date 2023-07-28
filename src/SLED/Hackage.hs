@@ -6,8 +6,6 @@ module SLED.Hackage
 import SLED.Prelude
 
 import Data.Aeson
-import qualified Data.ByteString.Lazy as BSL
-import qualified Data.Text as T
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
@@ -30,7 +28,7 @@ instance FromJSON HackageVersions where
       <*> (o .:? "deprecated-version" .!= [])
 
 getHackageVersions
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
   => PackageName
   -> m (Maybe HackageVersions)
 getHackageVersions package = do
@@ -53,18 +51,19 @@ getHackageVersions package = do
       body <- mBody
       decode body
 
-  logDebug
-    $ "Hackage versions for "
-    <> display package
-    <> ": "
-    <> "\n  Status: "
-    <> displayShow (getResponseStatus resp)
-    <> "\n  Response: "
-    <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
-    <> "\n  Versions: "
-    <> maybe "none" (displayVersions . hvNormal) mVersions
+  -- TODO
+  -- logDebug
+  --   $ "Hackage versions for "
+  --   <> display package
+  --   <> ": "
+  --   <> "\n  Status: "
+  --   <> displayShow (getResponseStatus resp)
+  --   <> "\n  Response: "
+  --   <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
+  --   <> "\n  Versions: "
+  --   <> maybe "none" (displayVersions . hvNormal) mVersions
 
   pure mVersions
 
-displayVersions :: [Version] -> Utf8Builder
-displayVersions = display . T.intercalate ", " . map (pack . showVersion)
+-- displayVersions :: [Version] -> Utf8Builder
+-- displayVersions = display . T.intercalate ", " . map (pack . showVersion)

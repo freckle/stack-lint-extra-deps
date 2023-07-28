@@ -1,18 +1,14 @@
 module SLED.Options
   ( Options (..)
   , parseOptions
-  , optionsLogOptions
-  , ColorOption (..)
   ) where
 
 import SLED.Prelude
 
 import Options.Applicative
 import SLED.Checks
-import SLED.Options.BoundedEnum
 import SLED.Report
 import SLED.StackageResolver
-import System.Environment (lookupEnv)
 import System.FilePath.Glob
 
 data Options = Options
@@ -22,23 +18,8 @@ data Options = Options
   , oChecks :: ChecksName
   , oFormat :: Format
   , oNoExit :: Bool
-  , oColor :: ColorOption
-  , oVerbose :: Bool
   , oFilter :: Maybe Pattern
   }
-
-optionsLogOptions :: MonadIO m => Options -> Handle -> m LogOptions
-optionsLogOptions Options {..} h = do
-  useColor <- case oColor of
-    ColorAuto -> hIsTerminalDevice h
-    ColorAlways -> pure True
-    ColorNever -> pure False
-  setLogVerboseFormat True
-    . setLogUseColor useColor
-    . setLogMinLevel minLevel
-    <$> logOptionsHandle h False
- where
-  minLevel = if oVerbose then LevelDebug else LevelInfo
 
 parseOptions :: IO Options
 parseOptions = do
@@ -83,20 +64,6 @@ options stackYaml =
           <> long "no-exit"
           <> help "Exit successfully, even if suggestions found"
       )
-    <*> boundedEnumOptionWith
-      showColorOption
-      ( \list ->
-          short 'c'
-            <> long "color"
-            <> help ("When to use color, one of: " <> list)
-            <> metavar "COLOR"
-            <> value ColorAuto
-      )
-    <*> switch
-      ( short 'v'
-          <> long "verbose"
-          <> help "Log verbosely"
-      )
     <*> optional
       ( argument
           str
@@ -104,15 +71,3 @@ options stackYaml =
               <> help "Limit to deps matching PATTERN"
           )
       )
-
-data ColorOption
-  = ColorAuto
-  | ColorAlways
-  | ColorNever
-  deriving (Bounded, Enum)
-
-showColorOption :: ColorOption -> String
-showColorOption = \case
-  ColorAuto -> "auto"
-  ColorAlways -> "always"
-  ColorNever -> "never"

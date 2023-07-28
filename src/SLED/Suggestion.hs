@@ -14,5 +14,5 @@ data SuggestionAction
 data Suggestion = Suggestion
   { sTarget :: ExtraDep
   , sAction :: SuggestionAction
-  , sDescription :: Utf8Builder
+  , sDescription :: Text
   }

@@ -24,6 +24,7 @@ dependencies:
 library:
   source-dirs: src
   dependencies:
+    - Blammo
     - Glob
     - aeson
     - bytestring
@@ -32,10 +33,12 @@ library:
     - html-conduit
     - http-conduit
     - http-types
+    - lens
     - optparse-applicative
-    - rio
+    - relude
     - text
     - typed-process
+    - unliftio-core
     - unliftio
     - xml-conduit
     - yaml
@@ -45,6 +48,7 @@ executables:
     source-dirs: app
     main: Main.hs
     dependencies:
+      - Blammo
       - stack-lint-extra-deps
 
 tests:

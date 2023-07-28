@@ -16,8 +16,9 @@ data StackYaml = StackYaml
   }
   deriving stock (Show)
 
-instance Display StackYaml where
-  display = displayShow
+instance ToJSON StackYaml where
+  toJSON = toJSON . show @Text
+  toEncoding = toEncoding . show @Text
 
 instance FromJSON StackYaml where
   parseJSON = withObject "StackYaml" $ \o -> do
