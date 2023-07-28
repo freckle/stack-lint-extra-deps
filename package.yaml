@@ -64,6 +64,7 @@ tests:
     main: Spec.hs
     source-dirs: test
     dependencies:
+      - Blammo
       - hspec
       - hspec-expectations-lifted
       - stack-lint-extra-deps
