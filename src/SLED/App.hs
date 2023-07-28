@@ -8,7 +8,9 @@ module SLED.App
 
 import SLED.Prelude
 
+import qualified Data.Yaml as Yaml
 import SLED.Options
+import SLED.StackYaml
 
 newtype AppT app m a = AppT
   { unAppT :: ReaderT app (LoggingT m) a
@@ -23,6 +25,11 @@ newtype AppT app m a = AppT
     , MonadLoggerIO
     , MonadReader app
     )
+
+instance MonadIO m => MonadStackYaml (AppT app m) where
+  loadStackYaml path = do
+    logDebug $ "Loading stack.yaml" :# ["path" .= path]
+    Yaml.decodeFileThrow path
 
 runAppT :: (MonadUnliftIO m, HasLogger app) => AppT app m a -> app -> m a
 runAppT action app =

@@ -1,14 +1,16 @@
 module SLED.StackYaml
-  ( StackYaml (..)
-  , loadStackYaml
+  ( MonadStackYaml (..)
+  , StackYaml (..)
   ) where
 
 import SLED.Prelude
 
 import Data.Aeson
-import qualified Data.Yaml as Yaml
 import SLED.ExtraDep
 import SLED.StackageResolver
+
+class MonadStackYaml m where
+  loadStackYaml :: FilePath -> m StackYaml
 
 data StackYaml = StackYaml
   { syResolver :: StackageResolver
@@ -25,6 +27,3 @@ instance FromJSON StackYaml where
     -- Support stack.yaml or snapshot.yaml syntax
     mExtraDeps <- (<|>) <$> o .:? "extra-deps" <*> o .:? "packages"
     StackYaml <$> o .: "resolver" <*> pure (fromMaybe [] mExtraDeps)
-
-loadStackYaml :: MonadIO m => FilePath -> m StackYaml
-loadStackYaml = Yaml.decodeFileThrow

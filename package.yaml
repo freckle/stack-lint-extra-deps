@@ -68,3 +68,4 @@ tests:
       - hspec
       - hspec-expectations-lifted
       - stack-lint-extra-deps
+      - yaml
