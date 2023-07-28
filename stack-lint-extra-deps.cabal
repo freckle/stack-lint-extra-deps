@@ -125,6 +125,7 @@ test-suite hspec
   main-is: Spec.hs
   other-modules:
       SLED.RunSpec
+      SLED.Test
       Paths_stack_lint_extra_deps
   hs-source-dirs:
       test

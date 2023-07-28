@@ -21,7 +21,7 @@ main = do
     stackYaml <- loadStackYaml oPath
     report <- getReportSuggestion oFormat
 
-    n <- runLsd opts stackYaml report
+    n <- runLsd stackYaml oResolver oChecks oFilter oExcludes report
     logDebug $ "Suggestions found" :# ["count" .= n]
 
     when (n /= 0 && not oNoExit) $ do
