@@ -10,7 +10,7 @@ import SLED.Prelude
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as T
 import Network.HTTP.Simple
-import Network.HTTP.Types.Status (status200)
+import Network.HTTP.Types.Status (Status (..), status200)
 import SLED.PackageName
 import SLED.StackageResolver
 import SLED.Version
@@ -45,15 +45,12 @@ getStackageVersions resolver package = do
       pure $ getResponseBody resp
     mVersions = parseVersionsTable . fromDocument . parseLBS <$> mBody
 
-  -- TODO
-  -- logDebug
-  --   $ "Stackage details for "
-  --   <> display package
-  --   <> ": "
-  --   <> "\n  Status: "
-  --   <> displayShow (getResponseStatus resp)
-  --   <> "\n  Versions: "
-  --   <> maybe "none" displayVersions mVersions
+  logDebug
+    $ "Stackage dependency details"
+    :# [ "package" .= unPackageName package
+       , "statusCode" .= statusCode (getResponseStatus resp)
+       , "versions" .= mVersions
+       ]
 
   pure $ do
     versions <- mVersions
@@ -89,9 +86,3 @@ latestKey = "Latest on Hackage:"
 
 nightlyPrefix :: Text
 nightlyPrefix = "Stackage Nightly "
-
--- displayVersions :: Map Text Version -> Utf8Builder
--- displayVersions = mconcat . map displayPair . Map.toList
---  where
---   displayPair (k, v) =
---     "\n  " <> display k <> " => " <> fromString (showVersion v)
