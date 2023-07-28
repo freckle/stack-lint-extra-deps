@@ -1,16 +1,10 @@
 module SLED.PackageName
-  ( PackageName
-  , packageName
-  , unPackageName
+  ( PackageName (..)
   ) where
 
 import SLED.Prelude
 
-newtype PackageName = PackageName Text
+newtype PackageName = PackageName
+  { unPackageName :: Text
+  }
   deriving newtype (Show, FromJSON, ToJSON)
-
-packageName :: Text -> PackageName
-packageName = PackageName
-
-unPackageName :: PackageName -> Text
-unPackageName (PackageName x) = x

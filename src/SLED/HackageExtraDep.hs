@@ -31,7 +31,7 @@ hackageExtraDepFromText :: Text -> Either String HackageExtraDep
 hackageExtraDepFromText x =
   Right
     HackageExtraDep
-      { hedPackage = packageName package
+      { hedPackage = PackageName package
       , hedVersion = mVersion
       , hedChecksum = do
           guard $ not $ T.null suffix

@@ -40,13 +40,13 @@ options stackYaml =
           <> showDefault
       )
     <*> optional
-      ( option
-          (eitherReader stackageResolver)
-          ( short 'r'
-              <> long "resolver"
-              <> metavar "RESOLVER"
-              <> help "Resolver to use, default is read from --path"
-          )
+      ( StackageResolver
+          <$> strOption
+                  ( short 'r'
+                      <> long "resolver"
+                      <> metavar "RESOLVER"
+                      <> help "Resolver to use, default is read from --path"
+                  )
       )
     <*> many
       ( strOption

@@ -16,6 +16,8 @@ runLsd
   :: ( MonadUnliftIO m
      , MonadLogger m
      , MonadStackYaml m
+     , MonadHackage m
+     , MonadStackage m
      , MonadReader env m
      , HasLogger env
      )

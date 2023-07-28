@@ -6,7 +6,6 @@ module SLED.Test
 
     -- * Concrete Test App
   , TestApp (..)
-  , newTestApp
 
     -- * Re-exports
   , module X
@@ -14,9 +13,11 @@ module SLED.Test
 
 import SLED.Prelude
 
-import Blammo.Logging.Logger
-
+import SLED.Hackage
+import SLED.PackageName
 import SLED.StackYaml
+import SLED.Stackage
+import SLED.StackageResolver
 import Test.Hspec as X (Spec, describe, example, it)
 import Test.Hspec.Expectations.Lifted as X
 
@@ -37,6 +38,16 @@ newtype TestAppT app m a = TestAppT
 instance Monad m => MonadStackYaml (TestAppT TestApp m) where
   loadStackYaml _path = asks taStackYaml
 
+instance Monad m => MonadHackage (TestAppT TestApp m) where
+  getHackageVersions package = do
+    f <- asks taGetHackageVersions
+    pure $ f package
+
+instance Monad m => MonadStackage (TestAppT TestApp m) where
+  getStackageVersions resolver package = do
+    f <- asks taGetStackageVersions
+    pure $ f resolver package
+
 runTestAppT
   :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a
 runTestAppT action app =
@@ -45,12 +56,12 @@ runTestAppT action app =
 data TestApp = TestApp
   { taLogger :: Logger
   , taStackYaml :: StackYaml
+  , taGetHackageVersions :: PackageName -> Maybe HackageVersions
+  , taGetStackageVersions
+      :: StackageResolver
+      -> PackageName
+      -> Maybe StackageVersions
   }
 
 instance HasLogger TestApp where
   loggerL = lens taLogger $ \x y -> x {taLogger = y}
-
-newTestApp :: MonadIO m => StackYaml -> m TestApp
-newTestApp taStackYaml = do
-  taLogger <- newTestLogger defaultLogSettings
-  pure TestApp {..}

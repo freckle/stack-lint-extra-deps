@@ -21,7 +21,11 @@ data ExternalDetails = ExternalDetails
   }
 
 getExternalDetails
-  :: (MonadUnliftIO m, MonadLogger m)
+  :: ( MonadUnliftIO m
+     , MonadLogger m
+     , MonadHackage m
+     , MonadStackage m
+     )
   => StackageResolver
   -> ExtraDep
   -> m ExternalDetails
@@ -41,4 +45,4 @@ getExternalDetails resolver = \case
   Other _ -> pure $ ExternalDetails Nothing Nothing Nothing
 
 inferGitHackageName :: Repository -> PackageName
-inferGitHackageName = packageName . repositoryBaseName
+inferGitHackageName = PackageName . repositoryBaseName

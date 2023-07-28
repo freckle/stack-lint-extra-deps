@@ -22,7 +22,7 @@ checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
       ReplaceWith
         $ Hackage
           HackageExtraDep
-            { hedPackage = packageName $ repositoryBaseName gedRepository
+            { hedPackage = PackageName $ repositoryBaseName gedRepository
             , hedVersion = Just v
             , hedChecksum = Nothing
             }

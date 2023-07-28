@@ -29,6 +29,7 @@ library:
     - aeson
     - bytestring
     - containers
+    - errors
     - extra
     - html-conduit
     - http-conduit
@@ -68,4 +69,3 @@ tests:
       - hspec
       - hspec-expectations-lifted
       - stack-lint-extra-deps
-      - yaml
