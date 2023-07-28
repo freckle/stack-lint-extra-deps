@@ -3,7 +3,7 @@ module SLED.Color
   , Color (..)
   ) where
 
-import RIO
+import SLED.Prelude
 
 data Color
   = Red

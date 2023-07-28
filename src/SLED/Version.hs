@@ -4,11 +4,11 @@ module SLED.Version
   , showVersion
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
+import qualified Data.List.NonEmpty as NE
 import qualified Data.Version as V
-import qualified RIO.NonEmpty as NE
 import Text.ParserCombinators.ReadP (ReadP, readP_to_S)
 
 newtype Version = Version V.Version

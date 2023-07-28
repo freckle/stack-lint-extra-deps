@@ -5,7 +5,7 @@ module SLED.Check
   , module X
   ) where
 
-import RIO
+import SLED.Prelude
 
 import SLED.ExternalDetails as X
 import SLED.ExtraDep as X

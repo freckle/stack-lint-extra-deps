@@ -3,7 +3,7 @@ module SLED.StackYaml
   , loadStackYaml
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
 import qualified Data.Yaml as Yaml

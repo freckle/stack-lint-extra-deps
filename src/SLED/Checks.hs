@@ -4,7 +4,7 @@ module SLED.Checks
   , checksByName
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Options.Applicative
 import SLED.Check

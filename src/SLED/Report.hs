@@ -4,7 +4,7 @@ module SLED.Report
   , getReportSuggestion
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Options.Applicative
 import SLED.Color

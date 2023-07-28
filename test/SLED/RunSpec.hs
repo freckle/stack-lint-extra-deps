@@ -2,7 +2,7 @@ module SLED.RunSpec
   ( spec
   ) where
 
-import RIO
+import SLED.Prelude
 
 import SLED.App
 import SLED.Checks

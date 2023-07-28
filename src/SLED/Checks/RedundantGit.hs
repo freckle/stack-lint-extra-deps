@@ -2,9 +2,9 @@ module SLED.Checks.RedundantGit
   ( checkRedundantGit
   ) where
 
-import RIO
+import SLED.Prelude
 
-import RIO.List (headMaybe, intersect, sortOn)
+import Data.List (intersect, sortOn)
 import SLED.Check
 import SLED.PackageName
 

@@ -5,7 +5,7 @@ module SLED.Options
   , ColorOption (..)
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Options.Applicative
 import SLED.Checks

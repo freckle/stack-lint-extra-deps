@@ -5,16 +5,16 @@ module SLED.GitDetails
   , getGitDetails
   ) where
 
-import RIO
+import SLED.Prelude
 
-import qualified RIO.ByteString.Lazy as BSL
-import RIO.Char (isSpace)
-import RIO.Directory (withCurrentDirectory)
-import RIO.Process
-import RIO.Text (pack, unpack)
-import qualified RIO.Text as T
+import qualified Data.ByteString.Lazy as BSL
+import Data.Char (isSpace)
+import Data.List.Extra (dropPrefix)
+import qualified Data.Text as T
 import SLED.GitExtraDep
 import SLED.Version
+import System.Process.Typed
+import UnliftIO.Directory (withCurrentDirectory)
 
 data GitDetails = GitDetails
   { gdHeadCommit :: CommitSHA
@@ -23,14 +23,14 @@ data GitDetails = GitDetails
   }
 
 getGitDetails
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
   => GitExtraDep
   -> m (Maybe GitDetails)
 getGitDetails GitExtraDep {..} = do
   logDebug $ "Cloning " <> fromString cloneUrl <> "..."
 
   withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
-    proc "git" ["clone", "--quiet", cloneUrl, path] runProcess_
+    runProcess_ $ proc "git" ["clone", "--quiet", cloneUrl, path]
 
     withCurrentDirectory path $ do
       commit <- gitRevParse "HEAD"
@@ -71,28 +71,28 @@ displayVersions =
       (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
 
 gitRevParse
-  :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  :: (MonadIO m, MonadReader env m, HasLogFunc env)
   => String
   -> m CommitSHA
 gitRevParse ref = do
-  bs <- proc "git" ["rev-parse", ref] readProcessStdout_
+  bs <- readProcessStdout_ $ proc "git" ["rev-parse", ref]
   pure $ CommitSHA $ T.strip $ bsToText bs
 
 gitCountRevisionBetween
-  :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  :: (MonadIO m, MonadReader env m, HasLogFunc env)
   => CommitSHA
   -> CommitSHA
   -> m (Maybe Int)
 gitCountRevisionBetween a b =
-  bsToInt <$> proc "git" ["rev-list", "--count", spec] readProcessStdout_
+  bsToInt <$> readProcessStdout_ (proc "git" ["rev-list", "--count", spec])
  where
   spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
 
 gitTaggedVersions
-  :: (MonadIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  :: (MonadIO m, MonadReader env m, HasLogFunc env)
   => m [(CommitSHA, Version)]
 gitTaggedVersions = do
-  bs <- proc "git" ["for-each-ref", refFormat, "refs/tags"] readProcessStdout_
+  bs <- readProcessStdout_ $ proc "git" ["for-each-ref", refFormat, "refs/tags"]
   pure $ mapMaybe toPair $ T.lines $ bsToText bs
  where
   -- naively parse "refs/tags/{tag} {sha}"
@@ -100,7 +100,7 @@ gitTaggedVersions = do
   toPair x = case T.words x of
     [ref, sha] -> do
       tag <- T.stripPrefix "refs/tags/" ref
-      version <- parseVersion $ unpack $ T.dropPrefix "v" tag
+      version <- parseVersion $ dropPrefix "v" $ unpack tag
       pure (CommitSHA sha, version)
     _ -> Nothing
 

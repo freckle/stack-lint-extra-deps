@@ -2,7 +2,7 @@ module SLED.Checks.GitVersion
   ( checkGitVersion
   ) where
 
-import RIO
+import SLED.Prelude
 
 import SLED.Check
 

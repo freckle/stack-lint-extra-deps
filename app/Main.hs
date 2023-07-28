@@ -2,7 +2,7 @@ module Main
   ( main
   ) where
 
-import RIO
+import SLED.Prelude
 
 import SLED.App
 import SLED.Options

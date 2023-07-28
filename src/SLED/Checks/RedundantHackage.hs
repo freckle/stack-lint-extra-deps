@@ -2,7 +2,7 @@ module SLED.Checks.RedundantHackage
   ( checkRedundantHackage
   ) where
 
-import RIO
+import SLED.Prelude
 
 import SLED.Check
 

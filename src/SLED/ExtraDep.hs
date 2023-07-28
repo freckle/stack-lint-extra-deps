@@ -3,10 +3,9 @@ module SLED.ExtraDep
   , matchPattern
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
-import RIO.Text (unpack)
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
 import SLED.PackageName

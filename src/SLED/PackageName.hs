@@ -4,7 +4,7 @@ module SLED.PackageName
   , unPackageName
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
 

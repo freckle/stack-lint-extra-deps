@@ -4,13 +4,11 @@ module SLED.HackageExtraDep
   , hackageExtraDepFromText
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
-import RIO.List (elemIndices, headMaybe, splitAt)
-import RIO.Text (pack, unpack)
-import qualified RIO.Text as T
-import qualified RIO.Text.Partial as T (breakOn)
+import Data.List (elemIndices, splitAt)
+import qualified Data.Text as T
 import SLED.PackageName
 import SLED.Version
 

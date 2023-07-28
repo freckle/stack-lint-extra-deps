@@ -3,12 +3,11 @@ module SLED.Options.BoundedEnum
   , boundedEnumOptionWith
   ) where
 
-import RIO
+import SLED.Prelude
 
+import qualified Data.Map.Strict as Map
+import qualified Data.Text as T
 import Options.Applicative
-import qualified RIO.Map as Map
-import RIO.Text (pack, unpack)
-import qualified RIO.Text as T
 
 boundedEnumOption
   :: (Bounded a, Enum a, Show a) => (String -> Mod OptionFields a) -> Parser a

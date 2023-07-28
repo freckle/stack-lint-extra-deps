@@ -4,10 +4,9 @@ module SLED.StackageResolver
   , unStackageResolver
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
-import RIO.Text (pack)
 
 newtype StackageResolver = StackageResolver Text
   deriving newtype (Show, Display, FromJSON)

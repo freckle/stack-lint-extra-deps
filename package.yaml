@@ -20,17 +20,23 @@ default-extensions:
 
 dependencies:
   - base
-  - rio
 
 library:
   source-dirs: src
   dependencies:
     - Glob
     - aeson
+    - bytestring
+    - containers
+    - extra
     - html-conduit
     - http-conduit
     - http-types
     - optparse-applicative
+    - rio
+    - text
+    - typed-process
+    - unliftio
     - xml-conduit
     - yaml
 

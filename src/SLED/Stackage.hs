@@ -5,14 +5,13 @@ module SLED.Stackage
   , getStackageVersions
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.List (find)
+import qualified Data.Map.Strict as Map
+import qualified Data.Text as T
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
-import qualified RIO.Map as Map
-import RIO.Text (unpack)
-import qualified RIO.Text as T
 import SLED.PackageName
 import SLED.StackageResolver
 import SLED.Version
