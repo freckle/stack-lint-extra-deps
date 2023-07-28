@@ -3,15 +3,14 @@ module SLED.Hackage
   , getHackageVersions
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
+import qualified Data.ByteString.Lazy as BSL
+import qualified Data.Text as T
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
-import qualified RIO.ByteString.Lazy as BSL
-import RIO.Text (pack, unpack)
-import qualified RIO.Text as T
 import SLED.PackageName
 import SLED.Version
 

@@ -2,9 +2,8 @@ module SLED.Run
   ( runLsd
   ) where
 
-import RIO
+import SLED.Prelude
 
-import RIO.Process
 import SLED.Check
 import SLED.Checks
 import SLED.Options
@@ -12,7 +11,7 @@ import SLED.StackYaml
 import System.FilePath.Glob
 
 runLsd
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
   => Options
   -> StackYaml
   -> (Suggestion -> m ())

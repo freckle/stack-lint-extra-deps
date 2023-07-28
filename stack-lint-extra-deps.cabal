@@ -34,6 +34,7 @@ library
       SLED.Options
       SLED.Options.BoundedEnum
       SLED.PackageName
+      SLED.Prelude
       SLED.Report
       SLED.Run
       SLED.Stackage
@@ -58,11 +59,17 @@ library
       Glob
     , aeson
     , base
+    , bytestring
+    , containers
+    , extra
     , html-conduit
     , http-conduit
     , http-types
     , optparse-applicative
     , rio
+    , text
+    , typed-process
+    , unliftio
     , xml-conduit
     , yaml
   default-language: Haskell2010
@@ -84,7 +91,6 @@ executable stack-lint-extra-deps
       TypeApplications
   build-depends:
       base
-    , rio
     , stack-lint-extra-deps
   default-language: Haskell2010
 
@@ -108,7 +114,6 @@ test-suite doctest
       aeson
     , base
     , doctest
-    , rio
     , yaml
   default-language: Haskell2010
 
@@ -133,6 +138,5 @@ test-suite hspec
       base
     , hspec
     , hspec-expectations-lifted
-    , rio
     , stack-lint-extra-deps
   default-language: Haskell2010

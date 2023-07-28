@@ -2,9 +2,8 @@ module SLED.Checks.HackageVersion
   ( checkHackageVersion
   ) where
 
-import RIO
+import SLED.Prelude
 
-import RIO.List (headMaybe)
 import SLED.Check
 
 checkHackageVersion :: Check

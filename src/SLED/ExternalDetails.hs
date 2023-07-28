@@ -3,9 +3,8 @@ module SLED.ExternalDetails
   , getExternalDetails
   ) where
 
-import RIO
+import SLED.Prelude
 
-import RIO.Process
 import SLED.ExtraDep
 import SLED.GitDetails
 import SLED.GitExtraDep
@@ -22,7 +21,7 @@ data ExternalDetails = ExternalDetails
   }
 
 getExternalDetails
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env, HasProcessContext env)
+  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
   => StackageResolver
   -> ExtraDep
   -> m ExternalDetails

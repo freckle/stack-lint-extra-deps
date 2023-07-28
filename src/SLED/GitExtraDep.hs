@@ -6,10 +6,10 @@ module SLED.GitExtraDep
   , CommitSHA (..)
   ) where
 
-import RIO
+import SLED.Prelude
 
 import Data.Aeson
-import qualified RIO.Text as T
+import qualified Data.Text as T
 
 data GitExtraDep = GitExtraDep
   { gedRepository :: Repository
@@ -32,7 +32,7 @@ newtype Repository = Repository
   deriving newtype (Show, Display, FromJSON)
 
 repositoryBase :: Repository -> Text
-repositoryBase = T.dropPrefix ghBase . unRepository
+repositoryBase = dropPrefix ghBase . unRepository
 
 repositoryBaseName :: Repository -> Text
 repositoryBaseName = T.drop 1 . T.dropWhile (/= '/') . repositoryBase
@@ -47,3 +47,6 @@ instance Display CommitSHA where
 
 ghBase :: Text
 ghBase = "https://github.com/"
+
+dropPrefix :: Text -> Text -> Text
+dropPrefix prefix t = fromMaybe t $ T.stripPrefix prefix t

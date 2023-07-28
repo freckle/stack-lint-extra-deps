@@ -3,7 +3,7 @@ module SLED.Suggestion
   , SuggestionAction (..)
   ) where
 
-import RIO
+import SLED.Prelude
 
 import SLED.ExtraDep
 
