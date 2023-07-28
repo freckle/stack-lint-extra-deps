@@ -1,4 +1,4 @@
-module GitExtraDep
+module SLED.GitExtraDep
   ( GitExtraDep (..)
   , Repository (..)
   , repositoryBase

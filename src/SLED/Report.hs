@@ -1,4 +1,4 @@
-module Report
+module SLED.Report
   ( Format (..)
   , formatOption
   , getReportSuggestion
@@ -6,10 +6,10 @@ module Report
 
 import RIO
 
-import Color
 import Options.Applicative
-import Options.BoundedEnum
-import Suggestion
+import SLED.Color
+import SLED.Options.BoundedEnum
+import SLED.Suggestion
 
 data Format = Detailed
   deriving stock (Bounded, Enum)

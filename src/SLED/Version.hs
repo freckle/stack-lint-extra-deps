@@ -1,4 +1,4 @@
-module Version
+module SLED.Version
   ( Version
   , parseVersion
   , showVersion

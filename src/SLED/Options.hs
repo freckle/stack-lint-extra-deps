@@ -1,4 +1,4 @@
-module Options
+module SLED.Options
   ( Options (..)
   , parseOptions
   , optionsLogOptions
@@ -7,11 +7,11 @@ module Options
 
 import RIO
 
-import Checks
 import Options.Applicative
-import Options.BoundedEnum
-import Report
-import StackageResolver
+import SLED.Checks
+import SLED.Options.BoundedEnum
+import SLED.Report
+import SLED.StackageResolver
 import System.Environment (lookupEnv)
 import System.FilePath.Glob
 

@@ -1,4 +1,4 @@
-module ExtraDep
+module SLED.ExtraDep
   ( ExtraDep (..)
   , matchPattern
   ) where
@@ -6,10 +6,10 @@ module ExtraDep
 import RIO
 
 import Data.Aeson
-import GitExtraDep
-import HackageExtraDep
-import PackageName
 import RIO.Text (unpack)
+import SLED.GitExtraDep
+import SLED.HackageExtraDep
+import SLED.PackageName
 import System.FilePath.Glob
 
 data ExtraDep

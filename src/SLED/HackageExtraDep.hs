@@ -1,4 +1,4 @@
-module HackageExtraDep
+module SLED.HackageExtraDep
   ( HackageExtraDep (..)
   , SHA256 (..)
   , hackageExtraDepFromText
@@ -7,12 +7,12 @@ module HackageExtraDep
 import RIO
 
 import Data.Aeson
-import PackageName
 import RIO.List (elemIndices, headMaybe, splitAt)
 import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
 import qualified RIO.Text.Partial as T (breakOn)
-import Version
+import SLED.PackageName
+import SLED.Version
 
 data HackageExtraDep = HackageExtraDep
   { hedPackage :: PackageName

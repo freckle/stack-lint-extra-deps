@@ -1,11 +1,11 @@
-module Checks.HackageVersion
+module SLED.Checks.HackageVersion
   ( checkHackageVersion
   ) where
 
 import RIO
 
-import Check
 import RIO.List (headMaybe)
+import SLED.Check
 
 checkHackageVersion :: Check
 checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do

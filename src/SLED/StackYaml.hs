@@ -1,4 +1,4 @@
-module StackYaml
+module SLED.StackYaml
   ( StackYaml (..)
   , loadStackYaml
   ) where
@@ -7,8 +7,8 @@ import RIO
 
 import Data.Aeson
 import qualified Data.Yaml as Yaml
-import ExtraDep
-import StackageResolver
+import SLED.ExtraDep
+import SLED.StackageResolver
 
 data StackYaml = StackYaml
   { syResolver :: StackageResolver

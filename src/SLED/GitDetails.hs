@@ -1,20 +1,20 @@
 {-# LANGUAGE TupleSections #-}
 
-module GitDetails
+module SLED.GitDetails
   ( GitDetails (..)
   , getGitDetails
   ) where
 
 import RIO
 
-import GitExtraDep
 import qualified RIO.ByteString.Lazy as BSL
 import RIO.Char (isSpace)
 import RIO.Directory (withCurrentDirectory)
 import RIO.Process
 import RIO.Text (pack, unpack)
 import qualified RIO.Text as T
-import Version
+import SLED.GitExtraDep
+import SLED.Version
 
 data GitDetails = GitDetails
   { gdHeadCommit :: CommitSHA

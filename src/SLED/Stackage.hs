@@ -1,6 +1,6 @@
 {-# LANGUAGE TupleSections #-}
 
-module Stackage
+module SLED.Stackage
   ( StackageVersions (..)
   , getStackageVersions
   ) where
@@ -10,14 +10,14 @@ import RIO
 import Data.List (find)
 import Network.HTTP.Simple
 import Network.HTTP.Types.Status (status200)
-import PackageName
 import qualified RIO.Map as Map
 import RIO.Text (unpack)
 import qualified RIO.Text as T
-import StackageResolver
+import SLED.PackageName
+import SLED.StackageResolver
+import SLED.Version
 import Text.HTML.DOM (parseLBS)
 import Text.XML.Cursor
-import Version
 
 data StackageVersions = StackageVersions
   { svOnPage :: Version

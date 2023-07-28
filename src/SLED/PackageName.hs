@@ -1,4 +1,4 @@
-module PackageName
+module SLED.PackageName
   ( PackageName
   , packageName
   , unPackageName
