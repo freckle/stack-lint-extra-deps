@@ -28,8 +28,7 @@ getGitDetails
   => GitExtraDep
   -> m (Maybe GitDetails)
 getGitDetails GitExtraDep {..} = do
-  -- TODO
-  -- logDebug $ "Cloning " <> fromString cloneUrl <> "..."
+  logDebug $ "Cloning git dependency" :# ["cloneUrl" .= cloneUrl]
 
   withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
     runProcess_ $ proc "git" ["clone", "--quiet", cloneUrl, path]
@@ -50,28 +49,17 @@ getGitDetails GitExtraDep {..} = do
 
           pure $ (,version) <$> mCount
 
-      -- TODO
-      -- logDebug
-      --   $ "Git details for "
-      --   <> display gedRepository
-      --   <> ":"
-      --   <> "\n  HEAD: "
-      --   <> display commit
-      --   <> "\n  Commits to HEAD: "
-      --   <> maybe "unknown" displayShow countToHead
-      --   <> "\n  Versions by tags: "
-      --   <> displayVersions countToVersionTags
+      logDebug
+        $ "Git dependency details"
+        :# [ "repository" .= gedRepository
+           , "headCommit" .= commit
+           , "commitsToHead" .= (show @Text <$> countToHead)
+           , "versionsByTags" .= countToVersionTags
+           ]
 
       pure $ GitDetails commit <$> countToHead <*> pure countToVersionTags
  where
   cloneUrl = unpack $ unRepository gedRepository
-
--- displayVersions :: [(Int, Version)] -> Utf8Builder
--- displayVersions =
---   display
---     . T.intercalate ", "
---     . map
---       (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
 
 gitRevParse
   :: (MonadIO m, MonadLogger m, MonadReader env m)

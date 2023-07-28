@@ -8,7 +8,7 @@ import SLED.Prelude
 import Data.Aeson
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
-import Network.HTTP.Types.Status (status200)
+import Network.HTTP.Types.Status (Status (..), status200)
 import SLED.PackageName
 import SLED.Version
 
@@ -51,19 +51,11 @@ getHackageVersions package = do
       body <- mBody
       decode body
 
-  -- TODO
-  -- logDebug
-  --   $ "Hackage versions for "
-  --   <> display package
-  --   <> ": "
-  --   <> "\n  Status: "
-  --   <> displayShow (getResponseStatus resp)
-  --   <> "\n  Response: "
-  --   <> maybe "none" (displayBytesUtf8 . BSL.toStrict) mBody
-  --   <> "\n  Versions: "
-  --   <> maybe "none" (displayVersions . hvNormal) mVersions
+  logDebug
+    $ "Hackage dependency details"
+    :# [ "package" .= unPackageName package
+       , "statusCode" .= statusCode (getResponseStatus resp)
+       , "versions" .= (hvNormal <$> mVersions)
+       ]
 
   pure mVersions
-
--- displayVersions :: [Version] -> Utf8Builder
--- displayVersions = display . T.intercalate ", " . map (pack . showVersion)

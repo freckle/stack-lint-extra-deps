@@ -18,8 +18,9 @@ runLsd
   -> m Int
 runLsd Options {..} StackYaml {..} report = do
   results <- for extraDeps $ \extraDep -> do
-    -- TODO
-    -- logDebug $ "Fetching external details for " <> display extraDep
+    logDebug
+      $ "Fetching external details"
+      :# ["dependency" .= extraDepToText extraDep]
     details <- getExternalDetails resolver extraDep
 
     for checks $ \check -> do

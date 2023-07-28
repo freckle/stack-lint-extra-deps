@@ -17,14 +17,12 @@ main = do
   app <- App opts <$> newLoggerEnv
 
   flip runAppT app $ do
-    -- TODO
-    -- logDebug $ "Loading " <> fromString oPath
+    logDebug $ "Loading stack.yaml" :# ["path" .= oPath]
     stackYaml <- loadStackYaml oPath
     report <- getReportSuggestion oFormat
 
     n <- runLsd opts stackYaml report
-    -- TODO
-    -- logDebug $ displayShow n <> " suggestion(s) found"
+    logDebug $ "Suggestions found" :# ["count" .= n]
 
     when (n /= 0 && not oNoExit) $ do
       logDebug "Exiting non-zero (--no-exit to disable)"
