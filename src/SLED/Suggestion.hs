@@ -1,11 +1,11 @@
-module Suggestion
+module SLED.Suggestion
   ( Suggestion (..)
   , SuggestionAction (..)
   ) where
 
 import RIO
 
-import ExtraDep
+import SLED.ExtraDep
 
 data SuggestionAction
   = Remove

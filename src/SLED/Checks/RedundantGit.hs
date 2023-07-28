@@ -1,12 +1,12 @@
-module Checks.RedundantGit
+module SLED.Checks.RedundantGit
   ( checkRedundantGit
   ) where
 
 import RIO
 
-import Check
-import PackageName
 import RIO.List (headMaybe, intersect, sortOn)
+import SLED.Check
+import SLED.PackageName
 
 checkRedundantGit :: Check
 checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do

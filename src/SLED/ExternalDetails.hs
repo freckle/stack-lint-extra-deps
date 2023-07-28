@@ -1,19 +1,19 @@
-module ExternalDetails
+module SLED.ExternalDetails
   ( ExternalDetails (..)
   , getExternalDetails
   ) where
 
 import RIO
 
-import ExtraDep
-import GitDetails
-import GitExtraDep
-import Hackage
-import HackageExtraDep
-import PackageName
 import RIO.Process
-import Stackage
-import StackageResolver
+import SLED.ExtraDep
+import SLED.GitDetails
+import SLED.GitExtraDep
+import SLED.Hackage
+import SLED.HackageExtraDep
+import SLED.PackageName
+import SLED.Stackage
+import SLED.StackageResolver
 
 data ExternalDetails = ExternalDetails
   { edStackageVersions :: Maybe StackageVersions

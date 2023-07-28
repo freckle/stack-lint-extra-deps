@@ -1,4 +1,4 @@
-module Checks
+module SLED.Checks
   ( ChecksName (..)
   , checksNameOption
   , checksByName
@@ -6,13 +6,13 @@ module Checks
 
 import RIO
 
-import Check
-import Checks.GitVersion
-import Checks.HackageVersion
-import Checks.RedundantGit
-import Checks.RedundantHackage
 import Options.Applicative
-import Options.BoundedEnum
+import SLED.Check
+import SLED.Checks.GitVersion
+import SLED.Checks.HackageVersion
+import SLED.Checks.RedundantGit
+import SLED.Checks.RedundantHackage
+import SLED.Options.BoundedEnum
 
 data ChecksName
   = AllChecks

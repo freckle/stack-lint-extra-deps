@@ -4,11 +4,11 @@ module Main
 
 import RIO
 
-import App
-import Options
-import Report
-import Run
-import StackYaml
+import SLED.App
+import SLED.Options
+import SLED.Report
+import SLED.Run
+import SLED.StackYaml
 
 main :: IO ()
 main = do

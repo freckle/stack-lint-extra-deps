@@ -1,14 +1,14 @@
-module Run
+module SLED.Run
   ( runLsd
   ) where
 
 import RIO
 
-import Check
-import Checks
-import Options
 import RIO.Process
-import StackYaml
+import SLED.Check
+import SLED.Checks
+import SLED.Options
+import SLED.StackYaml
 import System.FilePath.Glob
 
 runLsd

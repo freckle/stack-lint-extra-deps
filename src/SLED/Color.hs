@@ -1,4 +1,4 @@
-module Color
+module SLED.Color
   ( getColor
   , Color (..)
   ) where

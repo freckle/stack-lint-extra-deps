@@ -1,4 +1,4 @@
-module Options.BoundedEnum
+module SLED.Options.BoundedEnum
   ( boundedEnumOption
   , boundedEnumOptionWith
   ) where

@@ -1,15 +1,15 @@
-module RunSpec
+module SLED.RunSpec
   ( spec
   ) where
 
 import RIO
 
-import App
-import Checks
-import Options
-import Report
-import Run
-import StackYaml
+import SLED.App
+import SLED.Checks
+import SLED.Options
+import SLED.Report
+import SLED.Run
+import SLED.StackYaml
 import Test.Hspec (Spec, describe, example, it)
 import Test.Hspec.Expectations.Lifted
 

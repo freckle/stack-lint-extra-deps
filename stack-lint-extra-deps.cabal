@@ -17,30 +17,30 @@ extra-doc-files:
 
 library
   exposed-modules:
-      App
-      Check
-      Checks
-      Checks.GitVersion
-      Checks.HackageVersion
-      Checks.RedundantGit
-      Checks.RedundantHackage
-      Color
-      ExternalDetails
-      ExtraDep
-      GitDetails
-      GitExtraDep
-      Hackage
-      HackageExtraDep
-      Options
-      Options.BoundedEnum
-      PackageName
-      Report
-      Run
-      Stackage
-      StackageResolver
-      StackYaml
-      Suggestion
-      Version
+      SLED.App
+      SLED.Check
+      SLED.Checks
+      SLED.Checks.GitVersion
+      SLED.Checks.HackageVersion
+      SLED.Checks.RedundantGit
+      SLED.Checks.RedundantHackage
+      SLED.Color
+      SLED.ExternalDetails
+      SLED.ExtraDep
+      SLED.GitDetails
+      SLED.GitExtraDep
+      SLED.Hackage
+      SLED.HackageExtraDep
+      SLED.Options
+      SLED.Options.BoundedEnum
+      SLED.PackageName
+      SLED.Report
+      SLED.Run
+      SLED.Stackage
+      SLED.StackageResolver
+      SLED.StackYaml
+      SLED.Suggestion
+      SLED.Version
   other-modules:
       Paths_stack_lint_extra_deps
   hs-source-dirs:
@@ -116,7 +116,7 @@ test-suite hspec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      RunSpec
+      SLED.RunSpec
       Paths_stack_lint_extra_deps
   hs-source-dirs:
       test

@@ -1,10 +1,10 @@
-module Checks.GitVersion
+module SLED.Checks.GitVersion
   ( checkGitVersion
   ) where
 
 import RIO
 
-import Check
+import SLED.Check
 
 checkGitVersion :: Check
 checkGitVersion = Check $ \ExternalDetails {..} extraDep -> do

@@ -1,4 +1,4 @@
-module StackageResolver
+module SLED.StackageResolver
   ( StackageResolver
   , stackageResolver
   , unStackageResolver

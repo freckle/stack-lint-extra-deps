@@ -1,12 +1,12 @@
-module App
+module SLED.App
   ( App (..)
   , withApp
   ) where
 
 import RIO
 
-import Options
 import RIO.Process
+import SLED.Options
 
 data App = App
   { appLogFunc :: LogFunc
