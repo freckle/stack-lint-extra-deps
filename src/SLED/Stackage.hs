@@ -7,7 +7,6 @@ module SLED.Stackage
 
 import SLED.Prelude
 
-import Data.List (find)
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as T
 import Network.HTTP.Simple
@@ -24,7 +23,7 @@ data StackageVersions = StackageVersions
   }
 
 getStackageVersions
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
   => StackageResolver
   -> PackageName
   -> m (Maybe StackageVersions)
@@ -46,14 +45,15 @@ getStackageVersions resolver package = do
       pure $ getResponseBody resp
     mVersions = parseVersionsTable . fromDocument . parseLBS <$> mBody
 
-  logDebug
-    $ "Stackage details for "
-    <> display package
-    <> ": "
-    <> "\n  Status: "
-    <> displayShow (getResponseStatus resp)
-    <> "\n  Versions: "
-    <> maybe "none" displayVersions mVersions
+  -- TODO
+  -- logDebug
+  --   $ "Stackage details for "
+  --   <> display package
+  --   <> ": "
+  --   <> "\n  Status: "
+  --   <> displayShow (getResponseStatus resp)
+  --   <> "\n  Versions: "
+  --   <> maybe "none" displayVersions mVersions
 
   pure $ do
     versions <- mVersions
@@ -90,8 +90,8 @@ latestKey = "Latest on Hackage:"
 nightlyPrefix :: Text
 nightlyPrefix = "Stackage Nightly "
 
-displayVersions :: Map Text Version -> Utf8Builder
-displayVersions = mconcat . map displayPair . Map.toList
- where
-  displayPair (k, v) =
-    "\n  " <> display k <> " => " <> fromString (showVersion v)
+-- displayVersions :: Map Text Version -> Utf8Builder
+-- displayVersions = mconcat . map displayPair . Map.toList
+--  where
+--   displayPair (k, v) =
+--     "\n  " <> display k <> " => " <> fromString (showVersion v)

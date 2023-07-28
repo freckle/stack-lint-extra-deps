@@ -1,11 +1,11 @@
 module SLED.ExtraDep
   ( ExtraDep (..)
+  , extraDepToText
   , matchPattern
   ) where
 
 import SLED.Prelude
 
-import Data.Aeson
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
 import SLED.PackageName
@@ -24,11 +24,11 @@ instance FromJSON ExtraDep where
   parseJSON x =
     asum [Git <$> parseJSON x, Hackage <$> parseJSON x, pure $ Other x]
 
-instance Display ExtraDep where
-  display = \case
-    Hackage x -> display x
-    Git x -> display x
-    Other {} -> "<other>"
+extraDepToText :: ExtraDep -> Text
+extraDepToText = \case
+  Hackage x -> hackageExtraDepToText x
+  Git x -> gitExtraDepToText x
+  Other {} -> "<other>"
 
 matchPattern :: Pattern -> ExtraDep -> Bool
 matchPattern p = \case

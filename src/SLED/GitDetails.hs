@@ -15,6 +15,7 @@ import SLED.GitExtraDep
 import SLED.Version
 import System.Process.Typed
 import UnliftIO.Directory (withCurrentDirectory)
+import UnliftIO.Temporary (withSystemTempDirectory)
 
 data GitDetails = GitDetails
   { gdHeadCommit :: CommitSHA
@@ -23,11 +24,12 @@ data GitDetails = GitDetails
   }
 
 getGitDetails
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
   => GitExtraDep
   -> m (Maybe GitDetails)
 getGitDetails GitExtraDep {..} = do
-  logDebug $ "Cloning " <> fromString cloneUrl <> "..."
+  -- TODO
+  -- logDebug $ "Cloning " <> fromString cloneUrl <> "..."
 
   withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
     runProcess_ $ proc "git" ["clone", "--quiet", cloneUrl, path]
@@ -37,7 +39,7 @@ getGitDetails GitExtraDep {..} = do
       countToHead <- gitCountRevisionBetween gedCommit $ CommitSHA "HEAD"
       countToVersionTags <- do
         pairs <- gitTaggedVersions
-        forMaybeM pairs $ \(sha, version) -> do
+        fmap catMaybes $ for pairs $ \(sha, version) -> do
           mCountBehind <- gitCountRevisionBetween sha gedCommit
           mCountAhead <- gitCountRevisionBetween gedCommit sha
 
@@ -48,30 +50,31 @@ getGitDetails GitExtraDep {..} = do
 
           pure $ (,version) <$> mCount
 
-      logDebug
-        $ "Git details for "
-        <> display gedRepository
-        <> ":"
-        <> "\n  HEAD: "
-        <> display commit
-        <> "\n  Commits to HEAD: "
-        <> maybe "unknown" displayShow countToHead
-        <> "\n  Versions by tags: "
-        <> displayVersions countToVersionTags
+      -- TODO
+      -- logDebug
+      --   $ "Git details for "
+      --   <> display gedRepository
+      --   <> ":"
+      --   <> "\n  HEAD: "
+      --   <> display commit
+      --   <> "\n  Commits to HEAD: "
+      --   <> maybe "unknown" displayShow countToHead
+      --   <> "\n  Versions by tags: "
+      --   <> displayVersions countToVersionTags
 
       pure $ GitDetails commit <$> countToHead <*> pure countToVersionTags
  where
   cloneUrl = unpack $ unRepository gedRepository
 
-displayVersions :: [(Int, Version)] -> Utf8Builder
-displayVersions =
-  display
-    . T.intercalate ", "
-    . map
-      (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
+-- displayVersions :: [(Int, Version)] -> Utf8Builder
+-- displayVersions =
+--   display
+--     . T.intercalate ", "
+--     . map
+--       (\(n, v) -> pack $ showVersion v <> " (" <> show n <> " commits)")
 
 gitRevParse
-  :: (MonadIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadIO m, MonadLogger m, MonadReader env m)
   => String
   -> m CommitSHA
 gitRevParse ref = do
@@ -79,7 +82,7 @@ gitRevParse ref = do
   pure $ CommitSHA $ T.strip $ bsToText bs
 
 gitCountRevisionBetween
-  :: (MonadIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadIO m, MonadLogger m, MonadReader env m)
   => CommitSHA
   -> CommitSHA
   -> m (Maybe Int)
@@ -89,7 +92,7 @@ gitCountRevisionBetween a b =
   spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
 
 gitTaggedVersions
-  :: (MonadIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadIO m, MonadLogger m, MonadReader env m)
   => m [(CommitSHA, Version)]
 gitTaggedVersions = do
   bs <- readProcessStdout_ $ proc "git" ["for-each-ref", refFormat, "refs/tags"]

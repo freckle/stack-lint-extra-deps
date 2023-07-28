@@ -6,10 +6,8 @@ module SLED.StackageResolver
 
 import SLED.Prelude
 
-import Data.Aeson
-
 newtype StackageResolver = StackageResolver Text
-  deriving newtype (Show, Display, FromJSON)
+  deriving newtype (Show, FromJSON, ToJSON)
 
 stackageResolver :: String -> Either String StackageResolver
 stackageResolver = Right . StackageResolver . pack

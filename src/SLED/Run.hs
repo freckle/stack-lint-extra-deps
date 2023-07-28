@@ -11,14 +11,15 @@ import SLED.StackYaml
 import System.FilePath.Glob
 
 runLsd
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
   => Options
   -> StackYaml
   -> (Suggestion -> m ())
   -> m Int
 runLsd Options {..} StackYaml {..} report = do
   results <- for extraDeps $ \extraDep -> do
-    logDebug $ "Fetching external details for " <> display extraDep
+    -- TODO
+    -- logDebug $ "Fetching external details for " <> display extraDep
     details <- getExternalDetails resolver extraDep
 
     for checks $ \check -> do

@@ -21,7 +21,7 @@ data ExternalDetails = ExternalDetails
   }
 
 getExternalDetails
-  :: (MonadUnliftIO m, MonadReader env m, HasLogFunc env)
+  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m)
   => StackageResolver
   -> ExtraDep
   -> m ExternalDetails

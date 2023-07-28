@@ -6,7 +6,6 @@ module SLED.Version
 
 import SLED.Prelude
 
-import Data.Aeson
 import qualified Data.List.NonEmpty as NE
 import qualified Data.Version as V
 import Text.ParserCombinators.ReadP (ReadP, readP_to_S)
@@ -19,8 +18,9 @@ newtype Version = Version V.Version
     , FromJSON
     )
 
-instance Display Version where
-  display (Version v) = fromString $ V.showVersion v
+instance ToJSON Version where
+  toJSON (Version v) = toJSON $ V.showVersion v
+  toEncoding (Version v) = toEncoding $ V.showVersion v
 
 parseVersion :: String -> Maybe Version
 parseVersion = fmap Version . parse V.parseVersion
