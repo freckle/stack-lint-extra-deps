@@ -17,5 +17,5 @@ spec = do
       testApp <- newTestApp stackYaml
 
       flip runTestAppT testApp $ do
-        n <- runLsd "<ignored>" Nothing HackageChecks Nothing [] $ \_ -> pure ()
+        n <- runLsd "<ignored>" Nothing HackageChecks Nothing []
         n `shouldBe` 10

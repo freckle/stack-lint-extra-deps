@@ -7,7 +7,6 @@ import SLED.Prelude
 
 import Options.Applicative
 import SLED.Checks
-import SLED.Report
 import SLED.StackageResolver
 import System.FilePath.Glob
 
@@ -16,7 +15,6 @@ data Options = Options
   , oResolver :: Maybe StackageResolver
   , oExcludes :: [Pattern]
   , oChecks :: ChecksName
-  , oFormat :: Format
   , oNoExit :: Bool
   , oFilter :: Maybe Pattern
   }
@@ -58,7 +56,6 @@ options stackYaml =
           )
       )
     <*> checksNameOption
-    <*> formatOption
     <*> switch
       ( short 'n'
           <> long "no-exit"

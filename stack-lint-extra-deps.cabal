@@ -34,7 +34,6 @@ library
       SLED.Options.BoundedEnum
       SLED.PackageName
       SLED.Prelude
-      SLED.Report
       SLED.Run
       SLED.Stackage
       SLED.StackageResolver
