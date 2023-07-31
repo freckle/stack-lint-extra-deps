@@ -30,22 +30,29 @@ runSLED
      , HasLogger env
      )
   => Options
-  -> m Int
+  -> m ()
 runSLED Options {..} = do
   logDebug $ "Loading stack.yaml" :# ["path" .= oPath]
   StackYaml {..} <- Yaml.decodeFileThrow oPath
   let resolver = fromMaybe syResolver oResolver
 
-  runConduit
-    $ yieldMany syExtraDeps
-    .| filterC (shouldIncludeExtraDep oFilter oExcludes)
-    .| awaitForever
-      ( \extraDep -> do
-          suggestions <- lift $ runChecks resolver oChecks extraDep
-          yieldMany suggestions
-      )
-    .| printSuggestions
-    .| lengthC
+  n <-
+    runConduit
+      $ yieldMany syExtraDeps
+      .| filterC (shouldIncludeExtraDep oFilter oExcludes)
+      .| awaitForever
+        ( \extraDep -> do
+            suggestions <- lift $ runChecks resolver oChecks extraDep
+            yieldMany suggestions
+        )
+      .| printSuggestions
+      .| lengthC @_ @Int
+
+  logDebug $ "Suggestions found" :# ["count" .= n]
+
+  when (n /= 0 && not oNoExit) $ do
+    logDebug "Exiting non-zero (--no-exit to disable)"
+    exitFailure
 
 shouldIncludeExtraDep :: Maybe Pattern -> [Pattern] -> ExtraDep -> Bool
 shouldIncludeExtraDep mInclude excludes dep
