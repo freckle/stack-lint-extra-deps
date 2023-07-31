@@ -11,14 +11,12 @@ import SLED.Prelude
 import Control.Error.Util (hush, note)
 import Data.Aeson (eitherDecode)
 import qualified Data.ByteString.Lazy as BSL
-import qualified Data.Yaml as Yaml
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
 import SLED.Hackage
 import SLED.Options
 import SLED.PackageName
-import SLED.StackYaml
 import SLED.Stackage
 import SLED.StackageResolver
 

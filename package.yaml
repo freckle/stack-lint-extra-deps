@@ -18,6 +18,19 @@ default-extensions:
   - RecordWildCards
   - TypeApplications
 
+ghc-options:
+  - -fignore-optim-changes
+  - -fwrite-ide-info
+  - -Weverything
+  - -Wno-all-missed-specialisations
+  - -Wno-missing-import-lists
+  - -Wno-missing-kind-signatures
+  - -Wno-missing-local-signatures
+  - -Wno-missing-safe-haskell-mode
+  - -Wno-prepositive-qualified-module
+  - -Wno-unsafe
+  - -optP-Wno-nonportable-include-path # workaround [Filename case on macOS · Issue #4739 · haskell/cabal](https://github.com/haskell/cabal/issues/4739)
+
 dependencies:
   - base
 
@@ -52,6 +65,10 @@ executables:
     dependencies:
       - Blammo
       - stack-lint-extra-deps
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
 
 tests:
   doctest:
@@ -72,5 +89,4 @@ tests:
       - containers
       - file-embed
       - hspec
-      - hspec-expectations-lifted
       - stack-lint-extra-deps

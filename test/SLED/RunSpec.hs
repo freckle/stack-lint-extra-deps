@@ -13,7 +13,6 @@ import SLED.Hackage
 import SLED.HackageExtraDep
 import SLED.PackageName
 import SLED.Run
-import SLED.StackYaml
 import SLED.Stackage
 import SLED.StackageResolver
 import SLED.Suggestion
