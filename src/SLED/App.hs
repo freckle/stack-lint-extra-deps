@@ -10,10 +10,11 @@ import SLED.Prelude
 
 import Control.Error.Util (hush, note)
 import Data.Aeson (eitherDecode)
+import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Yaml as Yaml
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
-import Network.HTTP.Types.Status (Status (..), status200)
+import Network.HTTP.Types.Status (status200)
 import SLED.Hackage
 import SLED.Options
 import SLED.PackageName
@@ -42,29 +43,20 @@ instance MonadIO m => MonadStackYaml (AppT app m) where
 
 instance MonadIO m => MonadHackage (AppT app m) where
   getHackageVersions package = do
-    req <-
-      liftIO
-        $ parseRequest
-        $ unpack
-        $ "https://hackage.haskell.org/package/"
-        <> unPackageName package
-        <> "/preferred"
-
-    -- We'll parse ourselves because it makes logging more convenient
-    resp <- httpLBS $ addRequestHeader hAccept "application/json" req
-
-    let
-      mBody = do
-        guard $ getResponseStatus resp == status200
-        pure $ getResponseBody resp
-      eVersions = do
-        body <- mBody
-        eitherDecode body
+    eVersions <-
+      httpParse eitherDecode
+        . addRequestHeader hAccept "application/json"
+        =<< liftIO
+          ( parseRequest
+              $ unpack
+              $ "https://hackage.haskell.org/package/"
+              <> unPackageName package
+              <> "/preferred"
+          )
 
     logDebug
       $ "Hackage dependency details"
       :# [ "package" .= unPackageName package
-         , "statusCode" .= statusCode (getResponseStatus resp)
          , "versions" .= (hvNormal <$> eVersions)
          ]
 
@@ -72,25 +64,21 @@ instance MonadIO m => MonadHackage (AppT app m) where
 
 instance MonadIO m => MonadStackage (AppT app m) where
   getStackageVersions resolver package = do
-    req <-
-      liftIO
-        $ parseRequest
-        $ unpack
-        $ "https://www.stackage.org/"
-        <> unStackageResolver resolver
-        <> "/package/"
-        <> unPackageName package
-
-    resp <- httpLBS req
-
-    let eStackageVersions = do
-          note "Non-200 status" $ guard $ getResponseStatus resp == status200
-          parseStackageVersions $ getResponseBody resp
+    eStackageVersions <-
+      httpParse parseStackageVersions
+        =<< liftIO
+          ( parseRequest
+              $ unpack
+              $ "https://www.stackage.org/"
+              <> unStackageResolver resolver
+              <> "/package/"
+              <> unPackageName package
+          )
 
     logDebug
       $ "Stackage dependency details"
-      :# [ "package" .= unPackageName package
-         , "statusCode" .= statusCode (getResponseStatus resp)
+      :# [ "resolver" .= unStackageResolver resolver
+         , "package" .= unPackageName package
          , "versions" .= eStackageVersions
          ]
 
@@ -107,3 +95,14 @@ data App = App
 
 instance HasLogger App where
   loggerL = lens appLogger $ \x y -> x {appLogger = y}
+
+httpParse
+  :: MonadIO m
+  => (BSL.ByteString -> Either String a)
+  -> Request
+  -> m (Either String a)
+httpParse f req = do
+  resp <- httpLBS req
+  pure $ do
+    note "Non-200 status" $ guard $ getResponseStatus resp == status200
+    f $ getResponseBody resp
