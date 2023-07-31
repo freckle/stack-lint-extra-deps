@@ -15,7 +15,7 @@ main = do
   app <- App opts <$> newLoggerEnv
 
   flip runAppT app $ do
-    n <- runLsd oPath oResolver oChecks oFilter oExcludes
+    n <- runSLED opts
     logDebug $ "Suggestions found" :# ["count" .= n]
 
     when (n /= 0 && not oNoExit) $ do
