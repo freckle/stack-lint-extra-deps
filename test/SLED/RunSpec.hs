@@ -8,6 +8,7 @@ import Blammo.Logging.Logger
 import qualified Data.Map.Strict as Map
 import SLED.Checks
 import SLED.ExtraDep
+import SLED.GitExtraDep
 import SLED.Hackage
 import SLED.HackageExtraDep
 import SLED.PackageName
@@ -19,6 +20,47 @@ import SLED.Version
 
 spec :: Spec
 spec = do
+  describe "shouldIncludeExtraDep" $ do
+    context "Hackage extra deps" $ do
+      it "is True by default" $ example $ do
+        freckleApp1011 `shouldSatisfy` shouldIncludeExtraDep Nothing []
+
+      it "is True if matching given include" $ example $ do
+        freckleApp1011
+          `shouldSatisfy` shouldIncludeExtraDep (Just "*-app") []
+
+      it "is True if not matching any given excludes" $ example $ do
+        freckleApp1011
+          `shouldSatisfy` shouldIncludeExtraDep Nothing ["other-package"]
+
+      it "is False if not matching a given include" $ example $ do
+        freckleApp1011
+          `shouldNotSatisfy` shouldIncludeExtraDep (Just "other-package") []
+
+      it "is False is matching any given excludes" $ example $ do
+        freckleApp1011
+          `shouldNotSatisfy` shouldIncludeExtraDep Nothing ["freckle-*"]
+
+    context "Git extra deps" $ do
+      it "is True by default" $ example $ do
+        yesodFlowRoutesGitHub `shouldSatisfy` shouldIncludeExtraDep Nothing []
+
+      it "is True if org/repo matches given include" $ example $ do
+        yesodFlowRoutesGitHub
+          `shouldSatisfy` shouldIncludeExtraDep (Just "freckle/*") []
+
+      it "is True if not matching any given excludes" $ example $ do
+        yesodFlowRoutesGitHub
+          `shouldSatisfy` shouldIncludeExtraDep Nothing ["other-package"]
+
+      it "is False is not matching a given include" $ example $ do
+        yesodFlowRoutesGitHub
+          `shouldNotSatisfy` shouldIncludeExtraDep (Just "other-package") []
+
+      it "is False is matching any given excludes" $ example $ do
+        yesodFlowRoutesGitHub
+          `shouldNotSatisfy` shouldIncludeExtraDep Nothing ["*/yesod-*"]
+
   describe "runLsd" $ do
     describe "HackageChecks" $ do
       describe "checkHackageVersion" $ do
@@ -69,6 +111,14 @@ freckleApp1011 =
       { hedPackage = PackageName "freckle-app"
       , hedVersion = parseVersion "1.0.1.1"
       , hedChecksum = Nothing
+      }
+
+yesodFlowRoutesGitHub :: ExtraDep
+yesodFlowRoutesGitHub =
+  Git
+    GitExtraDep
+      { gedRepository = Repository "https://github.com/freckle/yesod-routes-flow"
+      , gedCommit = CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8"
       }
 
 hackageVersions
