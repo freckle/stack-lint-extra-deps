@@ -77,7 +77,6 @@ runChecks resolver checksName extraDep = do
 
 printSuggestions
   :: ( MonadIO m
-     , MonadLogger m
      , MonadReader env m
      , HasLogger env
      )
@@ -98,6 +97,3 @@ printSuggestions = do
             <> cyan (extraDepToText r)
       <> "\n        ↳ "
       <> sDescription
-
-passC :: Monad m => ConduitT a a m ()
-passC = awaitForever yield
