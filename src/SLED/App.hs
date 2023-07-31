@@ -36,11 +36,6 @@ newtype AppT app m a = AppT
     , MonadReader app
     )
 
-instance MonadIO m => MonadStackYaml (AppT app m) where
-  loadStackYaml path = do
-    logDebug $ "Loading stack.yaml" :# ["path" .= path]
-    Yaml.decodeFileThrow path
-
 instance MonadIO m => MonadHackage (AppT app m) where
   getHackageVersions package = do
     eVersions <-

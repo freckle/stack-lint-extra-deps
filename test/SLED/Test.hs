@@ -16,7 +16,6 @@ import SLED.Prelude
 import qualified Data.Map.Strict as Map
 import SLED.Hackage
 import SLED.PackageName
-import SLED.StackYaml
 import SLED.Stackage
 import SLED.StackageResolver
 import Test.Hspec as X (Spec, context, describe, example, it)
@@ -35,9 +34,6 @@ newtype TestAppT app m a = TestAppT
     , MonadLoggerIO
     , MonadReader app
     )
-
-instance Monad m => MonadStackYaml (TestAppT TestApp m) where
-  loadStackYaml _path = asks taStackYaml
 
 instance Monad m => MonadHackage (TestAppT TestApp m) where
   getHackageVersions package = do
@@ -59,7 +55,6 @@ runTestAppT action app =
 
 data TestApp = TestApp
   { taLogger :: Logger
-  , taStackYaml :: StackYaml
   , taHackageVersionsByPackage :: Map PackageName HackageVersions
   , taStackageVersionsByResolver
       :: Map StackageResolver (Map PackageName StackageVersions)

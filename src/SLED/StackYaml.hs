@@ -1,6 +1,5 @@
 module SLED.StackYaml
-  ( MonadStackYaml (..)
-  , StackYaml (..)
+  ( StackYaml (..)
   ) where
 
 import SLED.Prelude
@@ -8,9 +7,6 @@ import SLED.Prelude
 import Data.Aeson
 import SLED.ExtraDep
 import SLED.StackageResolver
-
-class MonadStackYaml m where
-  loadStackYaml :: FilePath -> m StackYaml
 
 data StackYaml = StackYaml
   { syResolver :: StackageResolver
