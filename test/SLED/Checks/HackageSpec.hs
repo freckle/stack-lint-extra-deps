@@ -22,7 +22,13 @@ spec = do
               $ hackageVersions ["1.0.1.2"] [] []
 
       suggestions <-
-        runTestChecks mockHackage mempty lts1818 HackageChecks freckleApp1011
+        runTestChecks
+          mockHackage
+          mempty
+          Nothing
+          lts1818
+          HackageChecks
+          freckleApp1011
 
       suggestions
         `shouldBe` [ Suggestion
@@ -38,7 +44,13 @@ spec = do
               $ hackageVersions [] [] ["1.0.1.2"]
 
       suggestions <-
-        runTestChecks mockHackage mempty lts1818 HackageChecks freckleApp1011
+        runTestChecks
+          mockHackage
+          mempty
+          Nothing
+          lts1818
+          HackageChecks
+          freckleApp1011
 
       suggestions `shouldBe` []
 
@@ -52,7 +64,13 @@ spec = do
               )
 
       suggestions <-
-        runTestChecks mempty mockStackage lts1818 HackageChecks freckleApp1011
+        runTestChecks
+          mempty
+          mockStackage
+          Nothing
+          lts1818
+          HackageChecks
+          freckleApp1011
 
       suggestions
         `shouldBe` [ Suggestion
@@ -71,7 +89,13 @@ spec = do
               )
 
       suggestions <-
-        runTestChecks mempty mockStackage lts1818 HackageChecks freckleApp1011
+        runTestChecks
+          mempty
+          mockStackage
+          Nothing
+          lts1818
+          HackageChecks
+          freckleApp1011
 
       suggestions
         `shouldBe` [ Suggestion
@@ -90,7 +114,13 @@ spec = do
               )
 
       suggestions <-
-        runTestChecks mempty mockStackage lts1818 HackageChecks freckleApp1011
+        runTestChecks
+          mempty
+          mockStackage
+          Nothing
+          lts1818
+          HackageChecks
+          freckleApp1011
 
       suggestions `shouldBe` []
 
@@ -120,8 +150,3 @@ stackageVersions p h =
     { svOnPage = unsafeVersion p
     , svOnHackage = unsafeVersion h
     }
-
-unsafeVersion :: String -> Version
-unsafeVersion s = fromMaybe err $ parseVersion s
- where
-  err = error $ pack $ "Invalid version: " <> s

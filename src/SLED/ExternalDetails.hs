@@ -25,6 +25,7 @@ getExternalDetails
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
+     , MonadGit m
      )
   => StackageResolver
   -> ExtraDep

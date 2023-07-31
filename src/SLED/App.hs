@@ -14,11 +14,13 @@ import qualified Data.ByteString.Lazy as BSL
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
+import SLED.GitDetails
 import SLED.Hackage
 import SLED.Options
 import SLED.PackageName
 import SLED.Stackage
 import SLED.StackageResolver
+import System.Process.Typed
 
 newtype AppT app m a = AppT
   { unAppT :: ReaderT app (LoggingT m) a
@@ -77,6 +79,12 @@ instance MonadIO m => MonadStackage (AppT app m) where
 
     pure $ hush eStackageVersions
 
+instance MonadIO m => MonadGit (AppT app m) where
+  gitClone url path = runGit ["clone", "--quiet", url, path]
+  gitRevParse ref = readGit ["rev-parse", ref]
+  gitRevListCount spec = readGit ["rev-list", "--count", spec]
+  gitForEachRef refFormat = readGit ["for-each-ref", refFormat, "refs/tags"]
+
 runAppT :: (MonadUnliftIO m, HasLogger app) => AppT app m a -> app -> m a
 runAppT action app =
   runLoggerLoggingT app $ runReaderT (unAppT action) app
@@ -99,3 +107,13 @@ httpParse f req = do
   pure $ do
     note "Non-200 status" $ guard $ getResponseStatus resp == status200
     f $ getResponseBody resp
+
+runGit :: (MonadIO m, MonadLogger m) => [String] -> m ()
+runGit args = do
+  logDebug $ "git" :# ["args" .= args]
+  runProcess_ $ proc "git" args
+
+readGit :: (MonadIO m, MonadLogger m) => [String] -> m BSL.ByteString
+readGit args = do
+  logDebug $ "git" :# ["args" .= args]
+  readProcessStdout_ $ proc "git" args

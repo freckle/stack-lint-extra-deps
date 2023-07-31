@@ -24,6 +24,7 @@ runLsd
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
+     , MonadGit m
      , MonadReader env m
      , HasLogger env
      )
@@ -60,6 +61,7 @@ runChecks
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
+     , MonadGit m
      )
   => StackageResolver
   -> ChecksName

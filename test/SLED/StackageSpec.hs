@@ -9,8 +9,7 @@ import SLED.Prelude
 import qualified Data.ByteString.Lazy as BSL
 import Data.FileEmbed
 import SLED.Stackage
-import SLED.Version
-import Test.Hspec
+import SLED.Test
 
 spec :: Spec
 spec = do
@@ -26,8 +25,3 @@ spec = do
             { svOnPage = unsafeVersion "2.1.0.0"
             , svOnHackage = unsafeVersion "2.2.2.0"
             }
-
-unsafeVersion :: String -> Version
-unsafeVersion s = fromMaybe err $ parseVersion s
- where
-  err = error $ pack $ "Not a valid version: " <> s
