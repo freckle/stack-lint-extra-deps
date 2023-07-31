@@ -1,9 +1,6 @@
 module SLED.App
   ( AppT (..)
   , runAppT
-
-    -- * Our concrete App
-  , App (..)
   ) where
 
 import SLED.Prelude
@@ -16,7 +13,6 @@ import Network.HTTP.Types.Header (hAccept)
 import Network.HTTP.Types.Status (status200)
 import SLED.GitDetails
 import SLED.Hackage
-import SLED.Options
 import SLED.PackageName
 import SLED.Stackage
 import SLED.StackageResolver
@@ -88,14 +84,6 @@ instance MonadIO m => MonadGit (AppT app m) where
 runAppT :: (MonadUnliftIO m, HasLogger app) => AppT app m a -> app -> m a
 runAppT action app =
   runLoggerLoggingT app $ runReaderT (unAppT action) app
-
-data App = App
-  { appOptions :: Options
-  , appLogger :: Logger
-  }
-
-instance HasLogger App where
-  loggerL = lens appLogger $ \x y -> x {appLogger = y}
 
 httpParse
   :: MonadIO m
