@@ -19,7 +19,7 @@ import SLED.PackageName
 import SLED.StackYaml
 import SLED.Stackage
 import SLED.StackageResolver
-import Test.Hspec as X (Spec, describe, example, it)
+import Test.Hspec as X (Spec, context, describe, example, it)
 import Test.Hspec.Expectations.Lifted as X
 
 newtype TestAppT app m a = TestAppT

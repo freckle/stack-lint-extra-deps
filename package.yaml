@@ -28,6 +28,7 @@ library:
     - Glob
     - aeson
     - bytestring
+    - conduit
     - containers
     - errors
     - extra
