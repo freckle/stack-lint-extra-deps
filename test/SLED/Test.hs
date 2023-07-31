@@ -18,8 +18,7 @@ import SLED.Hackage
 import SLED.PackageName
 import SLED.Stackage
 import SLED.StackageResolver
-import Test.Hspec as X (Spec, context, describe, example, it)
-import Test.Hspec.Expectations.Lifted as X
+import Test.Hspec as X
 
 newtype TestAppT app m a = TestAppT
   { unTestAppT :: ReaderT app (LoggingT m) a
