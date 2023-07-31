@@ -36,11 +36,10 @@ spec = do
                 ( \case
                     PackageName "freckle-app" ->
                       Just
-                        HackageVersions
-                          { hvNormal = catMaybes [parseVersion "1.0.1.2"]
-                          , hvUnpreferred = []
-                          , hvDeprecated = []
-                          }
+                        $ hackageVersions
+                          ["1.0.1.2"]
+                          []
+                          []
                     _ -> Nothing
                 )
               <*> pure (\_ -> const Nothing)
@@ -62,12 +61,7 @@ spec = do
               <*> pure
                 ( \case
                     PackageName "freckle-app" ->
-                      Just
-                        HackageVersions
-                          { hvNormal = []
-                          , hvUnpreferred = []
-                          , hvDeprecated = catMaybes [parseVersion "1.0.1.2"]
-                          }
+                      Just $ hackageVersions [] [] ["1.0.1.2"]
                     _ -> Nothing
                 )
               <*> pure (\_ -> const Nothing)
@@ -83,3 +77,18 @@ freckleApp1011 =
       , hedVersion = parseVersion "1.0.1.1"
       , hedChecksum = Nothing
       }
+
+hackageVersions
+  :: [String]
+  -- ^ Normal
+  -> [String]
+  -- ^ Unpreferred
+  -> [String]
+  -- ^ Deprecated
+  -> HackageVersions
+hackageVersions n u d =
+  HackageVersions
+    { hvNormal = mapMaybe parseVersion n
+    , hvUnpreferred = mapMaybe parseVersion u
+    , hvDeprecated = mapMaybe parseVersion d
+    }
