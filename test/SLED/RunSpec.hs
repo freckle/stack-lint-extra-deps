@@ -104,18 +104,10 @@ runTestChecks mockHackage mockStackage resolver checksName extraDep = do
   testApp <-
     TestApp
       <$> newTestLogger defaultLogSettings
-      <*> pure ignoredStackYaml
       <*> pure mockHackage
       <*> pure mockStackage
 
   runTestAppT (runChecks resolver checksName extraDep) testApp
- where
-  -- TODO: stop mocking this, it's not useful anymore
-  ignoredStackYaml =
-    StackYaml
-      { syResolver = StackageResolver "<ignored>"
-      , syExtraDeps = []
-      }
 
 lts1818 :: StackageResolver
 lts1818 = StackageResolver "lts-18.18"

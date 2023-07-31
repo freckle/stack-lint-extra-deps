@@ -12,6 +12,7 @@ import Blammo.Logging.Colors
 import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
+import qualified Data.Yaml as Yaml
 import SLED.Check
 import SLED.Checks
 import SLED.StackYaml
@@ -21,7 +22,6 @@ import System.FilePath.Glob
 runLsd
   :: ( MonadUnliftIO m
      , MonadLogger m
-     , MonadStackYaml m
      , MonadHackage m
      , MonadStackage m
      , MonadReader env m
@@ -34,7 +34,8 @@ runLsd
   -> [Pattern]
   -> m Int
 runLsd path mResolver checksName mInclude excludes = do
-  StackYaml {..} <- loadStackYaml path
+  logDebug $ "Loading stack.yaml" :# ["path" .= path]
+  StackYaml {..} <- Yaml.decodeFileThrow path
   let resolver = fromMaybe syResolver mResolver
 
   runConduit
