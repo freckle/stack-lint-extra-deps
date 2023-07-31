@@ -29,12 +29,7 @@ spec = do
                 StackYaml
                   { syResolver = StackageResolver "lts-18.18"
                   , syExtraDeps =
-                      [ Hackage
-                          HackageExtraDep
-                            { hedPackage = PackageName "freckle-app"
-                            , hedVersion = parseVersion "1.0.1.1"
-                            , hedChecksum = Nothing
-                            }
+                      [ freckleApp1011
                       ]
                   }
               <*> pure
@@ -61,12 +56,7 @@ spec = do
                 StackYaml
                   { syResolver = StackageResolver "lts-18.18"
                   , syExtraDeps =
-                      [ Hackage
-                          HackageExtraDep
-                            { hedPackage = PackageName "freckle-app"
-                            , hedVersion = parseVersion "1.0.1.1"
-                            , hedChecksum = Nothing
-                            }
+                      [ freckleApp1011
                       ]
                   }
               <*> pure
@@ -84,3 +74,12 @@ spec = do
 
           flip runTestAppT testApp $ do
             runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 0
+
+freckleApp1011 :: ExtraDep
+freckleApp1011 =
+  Hackage
+    HackageExtraDep
+      { hedPackage = PackageName "freckle-app"
+      , hedVersion = parseVersion "1.0.1.1"
+      , hedChecksum = Nothing
+      }
