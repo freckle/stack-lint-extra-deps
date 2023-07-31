@@ -7,4 +7,4 @@ import SLED.Prelude
 newtype StackageResolver = StackageResolver
   { unStackageResolver :: Text
   }
-  deriving newtype (Show, FromJSON, ToJSON)
+  deriving newtype (Eq, Ord, Show, FromJSON, ToJSON)

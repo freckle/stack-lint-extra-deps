@@ -141,6 +141,7 @@ test-suite hspec
   build-depends:
       Blammo
     , base
+    , containers
     , hspec
     , hspec-expectations-lifted
     , stack-lint-extra-deps

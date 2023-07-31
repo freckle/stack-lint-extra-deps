@@ -13,6 +13,7 @@ module SLED.Test
 
 import SLED.Prelude
 
+import qualified Data.Map.Strict as Map
 import SLED.Hackage
 import SLED.PackageName
 import SLED.StackYaml
@@ -40,13 +41,16 @@ instance Monad m => MonadStackYaml (TestAppT TestApp m) where
 
 instance Monad m => MonadHackage (TestAppT TestApp m) where
   getHackageVersions package = do
-    f <- asks taGetHackageVersions
-    pure $ f package
+    m <- asks taHackageVersionsByPackage
+    pure $ Map.lookup package m
 
 instance Monad m => MonadStackage (TestAppT TestApp m) where
   getStackageVersions resolver package = do
-    f <- asks taGetStackageVersions
-    pure $ f resolver package
+    ms <- asks taStackageVersionsByResolver
+
+    pure $ do
+      m <- Map.lookup resolver ms
+      Map.lookup package m
 
 runTestAppT
   :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a
@@ -56,11 +60,9 @@ runTestAppT action app =
 data TestApp = TestApp
   { taLogger :: Logger
   , taStackYaml :: StackYaml
-  , taGetHackageVersions :: PackageName -> Maybe HackageVersions
-  , taGetStackageVersions
-      :: StackageResolver
-      -> PackageName
-      -> Maybe StackageVersions
+  , taHackageVersionsByPackage :: Map PackageName HackageVersions
+  , taStackageVersionsByResolver
+      :: Map StackageResolver (Map PackageName StackageVersions)
   }
 
 instance HasLogger TestApp where

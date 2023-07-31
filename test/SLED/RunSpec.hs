@@ -5,6 +5,7 @@ module SLED.RunSpec
 import SLED.Prelude
 
 import Blammo.Logging.Logger
+import qualified Data.Map.Strict as Map
 import SLED.Checks
 import SLED.ExtraDep
 import SLED.Hackage
@@ -33,16 +34,10 @@ spec = do
                       ]
                   }
               <*> pure
-                ( \case
-                    PackageName "freckle-app" ->
-                      Just
-                        $ hackageVersions
-                          ["1.0.1.2"]
-                          []
-                          []
-                    _ -> Nothing
+                ( Map.singleton (PackageName "freckle-app")
+                    $ hackageVersions ["1.0.1.2"] [] []
                 )
-              <*> pure (\_ -> const Nothing)
+              <*> pure mempty
 
           flip runTestAppT testApp $ do
             runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 1
@@ -59,12 +54,10 @@ spec = do
                       ]
                   }
               <*> pure
-                ( \case
-                    PackageName "freckle-app" ->
-                      Just $ hackageVersions [] [] ["1.0.1.2"]
-                    _ -> Nothing
+                ( Map.singleton (PackageName "freckle-app")
+                    $ hackageVersions [] [] ["1.0.1.2"]
                 )
-              <*> pure (\_ -> const Nothing)
+              <*> pure mempty
 
           flip runTestAppT testApp $ do
             runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 0
