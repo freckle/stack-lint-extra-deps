@@ -1,5 +1,3 @@
-{-# LANGUAGE TupleSections #-}
-
 module SLED.App
   ( AppT (..)
   , runAppT
@@ -10,10 +8,8 @@ module SLED.App
 
 import SLED.Prelude
 
-import Control.Error.Util (hush)
+import Control.Error.Util (hush, note)
 import Data.Aeson (eitherDecode)
-import qualified Data.Map.Strict as Map
-import qualified Data.Text as T
 import qualified Data.Yaml as Yaml
 import Network.HTTP.Simple
 import Network.HTTP.Types.Header (hAccept)
@@ -24,9 +20,6 @@ import SLED.PackageName
 import SLED.StackYaml
 import SLED.Stackage
 import SLED.StackageResolver
-import SLED.Version
-import Text.HTML.DOM (parseLBS)
-import Text.XML.Cursor
 
 newtype AppT app m a = AppT
   { unAppT :: ReaderT app (LoggingT m) a
@@ -90,53 +83,18 @@ instance MonadIO m => MonadStackage (AppT app m) where
 
     resp <- httpLBS req
 
-    let
-      mBody = do
-        guard $ getResponseStatus resp == status200
-        pure $ getResponseBody resp
-      mVersions = parseVersionsTable . fromDocument . parseLBS <$> mBody
+    let eStackageVersions = do
+          note "Non-200 status" $ guard $ getResponseStatus resp == status200
+          parseStackageVersions $ getResponseBody resp
 
     logDebug
       $ "Stackage dependency details"
       :# [ "package" .= unPackageName package
          , "statusCode" .= statusCode (getResponseStatus resp)
-         , "versions" .= mVersions
+         , "versions" .= eStackageVersions
          ]
 
-    pure $ do
-      versions <- mVersions
-      StackageVersions
-        <$> Map.lookup currentKey versions
-        <*> Map.lookup latestKey versions
-   where
-    parseVersionsTable :: Cursor -> Map Text Version
-    parseVersionsTable cursor = do
-      fixNightly
-        $ Map.fromList
-        $ mapMaybe (toPair . ($// content))
-        $ cursor
-        $// element "tr"
-     where
-      toPair = \case
-        [] -> Nothing
-        [_] -> Nothing
-        [k, v] -> (k,) <$> parseVersion (unpack v)
-        [k, _, v] -> (k,) <$> parseVersion (unpack v)
-        (k : v : _) -> (k,) <$> parseVersion (unpack v)
-
-      fixNightly m =
-        maybe m (\(_, v) -> Map.insertWith (\_new old -> old) currentKey v m)
-          $ find ((nightlyPrefix `T.isPrefixOf`) . fst)
-          $ Map.toList m
-
-    currentKey :: Text
-    currentKey = "Version on this page:"
-
-    latestKey :: Text
-    latestKey = "Latest on Hackage:"
-
-    nightlyPrefix :: Text
-    nightlyPrefix = "Stackage Nightly "
+    pure $ hush eStackageVersions
 
 runAppT :: (MonadUnliftIO m, HasLogger app) => AppT app m a -> app -> m a
 runAppT action app =

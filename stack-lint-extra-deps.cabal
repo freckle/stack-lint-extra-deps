@@ -125,6 +125,7 @@ test-suite hspec
   main-is: Spec.hs
   other-modules:
       SLED.RunSpec
+      SLED.StackageSpec
       SLED.Test
       Paths_stack_lint_extra_deps
   hs-source-dirs:
@@ -141,7 +142,9 @@ test-suite hspec
   build-depends:
       Blammo
     , base
+    , bytestring
     , containers
+    , file-embed
     , hspec
     , hspec-expectations-lifted
     , stack-lint-extra-deps
