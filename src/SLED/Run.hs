@@ -1,5 +1,5 @@
 module SLED.Run
-  ( runLsd
+  ( runSLED
 
     -- * Exported for testing
   , shouldIncludeExtraDep
@@ -15,11 +15,12 @@ import Data.Conduit.Combinators (iterM)
 import qualified Data.Yaml as Yaml
 import SLED.Check
 import SLED.Checks
+import SLED.Options
 import SLED.StackYaml
 import SLED.StackageResolver
 import System.FilePath.Glob
 
-runLsd
+runSLED
   :: ( MonadUnliftIO m
      , MonadLogger m
      , MonadHackage m
@@ -28,23 +29,19 @@ runLsd
      , MonadReader env m
      , HasLogger env
      )
-  => FilePath
-  -> Maybe StackageResolver
-  -> ChecksName
-  -> Maybe Pattern
-  -> [Pattern]
+  => Options
   -> m Int
-runLsd path mResolver checksName mInclude excludes = do
-  logDebug $ "Loading stack.yaml" :# ["path" .= path]
-  StackYaml {..} <- Yaml.decodeFileThrow path
-  let resolver = fromMaybe syResolver mResolver
+runSLED Options {..} = do
+  logDebug $ "Loading stack.yaml" :# ["path" .= oPath]
+  StackYaml {..} <- Yaml.decodeFileThrow oPath
+  let resolver = fromMaybe syResolver oResolver
 
   runConduit
     $ yieldMany syExtraDeps
-    .| filterC (shouldIncludeExtraDep mInclude excludes)
+    .| filterC (shouldIncludeExtraDep oFilter oExcludes)
     .| awaitForever
       ( \extraDep -> do
-          suggestions <- lift $ runChecks resolver checksName extraDep
+          suggestions <- lift $ runChecks resolver oChecks extraDep
           yieldMany suggestions
       )
     .| printSuggestions
