@@ -44,11 +44,7 @@ repositoryBaseName = T.drop 1 . T.dropWhile (/= '/') . repositoryBase
 newtype CommitSHA = CommitSHA
   { unCommitSHA :: Text
   }
-  deriving newtype (Eq, Show, FromJSON)
-
-instance ToJSON CommitSHA where
-  toJSON (CommitSHA x) = toJSON $ T.take 7 x
-  toEncoding (CommitSHA x) = toEncoding $ T.take 7 x
+  deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 ghBase :: Text
 ghBase = "https://github.com/"
