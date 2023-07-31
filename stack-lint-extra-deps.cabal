@@ -125,6 +125,7 @@ test-suite hspec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      SLED.HackageSpec
       SLED.RunSpec
       SLED.StackageSpec
       SLED.Test
@@ -142,6 +143,7 @@ test-suite hspec
       TypeApplications
   build-depends:
       Blammo
+    , aeson
     , base
     , bytestring
     , containers

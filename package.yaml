@@ -67,6 +67,7 @@ tests:
     source-dirs: test
     dependencies:
       - Blammo
+      - aeson
       - bytestring
       - containers
       - file-embed

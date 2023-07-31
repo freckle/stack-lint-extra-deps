@@ -18,7 +18,7 @@ data HackageVersions = HackageVersions
   , hvUnpreferred :: [Version]
   , hvDeprecated :: [Version]
   }
-  deriving stock (Show)
+  deriving stock (Eq, Show)
 
 instance FromJSON HackageVersions where
   parseJSON = withObject "HackageVersions" $ \o ->
