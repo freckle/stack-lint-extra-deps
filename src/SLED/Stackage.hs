@@ -31,7 +31,7 @@ data StackageVersions = StackageVersions
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)
 
-parseStackageVersions :: BSL.ByteString -> Either Text StackageVersions
+parseStackageVersions :: BSL.ByteString -> Either String StackageVersions
 parseStackageVersions bs =
   StackageVersions
     <$> note "Missing version on this page" (Map.lookup currentKey versions)
