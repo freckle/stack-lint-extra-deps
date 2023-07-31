@@ -1,7 +1,8 @@
 {-# LANGUAGE TupleSections #-}
 
 module SLED.GitDetails
-  ( GitDetails (..)
+  ( MonadGit (..)
+  , GitDetails (..)
   , getGitDetails
   ) where
 
@@ -13,9 +14,14 @@ import Data.List.Extra (dropPrefix)
 import qualified Data.Text as T
 import SLED.GitExtraDep
 import SLED.Version
-import System.Process.Typed
 import UnliftIO.Directory (withCurrentDirectory)
 import UnliftIO.Temporary (withSystemTempDirectory)
+
+class Monad m => MonadGit m where
+  gitClone :: String -> FilePath -> m ()
+  gitRevParse :: String -> m BSL.ByteString
+  gitRevListCount :: String -> m BSL.ByteString
+  gitForEachRef :: String -> m BSL.ByteString
 
 data GitDetails = GitDetails
   { gdHeadCommit :: CommitSHA
@@ -24,17 +30,17 @@ data GitDetails = GitDetails
   }
 
 getGitDetails
-  :: (MonadUnliftIO m, MonadLogger m)
+  :: (MonadUnliftIO m, MonadLogger m, MonadGit m)
   => GitExtraDep
   -> m (Maybe GitDetails)
 getGitDetails GitExtraDep {..} = do
   logDebug $ "Cloning git dependency" :# ["cloneUrl" .= cloneUrl]
 
   withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
-    runProcess_ $ proc "git" ["clone", "--quiet", cloneUrl, path]
+    gitClone cloneUrl path
 
     withCurrentDirectory path $ do
-      commit <- gitRevParse "HEAD"
+      commit <- gitCurrentSHA "HEAD"
       countToHead <- gitCountRevisionBetween gedCommit $ CommitSHA "HEAD"
       countToVersionTags <- do
         pairs <- gitTaggedVersions
@@ -61,29 +67,29 @@ getGitDetails GitExtraDep {..} = do
  where
   cloneUrl = unpack $ unRepository gedRepository
 
-gitRevParse
-  :: MonadIO m
+gitCurrentSHA
+  :: MonadGit m
   => String
   -> m CommitSHA
-gitRevParse ref = do
-  bs <- readProcessStdout_ $ proc "git" ["rev-parse", ref]
+gitCurrentSHA ref = do
+  bs <- gitRevParse ref
   pure $ CommitSHA $ T.strip $ bsToText bs
 
 gitCountRevisionBetween
-  :: MonadIO m
+  :: MonadGit m
   => CommitSHA
   -> CommitSHA
   -> m (Maybe Int)
 gitCountRevisionBetween a b =
-  bsToInt <$> readProcessStdout_ (proc "git" ["rev-list", "--count", spec])
+  bsToInt <$> gitRevListCount spec
  where
   spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
 
 gitTaggedVersions
-  :: MonadIO m
+  :: MonadGit m
   => m [(CommitSHA, Version)]
 gitTaggedVersions = do
-  bs <- readProcessStdout_ $ proc "git" ["for-each-ref", refFormat, "refs/tags"]
+  bs <- gitForEachRef refFormat
   pure $ mapMaybe toPair $ T.lines $ bsToText bs
  where
   -- naively parse "refs/tags/{tag} {sha}"

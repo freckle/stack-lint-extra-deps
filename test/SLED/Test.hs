@@ -3,6 +3,9 @@
 module SLED.Test
   ( runTestChecks
 
+    -- * Helpers
+  , unsafeVersion
+
     -- * Fixtures
   , lts1818
   , freckleApp1011
@@ -16,9 +19,12 @@ module SLED.Test
 import SLED.Prelude
 
 import Blammo.Logging.Logger (newTestLogger)
+import Data.List (elemIndex)
 import qualified Data.Map.Strict as Map
+import qualified Data.Text as T
 import SLED.Checks as X
 import SLED.ExtraDep as X
+import SLED.GitDetails
 import SLED.GitExtraDep
 import SLED.Hackage
 import SLED.HackageExtraDep
@@ -57,6 +63,39 @@ instance Monad m => MonadStackage (TestAppT TestApp m) where
       m <- Map.lookup resolver ms
       Map.lookup package m
 
+instance Monad m => MonadGit (TestAppT TestApp m) where
+  gitClone _ _ = pure ()
+
+  gitRevParse = \case
+    "HEAD" -> withMockCommitSHAs $ (<> "\n") . encodeUtf8 . unCommitSHA . head
+    x -> error $ pack $ "git rev-parse called with unexpected argument " <> x
+
+  gitRevListCount spec = do
+    headCommit <- T.strip . decodeUtf8 <$> gitRevParse "HEAD"
+    let replaceHead x = if x == "HEAD" then headCommit else x
+
+    withMockCommitSHAs $ \shas ->
+      let (a, b) = T.breakOn ".." $ pack spec
+      in  fromMaybe "" $ do
+            let a' = replaceHead a
+            b' <- replaceHead <$> T.stripPrefix ".." b
+            nA <- CommitSHA a' `elemIndex` toList shas
+            nB <- CommitSHA b' `elemIndex` toList shas
+            pure $ (<> "\n") $ encodeUtf8 $ show @Text $ nA - nB
+
+  gitForEachRef _ =
+    withMockCommits
+      $ encodeUtf8
+      . mconcat
+      . map (<> "\n")
+      . mapMaybe (uncurry toRef)
+      . toList
+   where
+    toRef :: CommitSHA -> Maybe Text -> Maybe Text
+    toRef sha mTag = do
+      t <- mTag
+      pure $ "refs/tags/" <> t <> " " <> unCommitSHA sha
+
 runTestAppT
   :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a
 runTestAppT action app =
@@ -67,27 +106,49 @@ data TestApp = TestApp
   , taHackageVersionsByPackage :: Map PackageName HackageVersions
   , taStackageVersionsByResolver
       :: Map StackageResolver (Map PackageName StackageVersions)
+  , taCommits :: Maybe (NonEmpty (CommitSHA, Maybe Text))
   }
 
 instance HasLogger TestApp where
   loggerL = lens taLogger $ \x y -> x {taLogger = y}
 
+withMockCommitSHAs
+  :: (HasCallStack, MonadReader TestApp m) => (NonEmpty CommitSHA -> a) -> m a
+withMockCommitSHAs f = withMockCommits $ f . fmap fst
+
+withMockCommits
+  :: (HasCallStack, MonadReader TestApp m)
+  => (NonEmpty (CommitSHA, Maybe Text) -> a)
+  -> m a
+withMockCommits f = do
+  mCommits <- asks taCommits
+  case mCommits of
+    Nothing -> error "Git operation used without setting taCommitSHAs"
+    Just cs -> pure $ f cs
+
 runTestChecks
   :: MonadUnliftIO m
   => Map PackageName HackageVersions
   -> Map StackageResolver (Map PackageName StackageVersions)
+  -> Maybe (NonEmpty (CommitSHA, Maybe Text))
   -> StackageResolver
   -> ChecksName
   -> ExtraDep
   -> m [Suggestion]
-runTestChecks mockHackage mockStackage resolver checksName extraDep = do
+runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraDep = do
   testApp <-
     TestApp
       <$> newTestLogger defaultLogSettings
       <*> pure mockHackage
       <*> pure mockStackage
+      <*> pure mockCommitSHAs
 
   runTestAppT (runChecks resolver checksName extraDep) testApp
+
+unsafeVersion :: String -> Version
+unsafeVersion s = fromMaybe err $ parseVersion s
+ where
+  err = error $ pack $ "Invalid version: " <> s
 
 lts1818 :: StackageResolver
 lts1818 = StackageResolver "lts-18.18"
@@ -97,7 +158,7 @@ freckleApp1011 =
   Hackage
     HackageExtraDep
       { hedPackage = PackageName "freckle-app"
-      , hedVersion = parseVersion "1.0.1.1"
+      , hedVersion = Just $ unsafeVersion "1.0.1.1"
       , hedChecksum = Nothing
       }
 
@@ -106,7 +167,7 @@ freckleApp1012 =
   Hackage
     HackageExtraDep
       { hedPackage = PackageName "freckle-app"
-      , hedVersion = parseVersion "1.0.1.2"
+      , hedVersion = Just $ unsafeVersion "1.0.1.2"
       , hedChecksum = Nothing
       }
 

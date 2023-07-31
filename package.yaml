@@ -90,3 +90,4 @@ tests:
       - file-embed
       - hspec
       - stack-lint-extra-deps
+      - text

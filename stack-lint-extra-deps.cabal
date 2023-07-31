@@ -128,6 +128,7 @@ test-suite hspec
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      SLED.Checks.GitSpec
       SLED.Checks.HackageSpec
       SLED.HackageSpec
       SLED.RunSpec
@@ -155,4 +156,5 @@ test-suite hspec
     , file-embed
     , hspec
     , stack-lint-extra-deps
+    , text
   default-language: Haskell2010
