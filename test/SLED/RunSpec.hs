@@ -14,7 +14,9 @@ import SLED.HackageExtraDep
 import SLED.PackageName
 import SLED.Run
 import SLED.StackYaml
+import SLED.Stackage
 import SLED.StackageResolver
+import SLED.Suggestion
 import SLED.Test
 import SLED.Version
 
@@ -61,48 +63,62 @@ spec = do
         yesodFlowRoutesGitHub
           `shouldNotSatisfy` shouldIncludeExtraDep Nothing ["*/yesod-*"]
 
-  describe "runLsd" $ do
+  describe "runChecks" $ do
     describe "HackageChecks" $ do
       describe "checkHackageVersion" $ do
         it "suggests newer normal versions" $ example $ do
-          testApp <-
-            TestApp
-              <$> newTestLogger defaultLogSettings
-              <*> pure
-                StackYaml
-                  { syResolver = StackageResolver "lts-18.18"
-                  , syExtraDeps =
-                      [ freckleApp1011
-                      ]
-                  }
-              <*> pure
-                ( Map.singleton (PackageName "freckle-app")
-                    $ hackageVersions ["1.0.1.2"] [] []
-                )
-              <*> pure mempty
+          let mockHackage =
+                Map.singleton (PackageName "freckle-app")
+                  $ hackageVersions ["1.0.1.2"] [] []
 
-          flip runTestAppT testApp $ do
-            runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 1
+          suggestions <-
+            runTestChecks mockHackage mempty lts1818 HackageChecks freckleApp1011
+
+          suggestions
+            `shouldBe` [ Suggestion
+                          { sTarget = freckleApp1011
+                          , sAction = ReplaceWith freckleApp1012
+                          , sDescription = "Newer version is available"
+                          }
+                       ]
 
         it "doesn't suggest deprecated versions" $ example $ do
-          testApp <-
-            TestApp
-              <$> newTestLogger defaultLogSettings
-              <*> pure
-                StackYaml
-                  { syResolver = StackageResolver "lts-18.18"
-                  , syExtraDeps =
-                      [ freckleApp1011
-                      ]
-                  }
-              <*> pure
-                ( Map.singleton (PackageName "freckle-app")
-                    $ hackageVersions [] [] ["1.0.1.2"]
-                )
-              <*> pure mempty
+          let mockHackage =
+                Map.singleton (PackageName "freckle-app")
+                  $ hackageVersions [] [] ["1.0.1.2"]
 
-          flip runTestAppT testApp $ do
-            runLsd "<ignored>" Nothing HackageChecks Nothing [] `shouldReturn` 0
+          suggestions <-
+            runTestChecks mockHackage mempty lts1818 HackageChecks freckleApp1011
+
+          suggestions `shouldBe` []
+
+runTestChecks
+  :: MonadUnliftIO m
+  => Map PackageName HackageVersions
+  -> Map StackageResolver (Map PackageName StackageVersions)
+  -> StackageResolver
+  -> ChecksName
+  -> ExtraDep
+  -> m [Suggestion]
+runTestChecks mockHackage mockStackage resolver checksName extraDep = do
+  testApp <-
+    TestApp
+      <$> newTestLogger defaultLogSettings
+      <*> pure ignoredStackYaml
+      <*> pure mockHackage
+      <*> pure mockStackage
+
+  runTestAppT (runChecks resolver checksName extraDep) testApp
+ where
+  -- TODO: stop mocking this, it's not useful anymore
+  ignoredStackYaml =
+    StackYaml
+      { syResolver = StackageResolver "<ignored>"
+      , syExtraDeps = []
+      }
+
+lts1818 :: StackageResolver
+lts1818 = StackageResolver "lts-18.18"
 
 freckleApp1011 :: ExtraDep
 freckleApp1011 =
@@ -110,6 +126,15 @@ freckleApp1011 =
     HackageExtraDep
       { hedPackage = PackageName "freckle-app"
       , hedVersion = parseVersion "1.0.1.1"
+      , hedChecksum = Nothing
+      }
+
+freckleApp1012 :: ExtraDep
+freckleApp1012 =
+  Hackage
+    HackageExtraDep
+      { hedPackage = PackageName "freckle-app"
+      , hedVersion = parseVersion "1.0.1.2"
       , hedChecksum = Nothing
       }
 

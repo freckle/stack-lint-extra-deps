@@ -16,7 +16,7 @@ data GitExtraDep = GitExtraDep
   { gedRepository :: Repository
   , gedCommit :: CommitSHA
   }
-  deriving stock (Show)
+  deriving stock (Eq, Show)
 
 instance FromJSON GitExtraDep where
   parseJSON = withObject "GitExtraDep" $ \o -> do
@@ -33,7 +33,7 @@ gitExtraDepToText GitExtraDep {..} =
 newtype Repository = Repository
   { unRepository :: Text
   }
-  deriving newtype (Show, FromJSON, ToJSON)
+  deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 repositoryBase :: Repository -> Text
 repositoryBase = dropPrefix ghBase . unRepository
@@ -44,7 +44,7 @@ repositoryBaseName = T.drop 1 . T.dropWhile (/= '/') . repositoryBase
 newtype CommitSHA = CommitSHA
   { unCommitSHA :: Text
   }
-  deriving newtype (Show, FromJSON)
+  deriving newtype (Eq, Show, FromJSON)
 
 instance ToJSON CommitSHA where
   toJSON (CommitSHA x) = toJSON $ T.take 7 x

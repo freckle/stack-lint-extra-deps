@@ -18,7 +18,7 @@ data ExtraDep
     Git GitExtraDep
   | -- | Local path, or any future style Stack adds
     Other Value
-  deriving stock (Show)
+  deriving stock (Eq, Show)
 
 instance FromJSON ExtraDep where
   parseJSON x =

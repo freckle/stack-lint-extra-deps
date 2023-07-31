@@ -18,14 +18,14 @@ data HackageExtraDep = HackageExtraDep
   , hedVersion :: Maybe Version
   , hedChecksum :: Maybe SHA256
   }
-  deriving stock (Show)
+  deriving stock (Eq, Show)
 
 instance FromJSON HackageExtraDep where
   parseJSON =
     withText "HackageExtraDep" $ either fail pure . hackageExtraDepFromText
 
 newtype SHA256 = SHA256 Text
-  deriving newtype (Show, FromJSON)
+  deriving newtype (Eq, Show, FromJSON)
 
 hackageExtraDepFromText :: Text -> Either String HackageExtraDep
 hackageExtraDepFromText x =
