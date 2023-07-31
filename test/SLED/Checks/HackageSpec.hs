@@ -8,6 +8,7 @@ import qualified Data.Map.Strict as Map
 import SLED.Checks
 import SLED.Hackage
 import SLED.PackageName
+import SLED.Stackage
 import SLED.Suggestion
 import SLED.Test
 import SLED.Version
@@ -41,6 +42,58 @@ spec = do
 
       suggestions `shouldBe` []
 
+  describe "checkRedundantHackage" $ do
+    it "suggests when stackage has your dep" $ do
+      let mockStackage =
+            Map.singleton
+              lts1818
+              ( Map.singleton (PackageName "freckle-app")
+                  $ stackageVersions "1.0.1.1" "1.0.1.2"
+              )
+
+      suggestions <-
+        runTestChecks mempty mockStackage lts1818 HackageChecks freckleApp1011
+
+      suggestions
+        `shouldBe` [ Suggestion
+                      { sTarget = freckleApp1011
+                      , sAction = Remove
+                      , sDescription = "Same or newer version is now in your resolver"
+                      }
+                   ]
+
+    it "suggests when stackage has a newer dep" $ do
+      let mockStackage =
+            Map.singleton
+              lts1818
+              ( Map.singleton (PackageName "freckle-app")
+                  $ stackageVersions "1.0.1.2" "1.0.1.2"
+              )
+
+      suggestions <-
+        runTestChecks mempty mockStackage lts1818 HackageChecks freckleApp1011
+
+      suggestions
+        `shouldBe` [ Suggestion
+                      { sTarget = freckleApp1011
+                      , sAction = Remove
+                      , sDescription = "Same or newer version is now in your resolver"
+                      }
+                   ]
+
+    it "does not suggest when stackage has an older dep" $ do
+      let mockStackage =
+            Map.singleton
+              lts1818
+              ( Map.singleton (PackageName "freckle-app")
+                  $ stackageVersions "1.0.1.0" "1.0.1.2"
+              )
+
+      suggestions <-
+        runTestChecks mempty mockStackage lts1818 HackageChecks freckleApp1011
+
+      suggestions `shouldBe` []
+
 hackageVersions
   :: [String]
   -- ^ Normal
@@ -55,3 +108,20 @@ hackageVersions n u d =
     , hvUnpreferred = mapMaybe parseVersion u
     , hvDeprecated = mapMaybe parseVersion d
     }
+
+stackageVersions
+  :: String
+  -- ^ On-page
+  -> String
+  -- ^ On-Hackage
+  -> StackageVersions
+stackageVersions p h =
+  StackageVersions
+    { svOnPage = unsafeVersion p
+    , svOnHackage = unsafeVersion h
+    }
+
+unsafeVersion :: String -> Version
+unsafeVersion s = fromMaybe err $ parseVersion s
+ where
+  err = error $ pack $ "Invalid version: " <> s
