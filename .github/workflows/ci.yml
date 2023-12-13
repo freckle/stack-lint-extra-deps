@@ -13,5 +13,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: freckle/stack-action@v4
+
+  test-action:
+    strategy:
+      matrix:
+        runner:
+          - ubuntu-latest
+          # - macOS-latest
+          # - windows-latest
+
+      fail-fast: false
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          arguments: --path test/examples/lts-18.18.yaml --no-exit
