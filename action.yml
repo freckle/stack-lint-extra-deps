@@ -24,7 +24,8 @@ runs:
         arch-x64: x86_64
 
     - shell: bash
-      run: stack-lint-extra-deps ${{ inputs.arguments }}
+      run: |
+        stack-lint-extra-deps ${{ inputs.arguments }}
       env:
         LOG_COLOR: always
         LOG_CONCURRENCY: 1
