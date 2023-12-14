@@ -64,11 +64,12 @@ new resolver (such as redundant Hackage deps).
 - [x] Suggest update when there is a newer version of a Hackage dep available
 - [x] Suggest removal when a Hackage dep is in the resolver at a same-or-newer
       version
-- [ ] Confirm all Hackage `extra-deps` use sha-pinning
 - [x] Suggest update when there are newer commits in a git dep
 - [x] Suggest replacement when there is a Hackage version of a git dep at a
       same-or-newer version
 - [ ] Apply custom rules
+- [ ] Suggest when newer resolver is available
+- [ ] Auto-fix
 
 ---
 
