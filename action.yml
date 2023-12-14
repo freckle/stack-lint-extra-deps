@@ -27,3 +27,4 @@ runs:
       run: stack-lint-extra-deps ${{ inputs.arguments }}
       env:
         LOG_COLOR: always
+        LOG_CONCURRENCY: 1
