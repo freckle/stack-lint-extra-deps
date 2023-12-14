@@ -52,12 +52,26 @@ Available options:
   -h,--help                Show this help text
 ```
 
-## Workflow
+## GitHub Action
 
-This is intended for use as part of a "Resolver Bump", when moving a project
-from one Stackage resolver to a (presumably) newer one. After doing so, run this
-linter. It will suggest any changes to your `extra-deps` that apply under the
-new resolver (such as redundant Hackage deps).
+This repository is also a GitHub Action that installs and runs the tool with no
+arguments (so with all defaults according to above). The `version` and
+`arguments` can be adjusted through inputs:
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: freckle/stack-lint-extra-deps@v1
+    with:
+      version: 1.0.1.6
+      arguments: >-
+        --path stack-x.yaml
+        --exclude 'amazonka-*'
+        --checks hackage
+        --no-exit
+```
+
+![](./files/action.png)
 
 ## Features
 
