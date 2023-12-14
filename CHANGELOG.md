@@ -1,4 +1,9 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.5...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.6...main)
+
+## [v1.1.0.6](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.5...v1.1.0.6)
+
+- Internal refactors, causing minor changes to options (remove `-f`) and output
+  style
 
 ## [v1.1.0.5](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.4...v1.1.0.5)
 
