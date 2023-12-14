@@ -37,8 +37,8 @@ url=$(curl --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/r
 % stack lint-extra-deps --help
 Usage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER]
                              [--exclude PATTERN] [--checks CHECKS]
-                             [-f|--format FORMAT] [-n|--no-exit]
-                             [-c|--color COLOR] [-v|--verbose] [PATTERN]
+                             [-n|--no-exit] [PATTERN]
+
   Lint Stackage (extra) Deps
 
 Available options:
@@ -47,11 +47,7 @@ Available options:
   --exclude PATTERN        Exclude deps matching PATTERN
   --checks CHECKS          Checks to run, one of: all, git, hackage
                            (default: all)
-  -f,--format FORMAT       Output format, one of: detailed (default: detailed)
   -n,--no-exit             Exit successfully, even if suggestions found
-  -c,--color COLOR         When to use color, one of: auto, always, never
-                           (default: auto)
-  -v,--verbose             Log verbosely
   PATTERN                  Limit to deps matching PATTERN
   -h,--help                Show this help text
 ```
