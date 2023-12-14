@@ -2,6 +2,10 @@ name: stack-lint-extra-deps
 description: "TODO"
 
 inputs:
+  version:
+    description: "Version of the tool to install"
+    required: true
+    default: 1.1.0.6
   arguments:
     description: "Arguments to pass. Must be shell-escaped. Default is none"
     required: false
@@ -14,7 +18,7 @@ runs:
     - uses: pbrisbin/setup-tool-action@v1
       with:
         name: stack-lint-extra-deps
-        version: 1.1.0.5
+        version: ${{ inputs.version }}
         url: "https://github.com/freckle/{name}/releases/download/v{version}/{name}-{arch}-{os}.{ext}"
         subdir: "{name}"
         arch-x64: x86_64
