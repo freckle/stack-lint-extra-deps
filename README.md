@@ -52,6 +52,13 @@ Available options:
   -h,--help                Show this help text
 ```
 
+Our output uses [Blammo][] and so [any of the `LOG_` environment
+variables][blammo-config] it supports may be used to control it, such as
+`LOG_COLOR`.
+
+[blammo]: https:/github.com/freckle/blammo#readme
+[blammo-config]: https://github.com/freckle/blammo#configuration
+
 ## GitHub Action
 
 This repository is also a GitHub Action that installs and runs the tool with no
