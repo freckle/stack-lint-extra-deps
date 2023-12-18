@@ -12,16 +12,18 @@ import Blammo.Logging.Colors
 import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
-import qualified Data.Yaml as Yaml
+import Data.Yaml.Marked.Decode
 import SLED.Check
 import SLED.Checks
+import SLED.Display
 import SLED.Options
 import SLED.StackYaml
 import SLED.StackageResolver
 import System.FilePath.Glob
 
 runSLED
-  :: ( MonadUnliftIO m
+  :: ( MonadThrow m
+     , MonadUnliftIO m
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
@@ -33,21 +35,27 @@ runSLED
   -> m ()
 runSLED Options {..} = do
   logDebug $ "Loading stack.yaml" :# ["path" .= oPath]
-  StackYaml {..} <- Yaml.decodeFileThrow oPath
-  let resolver = fromMaybe syResolver oResolver
+  bs <- readFileBS oPath
+  StackYaml {..} <-
+    liftIO $ markedItem <$> decodeThrow decodeStackYaml oPath bs
 
-  n <-
+  -- Mark an option resolver with the in-file resolver's position so that if we
+  -- do anything based on it, that's what we'll use
+  let resolver = maybe syResolver (<$ syResolver) oResolver
+
+  suggestions <-
     runConduit
       $ yieldMany syExtraDeps
-      .| filterC (shouldIncludeExtraDep oFilter oExcludes)
+      .| filterC (shouldIncludeExtraDep oFilter oExcludes . markedItem)
       .| awaitForever
         ( \extraDep -> do
             suggestions <- lift $ runChecks resolver oChecks extraDep
             yieldMany suggestions
         )
       .| printSuggestions
-      .| lengthC @_ @Int
+      .| sinkList
 
+  let n = length suggestions
   logDebug $ "Suggestions found" :# ["count" .= n]
 
   when (n /= 0 && not oNoExit) $ do
@@ -67,15 +75,16 @@ runChecks
      , MonadStackage m
      , MonadGit m
      )
-  => StackageResolver
+  => Marked StackageResolver
   -> ChecksName
-  -> ExtraDep
+  -> Marked ExtraDep
   -> m [Suggestion]
 runChecks resolver checksName extraDep = do
   logDebug
     $ "Fetching external details"
-    :# ["dependency" .= extraDepToText extraDep]
-  details <- getExternalDetails resolver extraDep
+    :# ["dependency" .= markedItem extraDep]
+  details <-
+    getExternalDetails (markedItem resolver) $ markedItem extraDep
 
   pure
     $ mapMaybe (\check -> runCheck check details extraDep)
@@ -88,18 +97,5 @@ printSuggestions
      )
   => ConduitT Suggestion Suggestion m ()
 printSuggestions = do
-  Colors {..} <- lift getColorsLogger
-
-  iterM $ \Suggestion {..} ->
-    pushLoggerLn
-      $ case sAction of
-        Remove ->
-          green "Remove " <> " " <> magenta (extraDepToText sTarget)
-        ReplaceWith r ->
-          yellow "Replace"
-            <> " "
-            <> magenta (extraDepToText sTarget)
-            <> " with "
-            <> cyan (extraDepToText r)
-      <> "\n        ↳ "
-      <> sDescription
+  colors <- lift getColorsLogger
+  iterM $ pushLoggerLn . display colors

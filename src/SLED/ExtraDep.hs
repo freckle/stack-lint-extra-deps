@@ -1,11 +1,14 @@
 module SLED.ExtraDep
   ( ExtraDep (..)
-  , extraDepToText
+  , decodeExtraDep
   , matchPattern
   ) where
 
 import SLED.Prelude
 
+import Data.Yaml.Marked.Parse
+import Data.Yaml.Marked.Value
+import SLED.Display
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
 import SLED.PackageName
@@ -17,18 +20,26 @@ data ExtraDep
   | -- | @{ git: {repository}, commit: {commit} }@
     Git GitExtraDep
   | -- | Local path, or any future style Stack adds
-    Other Value
+    Other ()
   deriving stock (Eq, Show)
 
-instance FromJSON ExtraDep where
-  parseJSON x =
-    asum [Git <$> parseJSON x, Hackage <$> parseJSON x, pure $ Other x]
+instance Display ExtraDep where
+  display colors = \case
+    Hackage x -> display colors x
+    Git x -> display colors x
+    Other {} -> "<other>"
 
-extraDepToText :: ExtraDep -> Text
-extraDepToText = \case
-  Hackage x -> hackageExtraDepToText x
-  Git x -> gitExtraDepToText x
-  Other {} -> "<other>"
+instance ToJSON ExtraDep where
+  toJSON = toJSON . display noColors
+  toEncoding = toEncoding . display noColors
+
+decodeExtraDep :: Marked Value -> Either String (Marked ExtraDep)
+decodeExtraDep mv =
+  asum
+    [ Git <$$> decodeGitExtraDep mv
+    , Hackage <$$> json mv
+    , pure $ Other () <$ mv
+    ]
 
 matchPattern :: Pattern -> ExtraDep -> Bool
 matchPattern p = \case

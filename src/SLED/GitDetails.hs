@@ -41,12 +41,13 @@ getGitDetails GitExtraDep {..} = do
 
     withCurrentDirectory path $ do
       commit <- gitCurrentSHA "HEAD"
-      countToHead <- gitCountRevisionBetween gedCommit $ CommitSHA "HEAD"
+      countToHead <-
+        gitCountRevisionBetween (markedItem gedCommit) $ CommitSHA "HEAD"
       countToVersionTags <- do
         pairs <- gitTaggedVersions
         fmap catMaybes $ for pairs $ \(sha, version) -> do
-          mCountBehind <- gitCountRevisionBetween sha gedCommit
-          mCountAhead <- gitCountRevisionBetween gedCommit sha
+          mCountBehind <- gitCountRevisionBetween sha (markedItem gedCommit)
+          mCountAhead <- gitCountRevisionBetween (markedItem gedCommit) sha
 
           let mCount = do
                 behind <- mCountBehind

@@ -9,7 +9,6 @@ import SLED.Prelude
 import qualified Data.List.NonEmpty as NE
 import SLED.Checks
 import SLED.GitExtraDep
-import SLED.HackageExtraDep
 import SLED.Suggestion
 import SLED.Test
 
@@ -21,23 +20,25 @@ spec = do
         gitDep1 =
           GitExtraDep
             { gedRepository = Repository "freckle/foo"
-            , gedCommit = CommitSHA "xxxxx"
+            , gedCommit = markAtZero (CommitSHA "xxxxx") "<input>"
             }
         gitDep2 =
           GitExtraDep
             { gedRepository = Repository "freckle/foo"
-            , gedCommit = CommitSHA "yyyyy"
+            , gedCommit = markAtZero (CommitSHA "yyyyy") "<input>"
             }
+        extraDep = markAtZero (Git gitDep1) "<input>"
+
         mockGit =
           Just
             $ NE.fromList
             $ map
               (,Nothing)
-              [ gedCommit gitDep2
+              [ markedItem $ gedCommit gitDep2
               , CommitSHA "abc456"
               , CommitSHA "def456"
               , CommitSHA "jkl789"
-              , gedCommit gitDep1
+              , markedItem $ gedCommit gitDep1
               , CommitSHA "xyz012"
               ]
 
@@ -48,12 +49,12 @@ spec = do
           mockGit
           lts1818
           GitChecks
-          (Git gitDep1)
+          extraDep
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = Git gitDep1
-                      , sAction = ReplaceWith $ Git gitDep2
+                      { sTarget = extraDep
+                      , sAction = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
                       , sDescription = "There are newer commits (4) on the default branch"
                       }
                    ]
@@ -64,22 +65,24 @@ spec = do
         gitDep1 =
           GitExtraDep
             { gedRepository = Repository "freckle/foo"
-            , gedCommit = CommitSHA "xxxxx"
+            , gedCommit = markAtZero (CommitSHA "xxxxx") "<input>"
             }
         gitDep2 =
           GitExtraDep
             { gedRepository = Repository "freckle/foo"
-            , gedCommit = CommitSHA "yyyyy"
+            , gedCommit = markAtZero (CommitSHA "yyyyy") "<input>"
             }
+        extraDep = markAtZero (Git gitDep1) "<input>"
+
         mockGit :: Maybe (NonEmpty (CommitSHA, Maybe Text))
         mockGit =
           Just
             $ NE.fromList
-              [ (gedCommit gitDep2, Just "v1.0.2")
+              [ (markedItem $ gedCommit gitDep2, Just "v1.0.2")
               , (CommitSHA "abc456", Nothing)
               , (CommitSHA "def456", Just "beta")
               , (CommitSHA "jkl789", Nothing)
-              , (gedCommit gitDep1, Just "v1.0.0")
+              , (markedItem $ gedCommit gitDep1, Just "v1.0.0")
               ]
 
       suggestions <-
@@ -89,27 +92,17 @@ spec = do
           mockGit
           lts1818
           GitChecks
-          (Git gitDep1)
+          extraDep
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = Git gitDep1
-                      , sAction =
-                          ReplaceWith
-                            $ Hackage
-                            $ HackageExtraDep
-                              { hedPackage =
-                                  PackageName
-                                    $ repositoryBaseName
-                                    $ gedRepository gitDep1
-                              , hedVersion = Just $ unsafeVersion "1.0.2"
-                              , hedChecksum = Nothing
-                              }
+                      { sTarget = extraDep
+                      , sAction = replaceGitExtraDep (gitDep1 <$ extraDep) $ unsafeVersion "1.0.2"
                       , sDescription = "Newer, version-like tag exists"
                       }
                    , Suggestion
-                      { sTarget = Git gitDep1
-                      , sAction = ReplaceWith $ Git gitDep2
+                      { sTarget = extraDep
+                      , sAction = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
                       , sDescription = "There are newer commits (4) on the default branch"
                       }
                    ]

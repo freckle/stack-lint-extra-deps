@@ -6,26 +6,17 @@ import SLED.Prelude
 
 import Data.List (intersect)
 import SLED.Check
-import SLED.PackageName
 
 checkRedundantGit :: Check
 checkRedundantGit = Check $ \ExternalDetails {..} extraDep -> do
-  Git GitExtraDep {..} <- pure extraDep
+  Git ged <- pure $ markedItem extraDep
   GitDetails {..} <- edGitDetails
 
   let
     versions = sortOn (Down . fst) gdCommitCountToVersionTags
     equalVersions = map snd $ takeWhile ((>= 0) . fst) versions
     newerVersions = map snd $ takeWhile ((> 0) . fst) versions
-
-    replaceWith v =
-      ReplaceWith
-        $ Hackage
-          HackageExtraDep
-            { hedPackage = PackageName $ repositoryBaseName gedRepository
-            , hedVersion = Just v
-            , hedChecksum = Nothing
-            }
+    replaceWith = replaceGitExtraDep (ged <$ extraDep)
 
     -- Attempt to suggest a version tag that exists on Hackage
     suggestHackage = do

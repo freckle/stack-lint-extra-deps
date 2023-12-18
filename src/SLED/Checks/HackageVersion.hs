@@ -8,7 +8,7 @@ import SLED.Check
 
 checkHackageVersion :: Check
 checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do
-  Hackage hed@HackageExtraDep {..} <- pure extraDep
+  Hackage hed@HackageExtraDep {..} <- pure $ markedItem extraDep
   HackageVersions {..} <- edHackageVersions
 
   current <- hedVersion
@@ -19,6 +19,6 @@ checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do
   pure
     $ Suggestion
       { sTarget = extraDep
-      , sAction = ReplaceWith $ Hackage $ hed {hedVersion = Just released}
+      , sAction = replaceHackageDep (hed <$ extraDep) released
       , sDescription = "Newer version is available"
       }

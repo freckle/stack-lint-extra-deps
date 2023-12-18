@@ -7,6 +7,7 @@ module SLED.Check
 
 import SLED.Prelude
 
+import Data.Yaml.Marked.Replace as X
 import SLED.ExternalDetails as X
 import SLED.ExtraDep as X
 import SLED.GitDetails as X
@@ -17,5 +18,5 @@ import SLED.Stackage as X
 import SLED.Suggestion as X
 
 newtype Check = Check
-  { runCheck :: ExternalDetails -> ExtraDep -> Maybe Suggestion
+  { runCheck :: ExternalDetails -> Marked ExtraDep -> Maybe Suggestion
   }

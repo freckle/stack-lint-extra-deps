@@ -5,11 +5,11 @@ module SLED.Test
 
     -- * Helpers
   , unsafeVersion
+  , toHackageExtraDepUnsafe
 
     -- * Fixtures
   , lts1818
   , freckleApp1011
-  , freckleApp1012
   , yesodFlowRoutesGitHub
 
     -- * Re-exports
@@ -131,9 +131,9 @@ runTestChecks
   => Map PackageName HackageVersions
   -> Map StackageResolver (Map PackageName StackageVersions)
   -> Maybe (NonEmpty (CommitSHA, Maybe Text))
-  -> StackageResolver
+  -> Marked StackageResolver
   -> ChecksName
-  -> ExtraDep
+  -> Marked ExtraDep
   -> m [Suggestion]
 runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraDep = do
   testApp <-
@@ -145,36 +145,31 @@ runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraD
 
   runTestAppT (runChecks resolver checksName extraDep) testApp
 
-unsafeVersion :: String -> Version
+unsafeVersion :: HasCallStack => String -> Version
 unsafeVersion s = fromMaybe err $ parseVersion s
  where
   err = error $ pack $ "Invalid version: " <> s
 
-lts1818 :: StackageResolver
-lts1818 = StackageResolver "lts-18.18"
+toHackageExtraDepUnsafe :: HasCallStack => ExtraDep -> HackageExtraDep
+toHackageExtraDepUnsafe = \case
+  Hackage x -> x
+  x -> error $ "Expected HackageExtraDep, got: " <> show x
 
-freckleApp1011 :: ExtraDep
+lts1818 :: Marked StackageResolver
+lts1818 = markAtZero (StackageResolver "lts-18.18") "<input>"
+
+freckleApp1011 :: HackageExtraDep
 freckleApp1011 =
-  Hackage
-    HackageExtraDep
-      { hedPackage = PackageName "freckle-app"
-      , hedVersion = Just $ unsafeVersion "1.0.1.1"
-      , hedChecksum = Nothing
-      }
+  HackageExtraDep
+    { hedPackage = PackageName "freckle-app"
+    , hedVersion = Just $ unsafeVersion "1.0.1.1"
+    , hedChecksum = Nothing
+    }
 
-freckleApp1012 :: ExtraDep
-freckleApp1012 =
-  Hackage
-    HackageExtraDep
-      { hedPackage = PackageName "freckle-app"
-      , hedVersion = Just $ unsafeVersion "1.0.1.2"
-      , hedChecksum = Nothing
-      }
-
-yesodFlowRoutesGitHub :: ExtraDep
+yesodFlowRoutesGitHub :: GitExtraDep
 yesodFlowRoutesGitHub =
-  Git
-    GitExtraDep
-      { gedRepository = Repository "https://github.com/freckle/yesod-routes-flow"
-      , gedCommit = CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8"
-      }
+  GitExtraDep
+    { gedRepository = Repository "https://github.com/freckle/yesod-routes-flow"
+    , gedCommit =
+        markAtZero (CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8") "<input>"
+    }

@@ -3,7 +3,18 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    name: yaml-marked
+    pantry-tree:
+      sha256: 475427ffc3e729718ae0b37e7a06c79cf89bb70856f8a2d828962d72c4dfb11f
+      size: 1401
+    sha256: e4c43e42de2b72151bc516375f9201517867d4b622d0ac5a6027b629127028a7
+    size: 16148
+    url: https://github.com/pbrisbin/yaml-marked/archive/559947dcacb3f8fd9971e06ff3ecf0531b1c295a.tar.gz
+    version: 0.0.0.0
+  original:
+    url: https://github.com/pbrisbin/yaml-marked/archive/559947dcacb3f8fd9971e06ff3ecf0531b1c295a.tar.gz
 snapshots:
 - completed:
     sha256: caa77fdbc5b9f698262b21ee78030133272ec53116ad6ddbefdc4c321f668e0c

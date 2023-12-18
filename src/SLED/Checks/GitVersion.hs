@@ -8,7 +8,7 @@ import SLED.Check
 
 checkGitVersion :: Check
 checkGitVersion = Check $ \ExternalDetails {..} extraDep -> do
-  Git ged <- pure extraDep
+  Git ged <- pure $ markedItem extraDep
   GitDetails {..} <- edGitDetails
 
   guard $ gdCommitCountToHead >= 1
@@ -16,7 +16,7 @@ checkGitVersion = Check $ \ExternalDetails {..} extraDep -> do
   pure
     $ Suggestion
       { sTarget = extraDep
-      , sAction = ReplaceWith $ Git $ ged {gedCommit = gdHeadCommit}
+      , sAction = replaceGitExtraDepCommit ged gdHeadCommit
       , sDescription =
           "There are newer commits ("
             <> pack (show gdCommitCountToHead)

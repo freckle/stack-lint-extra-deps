@@ -2,7 +2,6 @@ module SLED.HackageExtraDep
   ( HackageExtraDep (..)
   , SHA256 (..)
   , hackageExtraDepFromText
-  , hackageExtraDepToText
   ) where
 
 import SLED.Prelude
@@ -10,6 +9,7 @@ import SLED.Prelude
 import Data.Aeson
 import Data.List (elemIndices)
 import qualified Data.Text as T
+import SLED.Display
 import SLED.PackageName
 import SLED.Version
 
@@ -23,6 +23,11 @@ data HackageExtraDep = HackageExtraDep
 instance FromJSON HackageExtraDep where
   parseJSON =
     withText "HackageExtraDep" $ either fail pure . hackageExtraDepFromText
+
+instance Display HackageExtraDep where
+  display colors HackageExtraDep {..} =
+    display colors hedPackage
+      <> maybe "" (("@" <>) . display colors) hedVersion
 
 newtype SHA256 = SHA256 Text
   deriving newtype (Eq, Show, FromJSON)
@@ -40,11 +45,6 @@ hackageExtraDepFromText x =
  where
   (prefix, suffix) = T.breakOn "@" x
   (package, mVersion) = splitPackageVersion prefix
-
-hackageExtraDepToText :: HackageExtraDep -> Text
-hackageExtraDepToText HackageExtraDep {..} =
-  unPackageName hedPackage
-    <> maybe "" (("@v" <>) . pack . showVersion) hedVersion
 
 -- |
 --

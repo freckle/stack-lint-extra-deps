@@ -8,7 +8,7 @@ import SLED.Check
 
 checkRedundantHackage :: Check
 checkRedundantHackage = Check $ \ExternalDetails {..} extraDep -> do
-  Hackage HackageExtraDep {..} <- pure extraDep
+  Hackage HackageExtraDep {..} <- pure $ markedItem extraDep
   StackageVersions {..} <- edStackageVersions
   current <- hedVersion
 

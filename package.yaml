@@ -44,6 +44,7 @@ library:
     - conduit
     - containers
     - errors
+    - exceptions
     - extra
     - html-conduit
     - http-conduit
@@ -53,10 +54,10 @@ library:
     - relude
     - text
     - typed-process
-    - unliftio-core
     - unliftio
+    - unliftio-core
     - xml-conduit
-    - yaml
+    - yaml-marked
 
 executables:
   stack-lint-extra-deps:
