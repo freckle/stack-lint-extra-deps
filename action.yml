@@ -21,6 +21,7 @@ runs:
         version: ${{ inputs.version }}
         url: "https://github.com/freckle/{name}/releases/download/v{version}/{name}-{arch}-{os}.{ext}"
         subdir: "{name}"
+        os-darwin: osx
         arch-x64: x86_64
 
     - shell: bash
