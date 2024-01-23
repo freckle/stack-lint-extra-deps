@@ -21,8 +21,7 @@ jobs:
       matrix:
         runner:
           - ubuntu-latest
-          # - macOS-latest
-          # - windows-latest
+          - macOS-latest
 
       fail-fast: false
 

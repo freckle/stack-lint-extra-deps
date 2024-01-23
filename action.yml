@@ -1,13 +1,13 @@
 name: stack-lint-extra-deps
-description: "TODO"
+description: Install and run stack-lint-extra-deps
 
 inputs:
   version:
-    description: "Version of the tool to install"
+    description: Version of the tool to install
     required: true
-    default: 1.1.0.6
+    default: 1.1.0.7
   arguments:
-    description: "Arguments to pass. Must be shell-escaped. Default is none"
+    description: Arguments to pass. Must be shell-escaped. Default is none.
     required: false
 
 outputs: {}
@@ -21,6 +21,7 @@ runs:
         version: ${{ inputs.version }}
         url: "https://github.com/freckle/{name}/releases/download/v{version}/{name}-{arch}-{os}.{ext}"
         subdir: "{name}"
+        os-darwin: osx
         arch-x64: x86_64
 
     - shell: bash
