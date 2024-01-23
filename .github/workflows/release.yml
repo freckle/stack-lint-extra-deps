@@ -46,7 +46,7 @@ jobs:
       - run: |
           mkdir -p dist/stack-lint-extra-deps
           stack build --copy-bins --local-bin-path dist/stack-lint-extra-deps
-          cd dist && tar -czf ./stack-lint-extra-deps.tar.gz ./stack-lint-extra-deps
+          tar -C dist -czf ./stack-lint-extra-deps-${{ matrix.suffix }}.tar.gz ./stack-lint-extra-deps
       - uses: freckle/action-gh-release@v2
         with:
           id: ${{ needs.create-release.outputs.release_id }}
