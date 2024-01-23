@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.6...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.7...main)
+
+## [v1.1.0.7](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.6...v1.1.0.7)
+
+- No changes, just triggering a new release to build binaries
 
 ## [v1.1.0.6](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.5...v1.1.0.6)
 
