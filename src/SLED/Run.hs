@@ -8,17 +8,16 @@ module SLED.Run
 
 import SLED.Prelude
 
-import Blammo.Logging.Colors
 import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
 import Data.Yaml.Marked.Decode
 import SLED.Check
 import SLED.Checks
-import SLED.Display
 import SLED.Options
 import SLED.StackYaml
 import SLED.StackageResolver
+import SLED.Suggestion.Format
 import System.FilePath.Glob
 
 runSLED
@@ -39,9 +38,13 @@ runSLED Options {..} = do
   StackYaml {..} <-
     liftIO $ markedItem <$> decodeThrow decodeStackYaml oPath bs
 
-  -- Mark an option resolver with the in-file resolver's position so that if we
-  -- do anything based on it, that's what we'll use
-  let resolver = maybe syResolver (<$ syResolver) oResolver
+  let
+    -- Mark an option resolver with the in-file resolver's position so that if
+    -- we do anything based on it, that's what we'll use
+    resolver = maybe syResolver (<$ syResolver) oResolver
+
+    -- TODO: Options
+    format = FormatJSON
 
   suggestions <-
     runConduit
@@ -52,7 +55,7 @@ runSLED Options {..} = do
             suggestions <- lift $ runChecks resolver oChecks extraDep
             yieldMany suggestions
         )
-      .| printSuggestions
+      .| iterM (pushLoggerLn . formatSuggestion format)
       .| sinkList
 
   let n = length suggestions
@@ -89,13 +92,3 @@ runChecks resolver checksName extraDep = do
   pure
     $ mapMaybe (\check -> runCheck check details extraDep)
     $ checksByName checksName
-
-printSuggestions
-  :: ( MonadIO m
-     , MonadReader env m
-     , HasLogger env
-     )
-  => ConduitT Suggestion Suggestion m ()
-printSuggestions = do
-  colors <- lift getColorsLogger
-  iterM $ pushLoggerLn . display colors

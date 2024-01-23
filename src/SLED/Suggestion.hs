@@ -1,4 +1,4 @@
-{-# LANGUAGE ViewPatterns #-}
+
 
 module SLED.Suggestion
   ( Suggestion (..)
@@ -10,7 +10,6 @@ module SLED.Suggestion
 
 import SLED.Prelude
 
-import SLED.Display
 import SLED.ExtraDep
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
@@ -20,45 +19,47 @@ import SLED.Version
 data SuggestionAction
   = Remove
   | ReplaceWith ExtraDep
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (ToJSON)
 
 data Suggestion = Suggestion
   { sTarget :: Marked ExtraDep
   , sAction :: SuggestionAction
   , sDescription :: Text
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (ToJSON)
 
-instance Display Suggestion where
-  display colors Suggestion {..} =
-    displayAction colors sTarget sAction
-      <> " ("
-      <> displayMarks sTarget
-      <> ")"
-      <> "\n        ↳ "
-      <> sDescription
+-- instance Display Suggestion where
+--   display colors Suggestion {..} =
+--     displayAction colors sTarget sAction
+--       <> " ("
+--       <> displayMarks sTarget
+--       <> ")"
+--       <> "\n        ↳ "
+--       <> sDescription
 
-displayAction :: Colors -> Marked ExtraDep -> SuggestionAction -> Text
-displayAction colors@Colors {..} (markedItem -> x) = \case
-  Remove ->
-    green "Remove"
-      <> "  "
-      <> magenta (display colors x)
-  ReplaceWith y ->
-    yellow "Replace"
-      <> " "
-      <> magenta (display colors x)
-      <> " with "
-      <> cyan (display colors y)
+-- displayAction :: Colors -> Marked ExtraDep -> SuggestionAction -> Text
+-- displayAction colors@Colors {..} (markedItem -> x) = \case
+--   Remove ->
+--     green "Remove"
+--       <> "  "
+--       <> magenta (display colors x)
+--   ReplaceWith y ->
+--     yellow "Replace"
+--       <> " "
+--       <> magenta (display colors x)
+--       <> " with "
+--       <> cyan (display colors y)
 
-displayMarks :: Marked a -> Text
-displayMarks m =
-  pack
-    $ mconcat
-      [ markedPath m
-      , ":" <> show (locationLine $ markedLocationStart m)
-      , ":" <> show (locationLine $ markedLocationEnd m)
-      ]
+-- displayMarks :: Marked a -> Text
+-- displayMarks m =
+--   pack
+--     $ mconcat
+--       [ markedPath m
+--       , ":" <> show (locationLine $ markedLocationStart m)
+--       , ":" <> show (locationLine $ markedLocationEnd m)
+--       ]
 
 replaceGitExtraDep :: Marked GitExtraDep -> Version -> SuggestionAction
 replaceGitExtraDep mged version =

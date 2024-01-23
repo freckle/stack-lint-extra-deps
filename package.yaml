@@ -9,6 +9,8 @@ extra-source-files:
   - test/examples/lts-18.18.yaml
 
 default-extensions:
+  - DeriveAnyClass
+  - DeriveGeneric
   - DerivingStrategies
   - FlexibleContexts
   - GeneralizedNewtypeDeriving

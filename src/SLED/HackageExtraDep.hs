@@ -9,7 +9,6 @@ import SLED.Prelude
 import Data.Aeson
 import Data.List (elemIndices)
 import qualified Data.Text as T
-import SLED.Display
 import SLED.PackageName
 import SLED.Version
 
@@ -18,19 +17,15 @@ data HackageExtraDep = HackageExtraDep
   , hedVersion :: Maybe Version
   , hedChecksum :: Maybe SHA256
   }
-  deriving stock (Eq, Show)
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (ToJSON)
 
 instance FromJSON HackageExtraDep where
   parseJSON =
     withText "HackageExtraDep" $ either fail pure . hackageExtraDepFromText
 
-instance Display HackageExtraDep where
-  display colors HackageExtraDep {..} =
-    display colors hedPackage
-      <> maybe "" (("@" <>) . display colors) hedVersion
-
 newtype SHA256 = SHA256 Text
-  deriving newtype (Eq, Show, FromJSON)
+  deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 hackageExtraDepFromText :: Text -> Either String HackageExtraDep
 hackageExtraDepFromText x =

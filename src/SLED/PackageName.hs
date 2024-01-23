@@ -4,9 +4,7 @@ module SLED.PackageName
 
 import SLED.Prelude
 
-import SLED.Display
-
 newtype PackageName = PackageName
   { unPackageName :: Text
   }
-  deriving newtype (Eq, Ord, Show, Display, FromJSON, ToJSON)
+  deriving newtype (Eq, Ord, Show, FromJSON, ToJSON)

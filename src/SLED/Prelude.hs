@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 module SLED.Prelude
   ( module X
   , module SLED.Prelude
@@ -25,3 +27,7 @@ headMaybe = fmap head . NE.nonEmpty
 (<$$>) = fmap . fmap
 
 infixr 8 <$$>
+
+instance ToJSON a => ToJSON (Marked a) where
+  toJSON = toJSON . markedItem -- TODO: include location
+  toEncoding = toEncoding . markedItem

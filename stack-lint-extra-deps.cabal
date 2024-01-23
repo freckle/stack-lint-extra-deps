@@ -24,7 +24,6 @@ library
       SLED.Checks.HackageVersion
       SLED.Checks.RedundantGit
       SLED.Checks.RedundantHackage
-      SLED.Display
       SLED.ExternalDetails
       SLED.ExtraDep
       SLED.GitDetails
@@ -40,12 +39,15 @@ library
       SLED.StackageResolver
       SLED.StackYaml
       SLED.Suggestion
+      SLED.Suggestion.Format
       SLED.Version
   other-modules:
       Paths_stack_lint_extra_deps
   hs-source-dirs:
       src
   default-extensions:
+      DeriveAnyClass
+      DeriveGeneric
       DerivingStrategies
       FlexibleContexts
       GeneralizedNewtypeDeriving
@@ -87,6 +89,8 @@ executable stack-lint-extra-deps
   hs-source-dirs:
       app
   default-extensions:
+      DeriveAnyClass
+      DeriveGeneric
       DerivingStrategies
       FlexibleContexts
       GeneralizedNewtypeDeriving
@@ -110,6 +114,8 @@ test-suite doctest
   hs-source-dirs:
       doctest
   default-extensions:
+      DeriveAnyClass
+      DeriveGeneric
       DerivingStrategies
       FlexibleContexts
       GeneralizedNewtypeDeriving
@@ -140,6 +146,8 @@ test-suite hspec
   hs-source-dirs:
       test
   default-extensions:
+      DeriveAnyClass
+      DeriveGeneric
       DerivingStrategies
       FlexibleContexts
       GeneralizedNewtypeDeriving
