@@ -15,9 +15,10 @@ default-extensions:
   - FlexibleContexts
   - GeneralizedNewtypeDeriving
   - LambdaCase
+  - NoFieldSelectors
   - NoImplicitPrelude
+  - OverloadedRecordDot
   - OverloadedStrings
-  - RecordWildCards
   - TypeApplications
 
 ghc-options:

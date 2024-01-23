@@ -37,7 +37,7 @@ import SLED.Version
 import Test.Hspec as X
 
 newtype TestAppT app m a = TestAppT
-  { unTestAppT :: ReaderT app (LoggingT m) a
+  { unwrap :: ReaderT app (LoggingT m) a
   }
   deriving newtype
     ( Functor
@@ -52,12 +52,12 @@ newtype TestAppT app m a = TestAppT
 
 instance Monad m => MonadHackage (TestAppT TestApp m) where
   getHackageVersions package = do
-    m <- asks taHackageVersionsByPackage
+    m <- asks (.hackageVersionsByPackage)
     pure $ Map.lookup package m
 
 instance Monad m => MonadStackage (TestAppT TestApp m) where
   getStackageVersions resolver package = do
-    ms <- asks taStackageVersionsByResolver
+    ms <- asks (.stackageVersionsByResolver)
 
     pure $ do
       m <- Map.lookup resolver ms
@@ -67,7 +67,7 @@ instance Monad m => MonadGit (TestAppT TestApp m) where
   gitClone _ _ = pure ()
 
   gitRevParse = \case
-    "HEAD" -> withMockCommitSHAs $ (<> "\n") . encodeUtf8 . unCommitSHA . head
+    "HEAD" -> withMockCommitSHAs $ (<> "\n") . encodeUtf8 . (.unwrap) . head
     x -> error $ pack $ "git rev-parse called with unexpected argument " <> x
 
   gitRevListCount spec = do
@@ -94,23 +94,23 @@ instance Monad m => MonadGit (TestAppT TestApp m) where
     toRef :: CommitSHA -> Maybe Text -> Maybe Text
     toRef sha mTag = do
       t <- mTag
-      pure $ "refs/tags/" <> t <> " " <> unCommitSHA sha
+      pure $ "refs/tags/" <> t <> " " <> sha.unwrap
 
 runTestAppT
   :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a
 runTestAppT action app =
-  runLoggerLoggingT app $ runReaderT (unTestAppT action) app
+  runLoggerLoggingT app $ runReaderT action.unwrap app
 
 data TestApp = TestApp
-  { taLogger :: Logger
-  , taHackageVersionsByPackage :: Map PackageName HackageVersions
-  , taStackageVersionsByResolver
+  { logger :: Logger
+  , hackageVersionsByPackage :: Map PackageName HackageVersions
+  , stackageVersionsByResolver
       :: Map StackageResolver (Map PackageName StackageVersions)
-  , taCommits :: Maybe (NonEmpty (CommitSHA, Maybe Text))
+  , commits :: Maybe (NonEmpty (CommitSHA, Maybe Text))
   }
 
 instance HasLogger TestApp where
-  loggerL = lens taLogger $ \x y -> x {taLogger = y}
+  loggerL = lens (.logger) $ \x y -> x {logger = y}
 
 withMockCommitSHAs
   :: (HasCallStack, MonadReader TestApp m) => (NonEmpty CommitSHA -> a) -> m a
@@ -121,9 +121,9 @@ withMockCommits
   => (NonEmpty (CommitSHA, Maybe Text) -> a)
   -> m a
 withMockCommits f = do
-  mCommits <- asks taCommits
+  mCommits <- asks (.commits)
   case mCommits of
-    Nothing -> error "Git operation used without setting taCommitSHAs"
+    Nothing -> error "Git operation used without setting TestApp.commits"
     Just cs -> pure $ f cs
 
 runTestChecks
@@ -161,15 +161,15 @@ lts1818 = markAtZero (StackageResolver "lts-18.18") "<input>"
 freckleApp1011 :: HackageExtraDep
 freckleApp1011 =
   HackageExtraDep
-    { hedPackage = PackageName "freckle-app"
-    , hedVersion = Just $ unsafeVersion "1.0.1.1"
-    , hedChecksum = Nothing
+    { package = PackageName "freckle-app"
+    , version = Just $ unsafeVersion "1.0.1.1"
+    , checksum = Nothing
     }
 
 yesodFlowRoutesGitHub :: GitExtraDep
 yesodFlowRoutesGitHub =
   GitExtraDep
-    { gedRepository = Repository "https://github.com/freckle/yesod-routes-flow"
-    , gedCommit =
+    { repository = Repository "https://github.com/freckle/yesod-routes-flow"
+    , commit =
         markAtZero (CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8") "<input>"
     }

@@ -11,8 +11,8 @@ import SLED.ExtraDep
 import SLED.StackageResolver
 
 data StackYaml = StackYaml
-  { syResolver :: Marked StackageResolver
-  , syExtraDeps :: [Marked ExtraDep]
+  { resolver :: Marked StackageResolver
+  , extraDeps :: [Marked ExtraDep]
   }
   deriving stock (Show)
 

@@ -34,10 +34,10 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = extraDep
-                      , sAction =
+                      { target = extraDep
+                      , action =
                           replaceHackageDep (freckleApp1011 <$ extraDep) $ unsafeVersion "1.0.1.2"
-                      , sDescription = "Newer version is available"
+                      , description = "Newer version is available"
                       }
                    ]
 
@@ -81,9 +81,9 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = extraDep
-                      , sAction = Remove
-                      , sDescription = "Same or newer version is now in your resolver"
+                      { target = extraDep
+                      , action = Remove
+                      , description = "Same or newer version is now in your resolver"
                       }
                    ]
 
@@ -108,9 +108,9 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = extraDep
-                      , sAction = Remove
-                      , sDescription = "Same or newer version is now in your resolver"
+                      { target = extraDep
+                      , action = Remove
+                      , description = "Same or newer version is now in your resolver"
                       }
                    ]
 
@@ -145,9 +145,9 @@ hackageVersions
   -> HackageVersions
 hackageVersions n u d =
   HackageVersions
-    { hvNormal = mapMaybe parseVersion n
-    , hvUnpreferred = mapMaybe parseVersion u
-    , hvDeprecated = mapMaybe parseVersion d
+    { normal = mapMaybe parseVersion n
+    , unpreferred = mapMaybe parseVersion u
+    , deprecated = mapMaybe parseVersion d
     }
 
 stackageVersions
@@ -158,6 +158,6 @@ stackageVersions
   -> StackageVersions
 stackageVersions p h =
   StackageVersions
-    { svOnPage = unsafeVersion p
-    , svOnHackage = unsafeVersion h
+    { onPage = unsafeVersion p
+    , onHackage = unsafeVersion h
     }

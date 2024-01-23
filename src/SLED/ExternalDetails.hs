@@ -15,9 +15,9 @@ import SLED.Stackage
 import SLED.StackageResolver
 
 data ExternalDetails = ExternalDetails
-  { edStackageVersions :: Maybe StackageVersions
-  , edHackageVersions :: Maybe HackageVersions
-  , edGitDetails :: Maybe GitDetails
+  { stackageVersions :: Maybe StackageVersions
+  , hackageVersions :: Maybe HackageVersions
+  , gitDetails :: Maybe GitDetails
   }
 
 getExternalDetails
@@ -32,13 +32,12 @@ getExternalDetails
   -> m ExternalDetails
 getExternalDetails resolver = \case
   Hackage dep -> do
-    let package = hedPackage dep
     ExternalDetails
-      <$> getStackageVersions resolver package
-      <*> getHackageVersions package
+      <$> getStackageVersions resolver dep.package
+      <*> getHackageVersions dep.package
       <*> pure Nothing
   Git dep -> do
-    let package = inferGitHackageName $ gedRepository dep
+    let package = inferGitHackageName $ dep.repository
     ExternalDetails
       <$> getStackageVersions resolver package
       <*> getHackageVersions package

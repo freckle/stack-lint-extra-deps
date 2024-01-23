@@ -1,5 +1,3 @@
-
-
 module SLED.Suggestion
   ( Suggestion (..)
   , SuggestionAction (..)
@@ -23,9 +21,9 @@ data SuggestionAction
   deriving anyclass (ToJSON)
 
 data Suggestion = Suggestion
-  { sTarget :: Marked ExtraDep
-  , sAction :: SuggestionAction
-  , sDescription :: Text
+  { target :: Marked ExtraDep
+  , action :: SuggestionAction
+  , description :: Text
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)
@@ -66,15 +64,15 @@ replaceGitExtraDep mged version =
   ReplaceWith
     $ Hackage
     $ HackageExtraDep
-      { hedPackage = PackageName $ repositoryBaseName $ gedRepository $ markedItem mged
-      , hedVersion = Just version
-      , hedChecksum = Nothing
+      { package = PackageName $ repositoryBaseName $ (.repository) $ markedItem mged
+      , version = Just version
+      , checksum = Nothing
       }
 
 replaceGitExtraDepCommit :: GitExtraDep -> CommitSHA -> SuggestionAction
 replaceGitExtraDepCommit ged sha =
-  ReplaceWith $ Git $ ged {gedCommit = sha <$ gedCommit ged}
+  ReplaceWith $ Git $ ged {commit = sha <$ ged.commit}
 
 replaceHackageDep :: Marked HackageExtraDep -> Version -> SuggestionAction
 replaceHackageDep mhed version =
-  ReplaceWith $ Hackage $ (markedItem mhed) {hedVersion = Just version}
+  ReplaceWith $ Hackage $ (markedItem mhed) {version = Just version}

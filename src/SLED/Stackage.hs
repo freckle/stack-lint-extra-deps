@@ -25,8 +25,8 @@ class MonadStackage m where
     :: StackageResolver -> PackageName -> m (Maybe StackageVersions)
 
 data StackageVersions = StackageVersions
-  { svOnPage :: Version
-  , svOnHackage :: Version
+  { onPage :: Version
+  , onHackage :: Version
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)

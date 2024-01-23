@@ -13,9 +13,9 @@ import SLED.PackageName
 import SLED.Version
 
 data HackageExtraDep = HackageExtraDep
-  { hedPackage :: PackageName
-  , hedVersion :: Maybe Version
-  , hedChecksum :: Maybe SHA256
+  { package :: PackageName
+  , version :: Maybe Version
+  , checksum :: Maybe SHA256
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)
@@ -31,9 +31,9 @@ hackageExtraDepFromText :: Text -> Either String HackageExtraDep
 hackageExtraDepFromText x =
   Right
     HackageExtraDep
-      { hedPackage = PackageName package
-      , hedVersion = mVersion
-      , hedChecksum = do
+      { package = PackageName package
+      , version = mVersion
+      , checksum = do
           guard $ not $ T.null suffix
           pure $ SHA256 $ T.drop 1 suffix
       }

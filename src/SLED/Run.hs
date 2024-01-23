@@ -32,27 +32,26 @@ runSLED
      )
   => Options
   -> m ()
-runSLED Options {..} = do
-  logDebug $ "Loading stack.yaml" :# ["path" .= oPath]
-  bs <- readFileBS oPath
-  StackYaml {..} <-
-    liftIO $ markedItem <$> decodeThrow decodeStackYaml oPath bs
+runSLED options = do
+  logDebug $ "Loading stack.yaml" :# ["path" .= options.path]
+  bs <- readFileBS options.path
+  stackYaml <- liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
 
   let
     -- Mark an option resolver with the in-file resolver's position so that if
     -- we do anything based on it, that's what we'll use
-    resolver = maybe syResolver (<$ syResolver) oResolver
+    resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
 
     -- TODO: Options
     format = FormatJSON
 
   suggestions <-
     runConduit
-      $ yieldMany syExtraDeps
-      .| filterC (shouldIncludeExtraDep oFilter oExcludes . markedItem)
+      $ yieldMany stackYaml.extraDeps
+      .| filterC (shouldIncludeExtraDep options.filter options.excludes . markedItem)
       .| awaitForever
         ( \extraDep -> do
-            suggestions <- lift $ runChecks resolver oChecks extraDep
+            suggestions <- lift $ runChecks resolver options.checks extraDep
             yieldMany suggestions
         )
       .| iterM (pushLoggerLn . formatSuggestion format)
@@ -61,7 +60,7 @@ runSLED Options {..} = do
   let n = length suggestions
   logDebug $ "Suggestions found" :# ["count" .= n]
 
-  when (n /= 0 && not oNoExit) $ do
+  when (n /= 0 && not options.noExit) $ do
     logDebug "Exiting non-zero (--no-exit to disable)"
     exitFailure
 
@@ -90,5 +89,5 @@ runChecks resolver checksName extraDep = do
     getExternalDetails (markedItem resolver) $ markedItem extraDep
 
   pure
-    $ mapMaybe (\check -> runCheck check details extraDep)
+    $ mapMaybe (\check -> check.run details extraDep)
     $ checksByName checksName

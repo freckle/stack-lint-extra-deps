@@ -24,16 +24,16 @@ class Monad m => MonadGit m where
   gitForEachRef :: String -> m BSL.ByteString
 
 data GitDetails = GitDetails
-  { gdHeadCommit :: CommitSHA
-  , gdCommitCountToHead :: Int
-  , gdCommitCountToVersionTags :: [(Int, Version)]
+  { headCommit :: CommitSHA
+  , commitCountToHead :: Int
+  , commitCountToVersionTags :: [(Int, Version)]
   }
 
 getGitDetails
   :: (MonadUnliftIO m, MonadLogger m, MonadGit m)
   => GitExtraDep
   -> m (Maybe GitDetails)
-getGitDetails GitExtraDep {..} = do
+getGitDetails ged = do
   logDebug $ "Cloning git dependency" :# ["cloneUrl" .= cloneUrl]
 
   withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
@@ -42,12 +42,12 @@ getGitDetails GitExtraDep {..} = do
     withCurrentDirectory path $ do
       commit <- gitCurrentSHA "HEAD"
       countToHead <-
-        gitCountRevisionBetween (markedItem gedCommit) $ CommitSHA "HEAD"
+        gitCountRevisionBetween (markedItem ged.commit) $ CommitSHA "HEAD"
       countToVersionTags <- do
         pairs <- gitTaggedVersions
         fmap catMaybes $ for pairs $ \(sha, version) -> do
-          mCountBehind <- gitCountRevisionBetween sha (markedItem gedCommit)
-          mCountAhead <- gitCountRevisionBetween (markedItem gedCommit) sha
+          mCountBehind <- gitCountRevisionBetween sha (markedItem ged.commit)
+          mCountAhead <- gitCountRevisionBetween (markedItem ged.commit) sha
 
           let mCount = do
                 behind <- mCountBehind
@@ -58,7 +58,7 @@ getGitDetails GitExtraDep {..} = do
 
       logDebug
         $ "Git dependency details"
-        :# [ "repository" .= gedRepository
+        :# [ "repository" .= ged.repository
            , "headCommit" .= commit
            , "commitsToHead" .= (show @Text <$> countToHead)
            , "versionsByTags" .= countToVersionTags
@@ -66,7 +66,7 @@ getGitDetails GitExtraDep {..} = do
 
       pure $ GitDetails commit <$> countToHead <*> pure countToVersionTags
  where
-  cloneUrl = unpack $ unRepository gedRepository
+  cloneUrl = unpack ged.repository.unwrap
 
 gitCurrentSHA
   :: MonadGit m
@@ -84,7 +84,7 @@ gitCountRevisionBetween
 gitCountRevisionBetween a b =
   bsToInt <$> gitRevListCount spec
  where
-  spec = unpack $ unCommitSHA a <> ".." <> unCommitSHA b
+  spec = unpack $ a.unwrap <> ".." <> b.unwrap
 
 gitTaggedVersions
   :: MonadGit m

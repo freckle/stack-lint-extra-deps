@@ -21,7 +21,7 @@ import System.Process.Typed
 import UnliftIO.Exception (throwIO)
 
 newtype AppT app m a = AppT
-  { unAppT :: ReaderT app (LoggingT m) a
+  { unwrap :: ReaderT app (LoggingT m) a
   }
   deriving newtype
     ( Functor
@@ -46,14 +46,14 @@ instance MonadIO m => MonadHackage (AppT app m) where
           ( parseRequest
               $ unpack
               $ "https://hackage.haskell.org/package/"
-              <> unPackageName package
+              <> package.unwrap
               <> "/preferred"
           )
 
     logDebug
       $ "Hackage dependency details"
-      :# [ "package" .= unPackageName package
-         , "versions" .= (hvNormal <$> eVersions)
+      :# [ "package" .= package
+         , "versions" .= ((.normal) <$> eVersions)
          ]
 
     pure $ hush eVersions
@@ -66,15 +66,15 @@ instance MonadIO m => MonadStackage (AppT app m) where
           ( parseRequest
               $ unpack
               $ "https://www.stackage.org/"
-              <> unStackageResolver resolver
+              <> resolver.unwrap
               <> "/package/"
-              <> unPackageName package
+              <> package.unwrap
           )
 
     logDebug
       $ "Stackage dependency details"
-      :# [ "resolver" .= unStackageResolver resolver
-         , "package" .= unPackageName package
+      :# [ "resolver" .= resolver
+         , "package" .= package
          , "versions" .= eStackageVersions
          ]
 
@@ -88,7 +88,7 @@ instance MonadIO m => MonadGit (AppT app m) where
 
 runAppT :: (MonadUnliftIO m, HasLogger app) => AppT app m a -> app -> m a
 runAppT action app =
-  runLoggerLoggingT app $ runReaderT (unAppT action) app
+  runLoggerLoggingT app $ runReaderT action.unwrap app
 
 httpParse
   :: MonadIO m

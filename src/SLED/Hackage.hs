@@ -14,9 +14,9 @@ class MonadHackage m where
 
 -- | <https://hackage.haskell.org/api#versions>
 data HackageVersions = HackageVersions
-  { hvNormal :: [Version]
-  , hvUnpreferred :: [Version]
-  , hvDeprecated :: [Version]
+  { normal :: [Version]
+  , unpreferred :: [Version]
+  , deprecated :: [Version]
   }
   deriving stock (Eq, Show)
 

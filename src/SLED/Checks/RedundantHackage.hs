@@ -7,16 +7,16 @@ import SLED.Prelude
 import SLED.Check
 
 checkRedundantHackage :: Check
-checkRedundantHackage = Check $ \ExternalDetails {..} extraDep -> do
-  Hackage HackageExtraDep {..} <- pure $ markedItem extraDep
-  StackageVersions {..} <- edStackageVersions
-  current <- hedVersion
+checkRedundantHackage = Check $ \ed extraDep -> do
+  Hackage hed <- pure $ markedItem extraDep
+  sv <- ed.stackageVersions
+  current <- hed.version
 
-  guard $ svOnPage >= current
+  guard $ sv.onPage >= current
 
   pure
     $ Suggestion
-      { sTarget = extraDep
-      , sAction = Remove
-      , sDescription = "Same or newer version is now in your resolver"
+      { target = extraDep
+      , action = Remove
+      , description = "Same or newer version is now in your resolver"
       }

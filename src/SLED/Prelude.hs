@@ -12,6 +12,7 @@ import Data.Aeson as X (FromJSON (..), ToJSON (..))
 import Data.Text as X (pack, unpack)
 import Data.Traversable as X (for)
 import Data.Yaml.Marked as X
+import GHC.Records as X
 import Relude as X
 
 import qualified Data.List.NonEmpty as NE

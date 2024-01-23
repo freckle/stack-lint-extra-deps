@@ -52,9 +52,10 @@ library
       FlexibleContexts
       GeneralizedNewtypeDeriving
       LambdaCase
+      NoFieldSelectors
       NoImplicitPrelude
+      OverloadedRecordDot
       OverloadedStrings
-      RecordWildCards
       TypeApplications
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path
   build-depends:
@@ -95,9 +96,10 @@ executable stack-lint-extra-deps
       FlexibleContexts
       GeneralizedNewtypeDeriving
       LambdaCase
+      NoFieldSelectors
       NoImplicitPrelude
+      OverloadedRecordDot
       OverloadedStrings
-      RecordWildCards
       TypeApplications
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path -threaded -rtsopts -with-rtsopts=-N
   build-depends:
@@ -120,9 +122,10 @@ test-suite doctest
       FlexibleContexts
       GeneralizedNewtypeDeriving
       LambdaCase
+      NoFieldSelectors
       NoImplicitPrelude
+      OverloadedRecordDot
       OverloadedStrings
-      RecordWildCards
       TypeApplications
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path
   build-depends:
@@ -152,9 +155,10 @@ test-suite hspec
       FlexibleContexts
       GeneralizedNewtypeDeriving
       LambdaCase
+      NoFieldSelectors
       NoImplicitPrelude
+      OverloadedRecordDot
       OverloadedStrings
-      RecordWildCards
       TypeApplications
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path
   build-depends:

@@ -5,6 +5,6 @@ module SLED.StackageResolver
 import SLED.Prelude
 
 newtype StackageResolver = StackageResolver
-  { unStackageResolver :: Text
+  { unwrap :: Text
   }
   deriving newtype (Eq, Ord, Show, FromJSON, ToJSON)

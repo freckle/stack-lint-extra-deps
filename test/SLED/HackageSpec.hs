@@ -24,7 +24,7 @@ spec = do
       eitherDecode body
         `shouldBe` Right
           HackageVersions
-            { hvNormal =
+            { normal =
                 catMaybes
                   [ parseVersion "1.9.1.1"
                   , parseVersion "1.9.1.0"
@@ -68,6 +68,6 @@ spec = do
                   , parseVersion "1.0.0.2"
                   , parseVersion "1.0.0.1"
                   ]
-            , hvUnpreferred = []
-            , hvDeprecated = []
+            , unpreferred = []
+            , deprecated = []
             }

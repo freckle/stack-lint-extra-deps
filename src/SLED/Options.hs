@@ -11,12 +11,12 @@ import SLED.StackageResolver
 import System.FilePath.Glob
 
 data Options = Options
-  { oPath :: FilePath
-  , oResolver :: Maybe StackageResolver
-  , oExcludes :: [Pattern]
-  , oChecks :: ChecksName
-  , oNoExit :: Bool
-  , oFilter :: Maybe Pattern
+  { path :: FilePath
+  , resolver :: Maybe StackageResolver
+  , excludes :: [Pattern]
+  , checks :: ChecksName
+  , noExit :: Bool
+  , filter :: Maybe Pattern
   }
 
 parseOptions :: IO Options

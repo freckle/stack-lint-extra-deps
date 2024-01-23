@@ -33,6 +33,6 @@ decodeExtraDep mv =
 
 matchPattern :: Pattern -> ExtraDep -> Bool
 matchPattern p = \case
-  Hackage HackageExtraDep {..} -> p `match` unpack (unPackageName hedPackage)
-  Git GitExtraDep {..} -> p `match` unpack (repositoryBase gedRepository)
+  Hackage hed -> p `match` unpack hed.package.unwrap
+  Git ged -> p `match` unpack (repositoryBase ged.repository)
   Other {} -> False

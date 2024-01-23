@@ -1,3 +1,5 @@
+{-# LANGUAGE DuplicateRecordFields #-}
+
 module SLED.GitExtraDep
   ( GitExtraDep (..)
   , decodeGitExtraDep
@@ -16,8 +18,8 @@ import Data.Yaml.Marked.Parse
 import Data.Yaml.Marked.Value
 
 data GitExtraDep = GitExtraDep
-  { gedRepository :: Repository
-  , gedCommit :: Marked CommitSHA
+  { repository :: Repository
+  , commit :: Marked CommitSHA
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)
@@ -33,28 +35,28 @@ decodeGitExtraDep = withObject "GitExtraDep" $ \o -> do
   GitExtraDep (markedItem repo) <$> (json =<< o .: "commit")
 
 newtype Repository = Repository
-  { unRepository :: Text
+  { unwrap :: Text
   }
   deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 repositoryBase :: Repository -> Text
-repositoryBase = dropPrefix ghBase . unRepository
+repositoryBase repo = dropPrefix ghBase repo.unwrap
 
 repositoryBaseName :: Repository -> Text
 repositoryBaseName = T.drop 1 . T.dropWhile (/= '/') . repositoryBase
 
 newtype CommitSHA = CommitSHA
-  { unCommitSHA :: Text
+  { unwrap :: Text
   }
   deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 newtype TruncatedCommitSHA = TruncatedCommitSHA
-  { unTruncatedCommitSHA :: Text
+  { unwrap :: Text
   }
   deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 truncateCommitSHA :: CommitSHA -> TruncatedCommitSHA
-truncateCommitSHA = TruncatedCommitSHA . T.take 7 . unCommitSHA
+truncateCommitSHA sha = TruncatedCommitSHA $ T.take 7 sha.unwrap
 
 ghBase :: Text
 ghBase = "https://github.com/"

@@ -22,6 +22,6 @@ spec = do
       parseStackageVersions body
         `shouldBe` Right
           StackageVersions
-            { svOnPage = unsafeVersion "2.1.0.0"
-            , svOnHackage = unsafeVersion "2.2.2.0"
+            { onPage = unsafeVersion "2.1.0.0"
+            , onHackage = unsafeVersion "2.2.2.0"
             }

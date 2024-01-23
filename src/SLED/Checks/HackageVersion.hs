@@ -7,18 +7,18 @@ import SLED.Prelude
 import SLED.Check
 
 checkHackageVersion :: Check
-checkHackageVersion = Check $ \ExternalDetails {..} extraDep -> do
-  Hackage hed@HackageExtraDep {..} <- pure $ markedItem extraDep
-  HackageVersions {..} <- edHackageVersions
+checkHackageVersion = Check $ \ed extraDep -> do
+  Hackage hed <- pure $ markedItem extraDep
+  hv <- ed.hackageVersions
 
-  current <- hedVersion
-  released <- headMaybe hvNormal
+  current <- hed.version
+  released <- headMaybe hv.normal
 
   guard $ released > current
 
   pure
     $ Suggestion
-      { sTarget = extraDep
-      , sAction = replaceHackageDep (hed <$ extraDep) released
-      , sDescription = "Newer version is available"
+      { target = extraDep
+      , action = replaceHackageDep (hed <$ extraDep) released
+      , description = "Newer version is available"
       }

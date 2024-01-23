@@ -19,13 +19,13 @@ spec = do
       let
         gitDep1 =
           GitExtraDep
-            { gedRepository = Repository "freckle/foo"
-            , gedCommit = markAtZero (CommitSHA "xxxxx") "<input>"
+            { repository = Repository "freckle/foo"
+            , commit = markAtZero (CommitSHA "xxxxx") "<input>"
             }
         gitDep2 =
           GitExtraDep
-            { gedRepository = Repository "freckle/foo"
-            , gedCommit = markAtZero (CommitSHA "yyyyy") "<input>"
+            { repository = Repository "freckle/foo"
+            , commit = markAtZero (CommitSHA "yyyyy") "<input>"
             }
         extraDep = markAtZero (Git gitDep1) "<input>"
 
@@ -34,11 +34,11 @@ spec = do
             $ NE.fromList
             $ map
               (,Nothing)
-              [ markedItem $ gedCommit gitDep2
+              [ markedItem gitDep2.commit
               , CommitSHA "abc456"
               , CommitSHA "def456"
               , CommitSHA "jkl789"
-              , markedItem $ gedCommit gitDep1
+              , markedItem gitDep1.commit
               , CommitSHA "xyz012"
               ]
 
@@ -53,9 +53,9 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = extraDep
-                      , sAction = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
-                      , sDescription = "There are newer commits (4) on the default branch"
+                      { target = extraDep
+                      , action = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
+                      , description = "There are newer commits (4) on the default branch"
                       }
                    ]
 
@@ -64,13 +64,13 @@ spec = do
       let
         gitDep1 =
           GitExtraDep
-            { gedRepository = Repository "freckle/foo"
-            , gedCommit = markAtZero (CommitSHA "xxxxx") "<input>"
+            { repository = Repository "freckle/foo"
+            , commit = markAtZero (CommitSHA "xxxxx") "<input>"
             }
         gitDep2 =
           GitExtraDep
-            { gedRepository = Repository "freckle/foo"
-            , gedCommit = markAtZero (CommitSHA "yyyyy") "<input>"
+            { repository = Repository "freckle/foo"
+            , commit = markAtZero (CommitSHA "yyyyy") "<input>"
             }
         extraDep = markAtZero (Git gitDep1) "<input>"
 
@@ -78,11 +78,11 @@ spec = do
         mockGit =
           Just
             $ NE.fromList
-              [ (markedItem $ gedCommit gitDep2, Just "v1.0.2")
+              [ (markedItem gitDep2.commit, Just "v1.0.2")
               , (CommitSHA "abc456", Nothing)
               , (CommitSHA "def456", Just "beta")
               , (CommitSHA "jkl789", Nothing)
-              , (markedItem $ gedCommit gitDep1, Just "v1.0.0")
+              , (markedItem gitDep1.commit, Just "v1.0.0")
               ]
 
       suggestions <-
@@ -96,13 +96,13 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { sTarget = extraDep
-                      , sAction = replaceGitExtraDep (gitDep1 <$ extraDep) $ unsafeVersion "1.0.2"
-                      , sDescription = "Newer, version-like tag exists"
+                      { target = extraDep
+                      , action = replaceGitExtraDep (gitDep1 <$ extraDep) $ unsafeVersion "1.0.2"
+                      , description = "Newer, version-like tag exists"
                       }
                    , Suggestion
-                      { sTarget = extraDep
-                      , sAction = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
-                      , sDescription = "There are newer commits (4) on the default branch"
+                      { target = extraDep
+                      , action = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
+                      , description = "There are newer commits (4) on the default branch"
                       }
                    ]
