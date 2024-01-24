@@ -7,6 +7,7 @@ import SLED.Prelude
 import qualified Data.Map.Strict as Map
 import SLED.Checks
 import SLED.Hackage
+import SLED.HackageExtraDep
 import SLED.PackageName
 import SLED.Stackage
 import SLED.Suggestion
@@ -34,10 +35,14 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { target = extraDep
-                      , action =
-                          replaceHackageDep (freckleApp1011 <$ extraDep) $ unsafeVersion "1.0.1.2"
-                      , description = "Newer version is available"
+                      { action =
+                          UpdateHackageVersion (freckleApp1011 <$ extraDep)
+                            $ HackageExtraDep
+                              { package = PackageName "freckle-app"
+                              , version = parseVersion "1.0.1.2"
+                              , checksum = Nothing
+                              }
+                      , reason = "Newer version is available"
                       }
                    ]
 
@@ -81,9 +86,8 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { target = extraDep
-                      , action = Remove
-                      , description = "Same or newer version is now in your resolver"
+                      { action = Remove extraDep
+                      , reason = "Same or newer version is now in your resolver"
                       }
                    ]
 
@@ -108,9 +112,8 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { target = extraDep
-                      , action = Remove
-                      , description = "Same or newer version is now in your resolver"
+                      { action = Remove extraDep
+                      , reason = "Same or newer version is now in your resolver"
                       }
                    ]
 

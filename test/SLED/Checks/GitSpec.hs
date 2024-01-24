@@ -9,8 +9,10 @@ import SLED.Prelude
 import qualified Data.List.NonEmpty as NE
 import SLED.Checks
 import SLED.GitExtraDep
+import SLED.HackageExtraDep
 import SLED.Suggestion
 import SLED.Test
+import SLED.Version
 
 spec :: Spec
 spec = do
@@ -53,9 +55,9 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { target = extraDep
-                      , action = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
-                      , description = "There are newer commits (4) on the default branch"
+                      { action =
+                          ReplaceCommit (markAtZero (CommitSHA "xxxxx") "<input>") (CommitSHA "yyyyy")
+                      , reason = "There are 4 newer commits on the default branch"
                       }
                    ]
 
@@ -96,13 +98,18 @@ spec = do
 
       suggestions
         `shouldBe` [ Suggestion
-                      { target = extraDep
-                      , action = replaceGitExtraDep (gitDep1 <$ extraDep) $ unsafeVersion "1.0.2"
-                      , description = "Newer, version-like tag exists"
+                      { action =
+                          ReplaceGitWithHackage (gitDep1 <$ extraDep)
+                            $ HackageExtraDep
+                              { package = PackageName "foo"
+                              , version = parseVersion "1.0.2"
+                              , checksum = Nothing
+                              }
+                      , reason = "Newer, version-like tag exists"
                       }
                    , Suggestion
-                      { target = extraDep
-                      , action = replaceGitExtraDepCommit gitDep1 (CommitSHA "yyyyy")
-                      , description = "There are newer commits (4) on the default branch"
+                      { action =
+                          ReplaceCommit (markAtZero (CommitSHA "xxxxx") "<input>") (CommitSHA "yyyyy")
+                      , reason = "There are 4 newer commits on the default branch"
                       }
                    ]

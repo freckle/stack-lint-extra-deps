@@ -17,6 +17,13 @@ checkRedundantGit = Check $ \ed extraDep -> do
     versions = sortOn (Down . fst) gd.commitCountToVersionTags
     equalVersions = map snd $ takeWhile ((>= 0) . fst) versions
     newerVersions = map snd $ takeWhile ((> 0) . fst) versions
+    replaceGitWithHackage v =
+      ReplaceGitWithHackage (ged <$ extraDep)
+        $ HackageExtraDep
+          { package = PackageName $ repositoryBaseName ged.repository
+          , version = Just v
+          , checksum = Nothing
+          }
 
     -- Attempt to suggest a version tag that exists on Hackage
     suggestHackage = do
@@ -24,14 +31,8 @@ checkRedundantGit = Check $ \ed extraDep -> do
       version <- headMaybe $ hv.normal `intersect` equalVersions
       pure
         $ Suggestion
-          { action =
-              ReplaceGitWithHackage (ged <$ extraDep)
-                $ HackageExtraDep
-                  { package = PackageName $ repositoryBaseName ged.repository
-                  , version = Just version
-                  , checksum = Nothing
-                  }
-          , reason = "Same-or-newer version exists on Hackage"
+          { action = replaceGitWithHackage version
+          , reason = "Same or newer version exists on Hackage"
           }
 
     -- Fall-back for when we can't find Hackage info, so just suggest if there
@@ -40,13 +41,7 @@ checkRedundantGit = Check $ \ed extraDep -> do
       version <- headMaybe newerVersions
       pure
         $ Suggestion
-          { action =
-              ReplaceGitWithHackage (ged <$ extraDep)
-                $ HackageExtraDep
-                  { package = PackageName $ repositoryBaseName ged.repository
-                  , version = Just version
-                  , checksum = Nothing
-                  }
+          { action = replaceGitWithHackage version
           , reason = "Newer, version-like tag exists"
           }
 

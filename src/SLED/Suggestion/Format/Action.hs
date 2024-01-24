@@ -7,6 +7,7 @@ module SLED.Suggestion.Format.Action
 import SLED.Prelude
 
 import Blammo.Logging.Colors
+import qualified Data.Text as T
 import SLED.ExtraDep
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
@@ -18,7 +19,7 @@ formatAction :: Colors -> SuggestionAction -> Text
 formatAction Colors {..} = \case
   Remove med ->
     green "Remove"
-      <> "  "
+      <> " "
       <> magenta (formatExtraDep $ markedItem med)
   ReplaceCommit msha sha ->
     yellow "Replace"
@@ -50,4 +51,7 @@ formatHackageExtraDep hed =
   hed.package.unwrap <> maybe "" (("-" <>) . pack . showVersion) hed.version
 
 formatGitExtraDep :: GitExtraDep -> Text
-formatGitExtraDep _ = "example/git@abc123"
+formatGitExtraDep ged =
+  repositoryBase ged.repository
+    <> "@"
+    <> T.take 7 (markedItem ged.commit).unwrap

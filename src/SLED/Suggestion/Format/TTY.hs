@@ -18,14 +18,15 @@ import System.FilePath (pathSeparator)
 formatSuggestionTTY :: FilePath -> ByteString -> Colors -> Suggestion -> Text
 formatSuggestionTTY cwd bs colors@Colors {..} s =
   T.unlines
-    [ formatAction colors s.action
-    , "        ├ "
-        <> pack (cwd <> [pathSeparator])
-        <> bold (formatMarkedLocation location)
-    , "        │ " <> formatMarkedContentIn colors location bs
-    , "        │ "
-    , "        └ " <> s.reason
-    ]
+    $ [ formatAction colors s.action
+      , "  ├ "
+          <> pack (cwd <> [pathSeparator])
+          <> bold (formatMarkedLocation location)
+      ]
+    <> map ("  │ " <>) (formatMarkedContentIn colors location bs)
+    <> [ "  │ "
+       , "  └ " <> s.reason
+       ]
  where
   location = suggestionLocation s
 
@@ -37,9 +38,9 @@ formatMarkedLocation m =
     <> ":"
     <> pack (show $ locationColumn $ markedLocationStart m)
 
-formatMarkedContentIn :: Colors -> Marked a -> ByteString -> Text
+formatMarkedContentIn :: Colors -> Marked a -> ByteString -> [Text]
 formatMarkedContentIn Colors {..} m bs =
-  T.intercalate "\n        │ " $ zipWith (<>) gutterLines contentLines
+  zipWith (<>) gutterLines contentLines
  where
   gutterLines =
     map gutterLine

@@ -9,8 +9,6 @@ import SLED.Prelude
 import SLED.ExtraDep
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
-import SLED.PackageName
-import SLED.Version
 
 data SuggestionAction
   = Remove (Marked ExtraDep)
