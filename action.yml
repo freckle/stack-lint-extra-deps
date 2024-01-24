@@ -9,13 +9,24 @@ inputs:
   arguments:
     description: Arguments to pass. Must be shell-escaped. Default is none.
     required: false
+  executable:
+    description: Name of stack-lint-extra-deps executable
+    required: false
+    default: stack-lint-extra-deps
+  no-install:
+    description: |
+      Skip installing the tool. Instead, the executable will be expected
+      to be installed and on PATH already.
+    required: false
+    default: false
 
 outputs: {}
 
 runs:
   using: composite
   steps:
-    - uses: pbrisbin/setup-tool-action@v1
+    - if: ${{ inputs.no-install != 'true' }}
+      uses: pbrisbin/setup-tool-action@v1
       with:
         name: stack-lint-extra-deps
         version: ${{ inputs.version }}
@@ -26,7 +37,7 @@ runs:
 
     - shell: bash
       run: |
-        stack-lint-extra-deps ${{ inputs.arguments }}
+        ${{inputs.executable}} ${{ inputs.arguments }}
       env:
         LOG_COLOR: always
         LOG_CONCURRENCY: 1

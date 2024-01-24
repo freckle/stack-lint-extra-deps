@@ -15,6 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: freckle/stack-action@v4
+      - uses: ./
+        with:
+          arguments: --format gha --path test/examples/lts-18.18.yaml --no-exit
+          executable: stack exec -- stack-lint-extra-deps
+          no-install: true
 
   test-action:
     strategy:
