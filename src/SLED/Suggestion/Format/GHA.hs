@@ -24,6 +24,6 @@ formatSuggestionGHA s = "::error " <> T.intercalate "," attrs <> "::" <> s.reaso
     , "title=" <> formatAction noColors s.action
     ]
   path = markedPath m
-  startLine = locationLine $ markedLocationStart m
-  endLine = locationLine $ markedLocationStart m
+  startLine = (+ 1) $ locationLine $ markedLocationStart m
+  endLine = (+ 1) $ locationLine $ markedLocationStart m
   m = suggestionLocation s

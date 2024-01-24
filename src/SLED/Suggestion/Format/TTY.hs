@@ -34,9 +34,9 @@ formatMarkedLocation :: Marked a -> Text
 formatMarkedLocation m =
   pack (markedPath m)
     <> ":"
-    <> pack (show $ locationLine $ markedLocationStart m)
+    <> pack (show $ (+ 1) $ locationLine $ markedLocationStart m)
     <> ":"
-    <> pack (show $ locationColumn $ markedLocationStart m)
+    <> pack (show $ (+ 1) $ locationColumn $ markedLocationStart m)
 
 formatMarkedContentIn :: Colors -> Marked a -> ByteString -> [Text]
 formatMarkedContentIn Colors {..} m bs =
@@ -82,10 +82,10 @@ formatMarkedContentIn Colors {..} m bs =
   markedWidth = maxColumn - minColumn
 
   startLine :: Int
-  startLine = fromIntegral $ locationLine $ markedLocationStart m
+  startLine = (+ 1) $ fromIntegral $ locationLine $ markedLocationStart m
 
   endLine :: Int
-  endLine = fromIntegral $ locationLine $ markedLocationEnd m
+  endLine = (+ 1) $ fromIntegral $ locationLine $ markedLocationEnd m
 
   startColumn :: Int
   startColumn = fromIntegral $ locationColumn $ markedLocationStart m
