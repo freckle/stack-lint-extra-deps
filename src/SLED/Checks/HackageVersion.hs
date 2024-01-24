@@ -18,7 +18,7 @@ checkHackageVersion = Check $ \ed extraDep -> do
 
   pure
     $ Suggestion
-      { target = extraDep
-      , action = replaceHackageDep (hed <$ extraDep) released
-      , description = "Newer version is available"
+      { action =
+          UpdateHackageVersion (hed <$ extraDep) $ hed {version = Just released}
+      , reason = "Newer version is available"
       }

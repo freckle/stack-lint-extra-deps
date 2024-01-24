@@ -16,7 +16,6 @@ checkRedundantHackage = Check $ \ed extraDep -> do
 
   pure
     $ Suggestion
-      { target = extraDep
-      , action = Remove
-      , description = "Same or newer version is now in your resolver"
+      { action = Remove extraDep
+      , reason = "Same or newer version is now in your resolver"
       }

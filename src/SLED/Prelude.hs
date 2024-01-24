@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 module SLED.Prelude
@@ -15,6 +16,7 @@ import Data.Yaml.Marked as X
 import GHC.Records as X
 import Relude as X
 
+import Data.Aeson (object)
 import qualified Data.List.NonEmpty as NE
 
 -- So we can say "Data.Text as X", not "as T"
@@ -30,5 +32,21 @@ headMaybe = fmap head . NE.nonEmpty
 infixr 8 <$$>
 
 instance ToJSON a => ToJSON (Marked a) where
-  toJSON = toJSON . markedItem -- TODO: include location
-  toEncoding = toEncoding . markedItem
+  toJSON Marked {..} =
+    object
+      [ "item" .= markedItem
+      , "path" .= markedPath
+      , "location"
+          .= object
+            [ "start" .= markedLocationStart
+            , "end" .= markedLocationEnd
+            ]
+      ]
+
+instance ToJSON Location where
+  toJSON Location {..} =
+    object
+      [ "index" .= locationIndex
+      , "line" .= locationLine
+      , "column" .= locationColumn
+      ]

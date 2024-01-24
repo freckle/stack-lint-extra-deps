@@ -24,7 +24,9 @@ instance FromJSON HackageExtraDep where
   parseJSON =
     withText "HackageExtraDep" $ either fail pure . hackageExtraDepFromText
 
-newtype SHA256 = SHA256 Text
+newtype SHA256 = SHA256
+  { unwrap :: Text
+  }
   deriving newtype (Eq, Show, FromJSON, ToJSON)
 
 hackageExtraDepFromText :: Text -> Either String HackageExtraDep

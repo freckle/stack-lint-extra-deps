@@ -49,6 +49,7 @@ library:
     - errors
     - exceptions
     - extra
+    - filepath
     - html-conduit
     - http-conduit
     - http-types

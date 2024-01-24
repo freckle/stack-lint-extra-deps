@@ -13,12 +13,15 @@ checkGitVersion = Check $ \ed extraDep -> do
 
   guard $ gd.commitCountToHead >= 1
 
+  let
+    areNewerCommits :: Int -> Text
+    areNewerCommits = \case
+      1 -> "is one newer commit"
+      n -> "are " <> pack (show n) <> " newer commits"
+
   pure
     $ Suggestion
-      { target = extraDep
-      , action = replaceGitExtraDepCommit ged gd.headCommit
-      , description =
-          "There are newer commits ("
-            <> pack (show gd.commitCountToHead)
-            <> ") on the default branch"
+      { action = ReplaceCommit ged.commit gd.headCommit
+      , reason =
+          "There " <> areNewerCommits gd.commitCountToHead <> " on the default branch"
       }

@@ -7,8 +7,6 @@ module SLED.GitExtraDep
   , repositoryBase
   , repositoryBaseName
   , CommitSHA (..)
-  , TruncatedCommitSHA (..)
-  , truncateCommitSHA
   ) where
 
 import SLED.Prelude
@@ -49,14 +47,6 @@ newtype CommitSHA = CommitSHA
   { unwrap :: Text
   }
   deriving newtype (Eq, Show, FromJSON, ToJSON)
-
-newtype TruncatedCommitSHA = TruncatedCommitSHA
-  { unwrap :: Text
-  }
-  deriving newtype (Eq, Show, FromJSON, ToJSON)
-
-truncateCommitSHA :: CommitSHA -> TruncatedCommitSHA
-truncateCommitSHA sha = TruncatedCommitSHA $ T.take 7 sha.unwrap
 
 ghBase :: Text
 ghBase = "https://github.com/"

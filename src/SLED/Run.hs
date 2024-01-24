@@ -8,6 +8,7 @@ module SLED.Run
 
 import SLED.Prelude
 
+import Blammo.Logging.Colors
 import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
@@ -19,6 +20,7 @@ import SLED.StackYaml
 import SLED.StackageResolver
 import SLED.Suggestion.Format
 import System.FilePath.Glob
+import UnliftIO.Directory (getCurrentDirectory)
 
 runSLED
   :: ( MonadThrow m
@@ -34,8 +36,12 @@ runSLED
   -> m ()
 runSLED options = do
   logDebug $ "Loading stack.yaml" :# ["path" .= options.path]
+
+  cwd <- getCurrentDirectory
   bs <- readFileBS options.path
-  stackYaml <- liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
+  colors <- getColorsLogger
+  stackYaml <-
+    liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
 
   let
     -- Mark an option resolver with the in-file resolver's position so that if
@@ -43,7 +49,7 @@ runSLED options = do
     resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
 
     -- TODO: Options
-    format = FormatJSON
+    format = FormatTTY colors
 
   suggestions <-
     runConduit
@@ -54,7 +60,7 @@ runSLED options = do
             suggestions <- lift $ runChecks resolver options.checks extraDep
             yieldMany suggestions
         )
-      .| iterM (pushLoggerLn . formatSuggestion format)
+      .| iterM (pushLoggerLn . formatSuggestion cwd bs format)
       .| sinkList
 
   let n = length suggestions
