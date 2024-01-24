@@ -43,13 +43,9 @@ runSLED options = do
   stackYaml <-
     liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
 
-  let
-    -- Mark an option resolver with the in-file resolver's position so that if
-    -- we do anything based on it, that's what we'll use
-    resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
-
-    -- TODO: Options
-    format = FormatTTY colors
+  -- Mark an option resolver with the in-file resolver's position so that if
+  -- we do anything based on it, that's what we'll use
+  let resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
 
   suggestions <-
     runConduit
@@ -60,7 +56,7 @@ runSLED options = do
             suggestions <- lift $ runChecks resolver options.checks extraDep
             yieldMany suggestions
         )
-      .| iterM (pushLoggerLn . formatSuggestion cwd bs format)
+      .| iterM (pushLoggerLn . formatSuggestion cwd bs colors options.format)
       .| sinkList
 
   let n = length suggestions

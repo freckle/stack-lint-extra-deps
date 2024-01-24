@@ -40,6 +40,9 @@ library
       SLED.StackYaml
       SLED.Suggestion
       SLED.Suggestion.Format
+      SLED.Suggestion.Format.Action
+      SLED.Suggestion.Format.GHA
+      SLED.Suggestion.Format.TTY
       SLED.Version
   other-modules:
       Paths_stack_lint_extra_deps

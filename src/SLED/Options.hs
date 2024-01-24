@@ -8,11 +8,13 @@ import SLED.Prelude
 import Options.Applicative
 import SLED.Checks
 import SLED.StackageResolver
+import SLED.Suggestion.Format
 import System.FilePath.Glob
 
 data Options = Options
   { path :: FilePath
   , resolver :: Maybe StackageResolver
+  , format :: Format
   , excludes :: [Pattern]
   , checks :: ChecksName
   , noExit :: Bool
@@ -47,6 +49,15 @@ options stackYaml =
                 <> metavar "RESOLVER"
                 <> help "Resolver to use, default is read from --path"
             )
+      )
+    <*> option
+      (eitherReader readFormat)
+      ( short 'f'
+          <> long "format"
+          <> metavar "tty|gha|json"
+          <> help "Format to output in"
+          <> value defaultFormat
+          <> showDefaultWith showFormat
       )
     <*> many
       ( strOption
