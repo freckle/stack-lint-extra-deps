@@ -3,9 +3,8 @@ description: Install and run stack-lint-extra-deps
 
 inputs:
   version:
-    description: Version of the tool to install
-    required: true
-    default: 1.2.0.0
+    description: Version of the tool to install. Default is latest.
+    required: false
   arguments:
     description: Arguments to pass. Must be shell-escaped. Default is none.
     required: false
@@ -25,12 +24,29 @@ outputs: {}
 runs:
   using: composite
   steps:
+    - id: prep
+      if: ${{ inputs.no-install != 'true' }}
+      shell: bash
+      run: |
+        version=${{ inputs.version }}
+
+        if [[ -z "$version" ]]; then
+          read -r version < <(
+            curl --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/releases |
+              jq '.[] | select(.draft|not) | select(.prerelease|not) | .tag_name' --raw-output |
+              head -n 1
+          )
+        fi
+
+        echo "Installing stack-lint-extra-deps $version"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
     - if: ${{ inputs.no-install != 'true' }}
       uses: pbrisbin/setup-tool-action@v1
       with:
         name: stack-lint-extra-deps
-        version: ${{ inputs.version }}
-        url: "https://github.com/freckle/{name}/releases/download/v{version}/{name}-{arch}-{os}.{ext}"
+        version: ${{ steps.prep.outputs.version }}
+        url: "https://github.com/freckle/{name}/releases/download/{version}/{name}-{arch}-{os}.{ext}"
         subdir: "{name}"
         os-darwin: osx
         arch-x64: x86_64
