@@ -9,8 +9,6 @@ module SLED.Test
 
     -- * Fixtures
   , lts1818
-  , freckleApp1011
-  , yesodFlowRoutesGitHub
 
     -- * Re-exports
   , module X
@@ -25,9 +23,9 @@ import qualified Data.Text as T
 import SLED.Checks as X
 import SLED.ExtraDep as X
 import SLED.GitDetails
-import SLED.GitExtraDep
+import SLED.GitExtraDep as X
 import SLED.Hackage
-import SLED.HackageExtraDep
+import SLED.HackageExtraDep as X
 import SLED.PackageName as X
 import SLED.Run (runChecks)
 import SLED.Stackage
@@ -179,19 +177,3 @@ markAtZero a =
 
 lts1818 :: Marked StackageResolver
 lts1818 = markAtZero (StackageResolver "lts-18.18")
-
-freckleApp1011 :: HackageExtraDep
-freckleApp1011 =
-  HackageExtraDep
-    { package = PackageName "freckle-app"
-    , version = Just $ unsafeVersion "1.0.1.1"
-    , checksum = Nothing
-    }
-
-yesodFlowRoutesGitHub :: GitExtraDep
-yesodFlowRoutesGitHub =
-  GitExtraDep
-    { repository = Repository "https://github.com/freckle/yesod-routes-flow"
-    , commit =
-        markAtZero (CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8")
-    }

@@ -6,6 +6,7 @@ import SLED.Prelude
 
 import SLED.Run
 import SLED.Test
+import SLED.Version
 
 spec :: Spec
 spec = do
@@ -51,3 +52,18 @@ spec = do
       it "is False is matching any given excludes" $ do
         Git yesodFlowRoutesGitHub
           `shouldNotSatisfy` shouldIncludeExtraDep Nothing ["*/yesod-*"]
+
+freckleApp1011 :: HackageExtraDep
+freckleApp1011 =
+  HackageExtraDep
+    { package = PackageName "freckle-app"
+    , version = parseVersion "1.0.1.1"
+    , checksum = Nothing
+    }
+
+yesodFlowRoutesGitHub :: GitExtraDep
+yesodFlowRoutesGitHub =
+  GitExtraDep
+    { repository = Repository "https://github.com/freckle/yesod-routes-flow"
+    , commit = markAtZero $ CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8"
+    }
