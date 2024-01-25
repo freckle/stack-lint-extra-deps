@@ -38,7 +38,7 @@ import SLED.Stackage
 import SLED.Version
 
 newtype TestAppT app m a = TestAppT
-  { unwrap :: ReaderT app (LoggingT m) a
+  { run :: ReaderT app (LoggingT m) a
   }
   deriving newtype
     ( Functor
@@ -100,7 +100,7 @@ instance Monad m => MonadGit (TestAppT TestApp m) where
 runTestAppT
   :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a
 runTestAppT action app =
-  runLoggerLoggingT app $ runReaderT action.unwrap app
+  runLoggerLoggingT app $ runReaderT action.run app
 
 data TestApp = TestApp
   { logger :: Logger
