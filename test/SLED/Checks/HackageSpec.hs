@@ -35,7 +35,7 @@ spec = do
           , version = parseVersion "1.0.1.1"
           , checksum = Nothing
           }
-        `shouldReturn` [UpdateHackageVersion version]
+        `shouldReturn` Just (UpdateHackageVersion version)
 
     it "doesn't suggest deprecated versions" $ do
       let
@@ -50,7 +50,7 @@ spec = do
           , version = parseVersion "1.0.1.1"
           , checksum = Nothing
           }
-        `shouldReturn` []
+        `shouldReturn` Nothing
 
   describe "checkRedundantHackage" $ do
     it "suggests when stackage has your dep" $ do
@@ -70,7 +70,7 @@ spec = do
             }
 
       runHackageChecks mempty mockStackage hed
-        `shouldReturn` [Remove]
+        `shouldReturn` Just Remove
 
     it "suggests when stackage has a newer dep" $ do
       let
@@ -88,7 +88,7 @@ spec = do
           , version = Just $ unsafeVersion "1.0.1.1"
           , checksum = Nothing
           }
-        `shouldReturn` [Remove]
+        `shouldReturn` Just Remove
 
     it "does not suggest when stackage has an older dep" $ do
       let
@@ -106,7 +106,7 @@ spec = do
           , version = Just $ unsafeVersion "1.0.1.1"
           , checksum = Nothing
           }
-        `shouldReturn` []
+        `shouldReturn` Nothing
 
 hackageVersions
   :: [String]

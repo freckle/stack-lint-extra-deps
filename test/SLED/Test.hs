@@ -134,7 +134,7 @@ runTestChecks
   -> Marked StackageResolver
   -> ChecksName
   -> ExtraDep
-  -> m [SuggestionAction]
+  -> m (Maybe SuggestionAction)
 runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraDep = do
   testApp <-
     TestApp
@@ -151,9 +151,9 @@ runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraD
           , markedLocationEnd = Location 21 1 19
           }
 
-  msuggestions <- runTestAppT (runChecks resolver checksName mextraDep) testApp
+  mSuggestion <- runTestAppT (runChecks resolver checksName mextraDep) testApp
 
-  for msuggestions $ \msuggestion -> do
+  for mSuggestion $ \msuggestion -> do
     let suggestion = markedItem msuggestion
 
     liftIO $ do

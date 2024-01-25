@@ -1,3 +1,5 @@
+{-# LANGUAGE ViewPatterns #-}
+
 module SLED.Run
   ( runSLED
 
@@ -12,6 +14,7 @@ import Blammo.Logging.Colors
 import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
+import qualified Data.List.NonEmpty as NE
 import Data.Yaml.Marked.Decode
 import SLED.Check
 import SLED.Checks
@@ -51,11 +54,7 @@ runSLED options = do
     runConduit
       $ yieldMany stackYaml.extraDeps
       .| filterC (shouldIncludeExtraDep options.filter options.excludes . markedItem)
-      .| awaitForever
-        ( \extraDep -> do
-            suggestions <- lift $ runChecks resolver options.checks extraDep
-            yieldMany suggestions
-        )
+      .| concatMapMC (runChecks resolver options.checks)
       .| iterM (pushLoggerLn . formatSuggestion cwd bs colors options.format)
       .| sinkList
 
@@ -82,14 +81,23 @@ runChecks
   => Marked StackageResolver
   -> ChecksName
   -> Marked ExtraDep
-  -> m [Marked Suggestion]
-runChecks resolver checksName extraDep = do
-  logDebug
-    $ "Fetching external details"
-    :# ["dependency" .= markedItem extraDep]
-  details <-
-    getExternalDetails (markedItem resolver) $ markedItem extraDep
+  -> m (Maybe (Marked Suggestion))
+runChecks (markedItem -> resolver) checksName m@(markedItem -> extraDep) = do
+  logDebug $ "Fetching external details" :# ["dependency" .= extraDep]
 
-  pure
-    $ mapMaybe (runCheck details extraDep)
-    $ checksByName checksName
+  details <-
+    getExternalDetails resolver extraDep
+
+  let mactions =
+        NE.nonEmpty
+          $ mapMaybe (\check -> check.run details extraDep)
+          $ checksByName checksName
+
+  for mactions $ \actions -> do
+    -- Making multiple suggestions on one extra-dep is conflicting.
+    -- We'll use the semigroup instance to give precendence and fold
+    -- them down to one per extra-dep.
+    let suggestion = Suggestion {target = extraDep, action = sconcat actions}
+
+    -- And mark the Suggestion at the point of the ExtraDep
+    pure $ suggestion <$ m

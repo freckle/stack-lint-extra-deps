@@ -40,7 +40,7 @@ spec = do
               ]
 
       runGitChecks mockGit GitExtraDep {repository = repo, commit = mcommitX}
-        `shouldReturn` [UpdateGitCommit commitY]
+        `shouldReturn` Just (UpdateGitCommit commitY)
 
   describe "checkRedundantGit" $ do
     it "suggests if there are newer version-like tags" $ do
@@ -62,11 +62,11 @@ spec = do
               ]
 
       runGitChecks mockGit ged
-        `shouldReturn` [ ReplaceGitWithHackage
-                          $ HackageExtraDep
-                            { package = PackageName "foo"
-                            , version = parseVersion "1.0.2"
-                            , checksum = Nothing
-                            }
-                       , UpdateGitCommit commitY
-                       ]
+        `shouldReturn` Just
+          ( ReplaceGitWithHackage
+              $ HackageExtraDep
+                { package = PackageName "foo"
+                , version = parseVersion "1.0.2"
+                , checksum = Nothing
+                }
+          )
