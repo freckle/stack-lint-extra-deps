@@ -7,18 +7,12 @@ module SLED.Checks.GitSpec
 import SLED.Prelude
 
 import qualified Data.List.NonEmpty as NE
-import SLED.Checks
-import SLED.GitExtraDep
-import SLED.HackageExtraDep
 import SLED.Suggestion
 import SLED.Test
 import SLED.Version
 
 spec :: Spec
 spec = do
-  let runGitChecks mockGit =
-        runTestChecks mempty mempty mockGit lts1818 GitChecks . Git
-
   describe "checkGitVersion" $ do
     it "suggests if there are newer commits" $ do
       let

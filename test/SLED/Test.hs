@@ -1,7 +1,9 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 module SLED.Test
-  ( runTestChecks
+  ( runGitChecks
+  , runHackageChecks
+  , runTestChecks
 
     -- * Helpers
   , unsafeVersion
@@ -14,25 +16,26 @@ module SLED.Test
   , module X
   ) where
 
+import SLED.Checks as X
+import SLED.ExtraDep as X
+import SLED.GitDetails
+import SLED.GitExtraDep as X
+import SLED.HackageExtraDep as X
+import SLED.PackageName as X
+import SLED.StackageResolver as X
+import SLED.Suggestion as X
+import Test.Hspec as X
+
 import SLED.Prelude
 
 import Blammo.Logging.Logger (newTestLogger)
 import Data.List (elemIndex)
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as T
-import SLED.Checks as X
-import SLED.ExtraDep as X
-import SLED.GitDetails
-import SLED.GitExtraDep as X
 import SLED.Hackage
-import SLED.HackageExtraDep as X
-import SLED.PackageName as X
 import SLED.Run (runChecks)
 import SLED.Stackage
-import SLED.StackageResolver as X
-import SLED.Suggestion as X
 import SLED.Version
-import Test.Hspec as X
 
 newtype TestAppT app m a = TestAppT
   { unwrap :: ReaderT app (LoggingT m) a
@@ -123,6 +126,24 @@ withMockCommits f = do
   case mCommits of
     Nothing -> error "Git operation used without setting TestApp.commits"
     Just cs -> pure $ f cs
+
+runGitChecks
+  :: MonadUnliftIO m
+  => Maybe (NonEmpty (CommitSHA, Maybe Text))
+  -> GitExtraDep
+  -> m (Maybe SuggestionAction)
+runGitChecks mockGit =
+  runTestChecks mempty mempty mockGit lts1818 GitChecks . Git
+
+runHackageChecks
+  :: MonadUnliftIO m
+  => Map PackageName HackageVersions
+  -> Map StackageResolver (Map PackageName StackageVersions)
+  -> HackageExtraDep
+  -> m (Maybe SuggestionAction)
+runHackageChecks mockHackage mockStackage =
+  runTestChecks mockHackage mockStackage Nothing lts1818 HackageChecks
+    . Hackage
 
 runTestChecks
   :: MonadUnliftIO m

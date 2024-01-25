@@ -5,9 +5,7 @@ module SLED.Checks.HackageSpec
 import SLED.Prelude
 
 import qualified Data.Map.Strict as Map
-import SLED.Checks
 import SLED.Hackage
-import SLED.HackageExtraDep
 import SLED.PackageName
 import SLED.Stackage
 import SLED.Suggestion
@@ -16,10 +14,6 @@ import SLED.Version
 
 spec :: Spec
 spec = do
-  let runHackageChecks mockHackage mockStackage =
-        runTestChecks mockHackage mockStackage Nothing lts1818 HackageChecks
-          . Hackage
-
   describe "checkHackageVersion" $ do
     it "suggests newer normal versions" $ do
       let
@@ -59,9 +53,7 @@ spec = do
         mockStackage =
           Map.singleton
             (markedItem lts1818)
-            ( Map.singleton package
-                $ stackageVersions "1.0.1.1" "1.0.1.2"
-            )
+            (Map.singleton package $ stackageVersions "1.0.1.1" "1.0.1.2")
         hed =
           HackageExtraDep
             { package = package
