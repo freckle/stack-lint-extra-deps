@@ -16,9 +16,8 @@ import SLED.Version
 
 spec :: Spec
 spec = do
-  let runGitChecks mockGit ged =
-        runTestChecks mempty mempty mockGit lts1818 GitChecks
-          $ markAtZero (Git ged) "<input>"
+  let runGitChecks mockGit =
+        runTestChecks mempty mempty mockGit lts1818 GitChecks . markAtZero . Git
 
   describe "checkGitVersion" $ do
     it "suggests if there are newer commits" $ do
@@ -26,7 +25,7 @@ spec = do
         repo = Repository "freckle/foo"
         commitX = CommitSHA "xxxxx"
         commitY = CommitSHA "yyyyy"
-        mcommitX = markAtZero commitX "<input>"
+        mcommitX = markAtZero commitX
         mockGit =
           Just
             $ NE.fromList
@@ -53,9 +52,9 @@ spec = do
         repo = Repository "freckle/foo"
         commitX = CommitSHA "xxxxx"
         commitY = CommitSHA "yyyyy"
-        mcommitX = markAtZero commitX "<input>"
+        mcommitX = markAtZero commitX
         ged = GitExtraDep {repository = repo, commit = mcommitX}
-        mged = markAtZero ged "<input>"
+        mged = markAtZero ged
         mockGit :: Maybe (NonEmpty (CommitSHA, Maybe Text))
         mockGit =
           Just

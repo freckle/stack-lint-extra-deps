@@ -150,17 +150,17 @@ unsafeVersion s = fromMaybe err $ parseVersion s
  where
   err = error $ pack $ "Invalid version: " <> s
 
-markAtZero :: a -> FilePath -> Marked a
-markAtZero a fp =
+markAtZero :: a -> Marked a
+markAtZero a =
   Marked
     { markedItem = a
-    , markedPath = fp
+    , markedPath = "<input>"
     , markedLocationStart = Location 0 0 0
     , markedLocationEnd = Location 0 0 0
     }
 
 lts1818 :: Marked StackageResolver
-lts1818 = markAtZero (StackageResolver "lts-18.18") "<input>"
+lts1818 = markAtZero (StackageResolver "lts-18.18")
 
 freckleApp1011 :: HackageExtraDep
 freckleApp1011 =
@@ -175,5 +175,5 @@ yesodFlowRoutesGitHub =
   GitExtraDep
     { repository = Repository "https://github.com/freckle/yesod-routes-flow"
     , commit =
-        markAtZero (CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8") "<input>"
+        markAtZero (CommitSHA "2a9cd873880956dd9a0999b593022d3c746324e8")
     }

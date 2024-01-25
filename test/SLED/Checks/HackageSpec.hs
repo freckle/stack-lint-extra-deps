@@ -22,7 +22,7 @@ spec = do
         mockHackage =
           Map.singleton (PackageName "freckle-app")
             $ hackageVersions ["1.0.1.2"] [] []
-        extraDep = markAtZero (Hackage freckleApp1011) "<input>"
+        extraDep = markAtZero (Hackage freckleApp1011)
 
       suggestions <-
         runTestChecks
@@ -51,7 +51,7 @@ spec = do
         mockHackage =
           Map.singleton (PackageName "freckle-app")
             $ hackageVersions [] [] ["1.0.1.2"]
-        extraDep = markAtZero (Hackage freckleApp1011) "<input>"
+        extraDep = markAtZero (Hackage freckleApp1011)
 
       suggestions <-
         runTestChecks
@@ -73,7 +73,7 @@ spec = do
             ( Map.singleton (PackageName "freckle-app")
                 $ stackageVersions "1.0.1.1" "1.0.1.2"
             )
-        extraDep = markAtZero (Hackage freckleApp1011) "<input>"
+        extraDep = markAtZero (Hackage freckleApp1011)
 
       suggestions <-
         runTestChecks
@@ -99,7 +99,7 @@ spec = do
             ( Map.singleton (PackageName "freckle-app")
                 $ stackageVersions "1.0.1.2" "1.0.1.2"
             )
-        extraDep = markAtZero (Hackage freckleApp1011) "<input>"
+        extraDep = markAtZero (Hackage freckleApp1011)
 
       suggestions <-
         runTestChecks
@@ -125,7 +125,7 @@ spec = do
             ( Map.singleton (PackageName "freckle-app")
                 $ stackageVersions "1.0.1.0" "1.0.1.2"
             )
-        extraDep = markAtZero (Hackage freckleApp1011) "<input>"
+        extraDep = markAtZero (Hackage freckleApp1011)
 
       suggestions <-
         runTestChecks
