@@ -1,4 +1,14 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.7...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.0.0...main)
+
+## [v1.2.0.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.7...v1.2.0.0)
+
+- Introduce `--format` with the following values:
+
+  - `tty`, the default, an improved version of the previous format
+  - `gha`, produces output that GitHub Actions will parse as annotations
+  - `json`
+
+- Include location information in suggestion details
 
 ## [v1.1.0.7](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.6...v1.1.0.7)
 
