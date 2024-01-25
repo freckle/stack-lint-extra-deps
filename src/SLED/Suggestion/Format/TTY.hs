@@ -11,6 +11,8 @@ import qualified Data.ByteString.Char8 as BS8
 import Data.Char (isSpace)
 import qualified Data.List.NonEmpty.Extra as NE
 import qualified Data.Text as T
+import SLED.ExtraDep
+import SLED.GitExtraDep
 import SLED.Suggestion
 import SLED.Suggestion.Format.Action
 import System.FilePath (pathSeparator)
@@ -24,12 +26,17 @@ formatSuggestionTTY cwd bs colors@Colors {..} m =
           <> pack (cwd <> [pathSeparator])
           <> bold (formatMarkedLocation m)
       ]
-    <> map ("  │ " <>) (formatMarkedContentIn colors m bs)
+    <> map ("  │ " <>) (formatMarkedContentIn colors contentMark bs)
     <> [ "  │ "
        , "  └ " <> suggestionActionDescription s.action
        ]
  where
   s = markedItem m
+
+  -- For updating git commits, mark the commit itself
+  contentMark = case (s.target, s.action) of
+    (Git ged, UpdateGitCommit {}) -> void $ ged.commit
+    _ -> void m
 
 formatMarkedLocation :: Marked a -> Text
 formatMarkedLocation m =
