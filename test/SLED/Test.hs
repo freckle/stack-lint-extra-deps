@@ -5,7 +5,7 @@ module SLED.Test
 
     -- * Helpers
   , unsafeVersion
-  , toHackageExtraDepUnsafe
+  , markAtZero
 
     -- * Fixtures
   , lts1818
@@ -150,10 +150,14 @@ unsafeVersion s = fromMaybe err $ parseVersion s
  where
   err = error $ pack $ "Invalid version: " <> s
 
-toHackageExtraDepUnsafe :: HasCallStack => ExtraDep -> HackageExtraDep
-toHackageExtraDepUnsafe = \case
-  Hackage x -> x
-  x -> error $ "Expected HackageExtraDep, got: " <> show x
+markAtZero :: a -> FilePath -> Marked a
+markAtZero a fp =
+  Marked
+    { markedItem = a
+    , markedPath = fp
+    , markedLocationStart = Location 0 0 0
+    , markedLocationEnd = Location 0 0 0
+    }
 
 lts1818 :: Marked StackageResolver
 lts1818 = markAtZero (StackageResolver "lts-18.18") "<input>"

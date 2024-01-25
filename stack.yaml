@@ -1,4 +1,4 @@
 resolver: lts-21.4
 extra-deps:
   - github: pbrisbin/yaml-marked
-    commit: 559947dcacb3f8fd9971e06ff3ecf0531b1c295a
+    commit: 8fe21f6cf13b78f14c0fa41c84456b5dd32bd098
