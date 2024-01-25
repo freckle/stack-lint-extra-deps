@@ -133,8 +133,8 @@ runTestChecks
   -> Maybe (NonEmpty (CommitSHA, Maybe Text))
   -> Marked StackageResolver
   -> ChecksName
-  -> Marked ExtraDep
-  -> m [Suggestion]
+  -> ExtraDep
+  -> m [SuggestionAction]
 runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraDep = do
   testApp <-
     TestApp
@@ -143,7 +143,25 @@ runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraD
       <*> pure mockStackage
       <*> pure mockCommitSHAs
 
-  runTestAppT (runChecks resolver checksName extraDep) testApp
+  let mextraDep =
+        Marked
+          { markedItem = extraDep
+          , markedPath = "example.yaml"
+          , markedLocationStart = Location 10 1 11
+          , markedLocationEnd = Location 21 1 19
+          }
+
+  msuggestions <- runTestAppT (runChecks resolver checksName mextraDep) testApp
+
+  for msuggestions $ \msuggestion -> do
+    let suggestion = markedItem msuggestion
+
+    liftIO $ do
+      -- Assert the suggestion is for the right thing at the right mark
+      void msuggestion `shouldBe` void mextraDep
+      suggestion.target `shouldBe` extraDep
+
+    pure $ suggestion.action
 
 unsafeVersion :: HasCallStack => String -> Version
 unsafeVersion s = fromMaybe err $ parseVersion s

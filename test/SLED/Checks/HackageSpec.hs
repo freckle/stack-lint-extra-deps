@@ -16,127 +16,97 @@ import SLED.Version
 
 spec :: Spec
 spec = do
+  let runHackageChecks mockHackage mockStackage =
+        runTestChecks mockHackage mockStackage Nothing lts1818 HackageChecks
+          . Hackage
+
   describe "checkHackageVersion" $ do
     it "suggests newer normal versions" $ do
       let
-        mockHackage =
-          Map.singleton (PackageName "freckle-app")
-            $ hackageVersions ["1.0.1.2"] [] []
-        extraDep = markAtZero (Hackage freckleApp1011)
+        package = PackageName "freckle-app"
+        version = unsafeVersion "1.0.1.2"
+        mockHackage = Map.singleton package $ hackageVersions ["1.0.1.2"] [] []
 
-      suggestions <-
-        runTestChecks
-          mockHackage
-          mempty
-          Nothing
-          lts1818
-          HackageChecks
-          extraDep
-
-      suggestions
-        `shouldBe` [ Suggestion
-                      { action =
-                          UpdateHackageVersion (freckleApp1011 <$ extraDep)
-                            $ HackageExtraDep
-                              { package = PackageName "freckle-app"
-                              , version = parseVersion "1.0.1.2"
-                              , checksum = Nothing
-                              }
-                      , reason = "Newer version is available"
-                      }
-                   ]
+      runHackageChecks
+        mockHackage
+        mempty
+        HackageExtraDep
+          { package = package
+          , version = parseVersion "1.0.1.1"
+          , checksum = Nothing
+          }
+        `shouldReturn` [UpdateHackageVersion version]
 
     it "doesn't suggest deprecated versions" $ do
       let
-        mockHackage =
-          Map.singleton (PackageName "freckle-app")
-            $ hackageVersions [] [] ["1.0.1.2"]
-        extraDep = markAtZero (Hackage freckleApp1011)
+        package = PackageName "freckle-app"
+        mockHackage = Map.singleton package $ hackageVersions [] [] ["1.0.1.2"]
 
-      suggestions <-
-        runTestChecks
-          mockHackage
-          mempty
-          Nothing
-          lts1818
-          HackageChecks
-          extraDep
-
-      suggestions `shouldBe` []
+      runHackageChecks
+        mockHackage
+        mempty
+        HackageExtraDep
+          { package = package
+          , version = parseVersion "1.0.1.1"
+          , checksum = Nothing
+          }
+        `shouldReturn` []
 
   describe "checkRedundantHackage" $ do
     it "suggests when stackage has your dep" $ do
       let
+        package = PackageName "freckle-app"
         mockStackage =
           Map.singleton
             (markedItem lts1818)
-            ( Map.singleton (PackageName "freckle-app")
+            ( Map.singleton package
                 $ stackageVersions "1.0.1.1" "1.0.1.2"
             )
-        extraDep = markAtZero (Hackage freckleApp1011)
+        hed =
+          HackageExtraDep
+            { package = package
+            , version = parseVersion "1.0.1.1"
+            , checksum = Nothing
+            }
 
-      suggestions <-
-        runTestChecks
-          mempty
-          mockStackage
-          Nothing
-          lts1818
-          HackageChecks
-          extraDep
-
-      suggestions
-        `shouldBe` [ Suggestion
-                      { action = Remove extraDep
-                      , reason = "Same or newer version is now in your resolver"
-                      }
-                   ]
+      runHackageChecks mempty mockStackage hed
+        `shouldReturn` [Remove]
 
     it "suggests when stackage has a newer dep" $ do
       let
+        package = PackageName "freckle-app"
         mockStackage =
           Map.singleton
             (markedItem lts1818)
-            ( Map.singleton (PackageName "freckle-app")
-                $ stackageVersions "1.0.1.2" "1.0.1.2"
-            )
-        extraDep = markAtZero (Hackage freckleApp1011)
+            (Map.singleton package $ stackageVersions "1.0.1.2" "1.0.1.2")
 
-      suggestions <-
-        runTestChecks
-          mempty
-          mockStackage
-          Nothing
-          lts1818
-          HackageChecks
-          extraDep
-
-      suggestions
-        `shouldBe` [ Suggestion
-                      { action = Remove extraDep
-                      , reason = "Same or newer version is now in your resolver"
-                      }
-                   ]
+      runHackageChecks
+        mempty
+        mockStackage
+        HackageExtraDep
+          { package = package
+          , version = Just $ unsafeVersion "1.0.1.1"
+          , checksum = Nothing
+          }
+        `shouldReturn` [Remove]
 
     it "does not suggest when stackage has an older dep" $ do
       let
+        package = PackageName "freckle-app"
         mockStackage =
           Map.singleton
             (markedItem lts1818)
-            ( Map.singleton (PackageName "freckle-app")
-                $ stackageVersions "1.0.1.0" "1.0.1.2"
-            )
-        extraDep = markAtZero (Hackage freckleApp1011)
+            (Map.singleton package $ stackageVersions "1.0.1.0" "1.0.1.2")
 
-      suggestions <-
-        runTestChecks
-          mempty
-          mockStackage
-          Nothing
-          lts1818
-          HackageChecks
-          extraDep
-
-      suggestions `shouldBe` []
+      runHackageChecks
+        mempty
+        mockStackage
+        HackageExtraDep
+          { package = package
+          , version = Just $ unsafeVersion "1.0.1.1"
+          , checksum = Nothing
+          }
+        `shouldReturn` []
 
 hackageVersions
   :: [String]

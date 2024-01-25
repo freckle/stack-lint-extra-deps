@@ -10,7 +10,7 @@ import SLED.PackageName
 
 checkRedundantGit :: Check
 checkRedundantGit = Check $ \ed extraDep -> do
-  Git ged <- pure $ markedItem extraDep
+  Git ged <- pure extraDep
   gd <- ed.gitDetails
 
   let
@@ -18,8 +18,8 @@ checkRedundantGit = Check $ \ed extraDep -> do
     equalVersions = map snd $ takeWhile ((>= 0) . fst) versions
     newerVersions = map snd $ takeWhile ((> 0) . fst) versions
     replaceGitWithHackage v =
-      ReplaceGitWithHackage (ged <$ extraDep)
-        $ HackageExtraDep
+      ReplaceGitWithHackage
+        HackageExtraDep
           { package = PackageName $ repositoryBaseName ged.repository
           , version = Just v
           , checksum = Nothing
@@ -29,20 +29,12 @@ checkRedundantGit = Check $ \ed extraDep -> do
     suggestHackage = do
       hv <- ed.hackageVersions
       version <- headMaybe $ hv.normal `intersect` equalVersions
-      pure
-        $ Suggestion
-          { action = replaceGitWithHackage version
-          , reason = "Same or newer version exists on Hackage"
-          }
+      pure $ replaceGitWithHackage version
 
     -- Fall-back for when we can't find Hackage info, so just suggest if there
     -- are newer version-like tags
     suggestGit = do
       version <- headMaybe newerVersions
-      pure
-        $ Suggestion
-          { action = replaceGitWithHackage version
-          , reason = "Newer, version-like tag exists"
-          }
+      pure $ replaceGitWithHackage version
 
   suggestHackage <|> suggestGit

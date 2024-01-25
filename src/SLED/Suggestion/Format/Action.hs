@@ -15,28 +15,28 @@ import SLED.PackageName
 import SLED.Suggestion
 import SLED.Version
 
-formatAction :: Colors -> SuggestionAction -> Text
-formatAction Colors {..} = \case
-  Remove med ->
+formatAction :: Colors -> ExtraDep -> SuggestionAction -> Text
+formatAction Colors {..} target = \case
+  Remove ->
     green "Remove"
       <> " "
-      <> magenta (formatExtraDep $ markedItem med)
-  ReplaceCommit msha sha ->
-    yellow "Replace"
+      <> magenta (formatExtraDep target)
+  UpdateGitCommit sha ->
+    yellow "Update"
       <> " "
-      <> magenta (markedItem msha).unwrap
-      <> " with "
+      <> magenta (formatExtraDep target)
+      <> " to "
       <> cyan sha.unwrap
-  ReplaceGitWithHackage mged hed ->
+  UpdateHackageVersion version ->
+    yellow "Update"
+      <> " "
+      <> magenta (formatExtraDep target)
+      <> " to "
+      <> cyan (pack $ showVersion version)
+  ReplaceGitWithHackage hed ->
     yellow "Replace"
       <> " "
-      <> magenta (formatGitExtraDep $ markedItem mged)
-      <> " with "
-      <> cyan (formatHackageExtraDep hed)
-  UpdateHackageVersion mhed hed ->
-    yellow "Replace"
-      <> " "
-      <> magenta (formatHackageExtraDep $ markedItem mhed)
+      <> magenta (formatExtraDep target)
       <> " with "
       <> cyan (formatHackageExtraDep hed)
 

@@ -17,7 +17,7 @@ import SLED.Version
 spec :: Spec
 spec = do
   let runGitChecks mockGit =
-        runTestChecks mempty mempty mockGit lts1818 GitChecks . markAtZero . Git
+        runTestChecks mempty mempty mockGit lts1818 GitChecks . Git
 
   describe "checkGitVersion" $ do
     it "suggests if there are newer commits" $ do
@@ -40,11 +40,7 @@ spec = do
               ]
 
       runGitChecks mockGit GitExtraDep {repository = repo, commit = mcommitX}
-        `shouldReturn` [ Suggestion
-                          { action = ReplaceCommit mcommitX commitY
-                          , reason = "There are 4 newer commits on the default branch"
-                          }
-                       ]
+        `shouldReturn` [UpdateGitCommit commitY]
 
   describe "checkRedundantGit" $ do
     it "suggests if there are newer version-like tags" $ do
@@ -54,7 +50,6 @@ spec = do
         commitY = CommitSHA "yyyyy"
         mcommitX = markAtZero commitX
         ged = GitExtraDep {repository = repo, commit = mcommitX}
-        mged = markAtZero ged
         mockGit :: Maybe (NonEmpty (CommitSHA, Maybe Text))
         mockGit =
           Just
@@ -67,18 +62,11 @@ spec = do
               ]
 
       runGitChecks mockGit ged
-        `shouldReturn` [ Suggestion
-                          { action =
-                              ReplaceGitWithHackage mged
-                                $ HackageExtraDep
-                                  { package = PackageName "foo"
-                                  , version = parseVersion "1.0.2"
-                                  , checksum = Nothing
-                                  }
-                          , reason = "Newer, version-like tag exists"
-                          }
-                       , Suggestion
-                          { action = ReplaceCommit mcommitX commitY
-                          , reason = "There are 4 newer commits on the default branch"
-                          }
+        `shouldReturn` [ ReplaceGitWithHackage
+                          $ HackageExtraDep
+                            { package = PackageName "foo"
+                            , version = parseVersion "1.0.2"
+                            , checksum = Nothing
+                            }
+                       , UpdateGitCommit commitY
                        ]

@@ -15,20 +15,21 @@ import SLED.Suggestion
 import SLED.Suggestion.Format.Action
 import System.FilePath (pathSeparator)
 
-formatSuggestionTTY :: FilePath -> ByteString -> Colors -> Suggestion -> Text
-formatSuggestionTTY cwd bs colors@Colors {..} s =
+formatSuggestionTTY
+  :: FilePath -> ByteString -> Colors -> Marked Suggestion -> Text
+formatSuggestionTTY cwd bs colors@Colors {..} m =
   T.unlines
-    $ [ formatAction colors s.action
+    $ [ formatAction colors s.target s.action
       , "  ├ "
           <> pack (cwd <> [pathSeparator])
-          <> bold (formatMarkedLocation location)
+          <> bold (formatMarkedLocation m)
       ]
-    <> map ("  │ " <>) (formatMarkedContentIn colors location bs)
+    <> map ("  │ " <>) (formatMarkedContentIn colors m bs)
     <> [ "  │ "
-       , "  └ " <> s.reason
+       , "  └ " <> suggestionActionDescription s.action
        ]
  where
-  location = suggestionLocation s
+  s = markedItem m
 
 formatMarkedLocation :: Marked a -> Text
 formatMarkedLocation m =

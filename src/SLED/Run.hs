@@ -82,7 +82,7 @@ runChecks
   => Marked StackageResolver
   -> ChecksName
   -> Marked ExtraDep
-  -> m [Suggestion]
+  -> m [Marked Suggestion]
 runChecks resolver checksName extraDep = do
   logDebug
     $ "Fetching external details"
@@ -91,5 +91,5 @@ runChecks resolver checksName extraDep = do
     getExternalDetails (markedItem resolver) $ markedItem extraDep
 
   pure
-    $ mapMaybe (\check -> check.run details extraDep)
+    $ mapMaybe (runCheck details extraDep)
     $ checksByName checksName

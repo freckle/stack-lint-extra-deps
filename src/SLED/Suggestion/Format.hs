@@ -42,7 +42,7 @@ formatSuggestion
   -- ^ Full content of file being linted
   -> Colors
   -> Format
-  -> Suggestion
+  -> Marked Suggestion
   -> Text
 formatSuggestion cwd bs colors = \case
   FormatJSON -> decodeUtf8 . encode

@@ -1,7 +1,7 @@
 module SLED.Suggestion
   ( Suggestion (..)
   , SuggestionAction (..)
-  , suggestionLocation
+  , suggestionActionDescription
   ) where
 
 import SLED.Prelude
@@ -9,25 +9,26 @@ import SLED.Prelude
 import SLED.ExtraDep
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
-
-data SuggestionAction
-  = Remove (Marked ExtraDep)
-  | ReplaceCommit (Marked CommitSHA) CommitSHA
-  | ReplaceGitWithHackage (Marked GitExtraDep) HackageExtraDep
-  | UpdateHackageVersion (Marked HackageExtraDep) HackageExtraDep
-  deriving stock (Eq, Show, Generic)
-  deriving anyclass (ToJSON)
+import SLED.Version
 
 data Suggestion = Suggestion
-  { action :: SuggestionAction
-  , reason :: Text
+  { target :: ExtraDep
+  , action :: SuggestionAction
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)
 
-suggestionLocation :: Suggestion -> Marked ()
-suggestionLocation s = case s.action of
-  Remove m -> void m
-  ReplaceCommit m _ -> void m
-  ReplaceGitWithHackage m _ -> void m
-  UpdateHackageVersion m _ -> void m
+data SuggestionAction
+  = Remove
+  | UpdateGitCommit CommitSHA
+  | UpdateHackageVersion Version
+  | ReplaceGitWithHackage HackageExtraDep
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (ToJSON)
+
+suggestionActionDescription :: SuggestionAction -> Text
+suggestionActionDescription = \case
+  Remove {} -> "This version (or newer) is in your Stackage resolver"
+  UpdateGitCommit {} -> "Newer commits exist on the default branch"
+  UpdateHackageVersion {} -> "A newer version is available"
+  ReplaceGitWithHackage {} -> "A version on Hackage exists for this commit (or newer)"

@@ -14,16 +14,20 @@ import SLED.Suggestion.Format.Action
 -- @
 -- ::error file={name},line={line},endLine={endLine},title={title}::{message}
 -- @
-formatSuggestionGHA :: Suggestion -> Text
-formatSuggestionGHA s = "::error " <> T.intercalate "," attrs <> "::" <> s.reason
+formatSuggestionGHA :: Marked Suggestion -> Text
+formatSuggestionGHA m =
+  "::error "
+    <> T.intercalate "," attrs
+    <> "::"
+    <> suggestionActionDescription s.action
  where
   attrs =
     [ "file=" <> pack path
     , "line=" <> show startLine
     , "endLine=" <> show endLine
-    , "title=" <> formatAction noColors s.action
+    , "title=" <> formatAction noColors s.target s.action
     ]
   path = markedPath m
   startLine = (+ 1) $ locationLine $ markedLocationStart m
   endLine = (+ 1) $ locationLine $ markedLocationStart m
-  m = suggestionLocation s
+  s = markedItem m
