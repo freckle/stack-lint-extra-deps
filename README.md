@@ -80,6 +80,22 @@ steps:
 
 ![](./files/action.png)
 
+### Action Version
+
+Version branches (e.g. `@v1`) are unrelated to the tool's version itself (and
+corresponding tags). They are maintained based on changes made only to the
+action itself.
+
+### Annotations
+
+Since `v1.2` (of the executable, not the action), `--format gha` is available
+and will result in output that produces annotations in your workflow summary.
+
+![](./files/annotations.png)
+
+In the future, this may become part of the default `arguments`, but for now you
+are expected to add it yourself if desired.
+
 ## Features
 
 - [x] Suggest update when there is a newer version of a Hackage dep available
