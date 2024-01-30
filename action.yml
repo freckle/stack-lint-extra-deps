@@ -42,7 +42,7 @@ runs:
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
     - if: ${{ inputs.no-install != 'true' }}
-      uses: pbrisbin/setup-tool-action@v1
+      uses: pbrisbin/setup-tool-action@v2
       with:
         name: stack-lint-extra-deps
         version: ${{ steps.prep.outputs.version }}
