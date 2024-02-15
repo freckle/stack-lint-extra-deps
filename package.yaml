@@ -20,6 +20,7 @@ default-extensions:
   - OverloadedRecordDot
   - OverloadedStrings
   - TypeApplications
+  - DuplicateRecordFields
 
 ghc-options:
   - -fignore-optim-changes
@@ -56,6 +57,7 @@ library:
     - lens
     - optparse-applicative
     - relude
+    - semigroups
     - text
     - typed-process
     - unliftio

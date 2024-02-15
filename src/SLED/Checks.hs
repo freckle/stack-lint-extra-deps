@@ -20,6 +20,14 @@ data ChecksName
   | HackageChecks
   deriving stock (Bounded, Enum)
 
+instance Semigroup ChecksName where
+  AllChecks <> _ = AllChecks
+  _ <> AllChecks = AllChecks
+  GitChecks <> HackageChecks = AllChecks
+  HackageChecks <> GitChecks = AllChecks
+  GitChecks <> GitChecks = GitChecks
+  HackageChecks <> HackageChecks = HackageChecks
+
 checksNameOption :: Parser ChecksName
 checksNameOption =
   boundedEnumOptionWith
@@ -28,7 +36,6 @@ checksNameOption =
         long "checks"
           <> help ("Checks to run, one of: " <> list)
           <> metavar "CHECKS"
-          <> value AllChecks
     )
 
 showChecksName :: ChecksName -> String
