@@ -33,6 +33,7 @@ library
       SLED.Options
       SLED.Options.BoundedEnum
       SLED.Options.Parse
+      SLED.Options.Pragma
       SLED.PackageName
       SLED.Prelude
       SLED.Run
@@ -82,6 +83,7 @@ library
     , optparse-applicative
     , relude
     , semigroups
+    , shellwords
     , text
     , typed-process
     , unliftio
@@ -151,6 +153,7 @@ test-suite hspec
       SLED.Checks.GitSpec
       SLED.Checks.HackageSpec
       SLED.HackageSpec
+      SLED.Options.PragmaSpec
       SLED.RunSpec
       SLED.StackageSpec
       SLED.Test

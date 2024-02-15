@@ -58,6 +58,7 @@ library:
     - optparse-applicative
     - relude
     - semigroups
+    - shellwords
     - text
     - typed-process
     - unliftio
