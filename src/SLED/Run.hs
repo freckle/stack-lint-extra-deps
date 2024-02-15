@@ -15,10 +15,9 @@ import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
 import qualified Data.List.NonEmpty as NE
-import Data.Yaml.Marked.Decode
 import SLED.Check
 import SLED.Checks
-import SLED.Options
+import SLED.Options.Parse
 import SLED.StackYaml
 import SLED.StackageResolver
 import SLED.Suggestion.Format
@@ -38,24 +37,20 @@ runSLED
   => Options
   -> m ()
 runSLED options = do
-  logDebug $ "Loading stack.yaml" :# ["path" .= options.path]
+  logDebug $ "Loaded stack.yaml" :# ["path" .= options.path]
 
   cwd <- getCurrentDirectory
-  bs <- readFileBS options.path
   colors <- getColorsLogger
-  stackYaml <-
-    liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
-
-  -- Mark an option resolver with the in-file resolver's position so that if
-  -- we do anything based on it, that's what we'll use
-  let resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
 
   suggestions <-
     runConduit
-      $ yieldMany stackYaml.extraDeps
+      $ yieldMany options.stackYaml.extraDeps
       .| filterC (shouldIncludeExtraDep options.filter options.excludes . markedItem)
-      .| concatMapMC (runChecks resolver options.checks)
-      .| iterM (pushLoggerLn . formatSuggestion cwd bs colors options.format)
+      .| concatMapMC (runChecks options.resolver options.checks)
+      .| iterM
+        ( pushLoggerLn
+            . formatSuggestion cwd options.stackYamlContents colors options.format
+        )
       .| sinkList
 
   let n = length suggestions

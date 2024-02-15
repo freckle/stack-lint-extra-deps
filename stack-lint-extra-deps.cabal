@@ -32,6 +32,7 @@ library
       SLED.HackageExtraDep
       SLED.Options
       SLED.Options.BoundedEnum
+      SLED.Options.Parse
       SLED.PackageName
       SLED.Prelude
       SLED.Run
@@ -60,6 +61,7 @@ library
       OverloadedRecordDot
       OverloadedStrings
       TypeApplications
+      DuplicateRecordFields
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path
   build-depends:
       Blammo
@@ -79,6 +81,7 @@ library
     , lens
     , optparse-applicative
     , relude
+    , semigroups
     , text
     , typed-process
     , unliftio
@@ -105,6 +108,7 @@ executable stack-lint-extra-deps
       OverloadedRecordDot
       OverloadedStrings
       TypeApplications
+      DuplicateRecordFields
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       Blammo
@@ -131,6 +135,7 @@ test-suite doctest
       OverloadedRecordDot
       OverloadedStrings
       TypeApplications
+      DuplicateRecordFields
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path
   build-depends:
       aeson
@@ -164,6 +169,7 @@ test-suite hspec
       OverloadedRecordDot
       OverloadedStrings
       TypeApplications
+      DuplicateRecordFields
   ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-prepositive-qualified-module -Wno-unsafe -optP-Wno-nonportable-include-path
   build-depends:
       Blammo
