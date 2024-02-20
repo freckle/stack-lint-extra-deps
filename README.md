@@ -59,6 +59,27 @@ variables][blammo-config] it supports may be used to control it, such as
 [blammo]: https:/github.com/freckle/blammo#readme
 [blammo-config]: https://github.com/freckle/blammo#configuration
 
+## Pragmas
+
+Comments prefixed by `@sled ` (e.g. "pragmas") can be added to the linted file
+and will be parsed as command-line options to change the program's behavior when
+linting that file. This is most useful for centralizing and documenting
+`--exclude` directives:
+
+```yaml
+resolver: lts-20
+extra-deps:
+  - one-dep-1.0
+
+  # We need to hold this back because...
+  # @sled --exclude another-dep
+  - another-dep-2.0
+```
+
+These comments can appear anywhere. All options besides `--path` will be
+respected. Failure to parse a directive will result in a warning logged to
+`stderr`, but otherwise be ignored.
+
 ## GitHub Action
 
 This repository is also a GitHub Action that installs and runs the tool with no
