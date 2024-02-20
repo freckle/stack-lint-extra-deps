@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.0.0...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.1.0...main)
+
+## [v1.2.1.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.0.0...v1.2.1.0)
+
+- Support parsing options from pragmas in source
 
 ## [v1.2.0.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.1.0.7...v1.2.0.0)
 
