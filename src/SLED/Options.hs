@@ -30,8 +30,7 @@ optionsParserInfo :: ParserInfo Options
 optionsParserInfo =
   info (optionsParser <**> helper)
     $ fullDesc
-    <> progDesc
-      "Lint Stackage (extra) Deps"
+    <> progDesc "stack lint-extra-deps (sled)"
 
 optionsParser :: Parser Options
 optionsParser =
