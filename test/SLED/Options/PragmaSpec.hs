@@ -38,10 +38,10 @@ spec = do
             [ "# @sled --exclude foo --exclude baz\n"
             , "resolver: x\n"
             , "extra-deps:\n"
-            , "- foo\n"
-            , "- bar\n"
-            , "# @sled --exclude=\"bat\"\n"
-            , "- baz\n"
+            , "  - foo\n"
+            , "  - bar\n"
+            , "  # @sled --exclude=\"bat\"\n"
+            , "  - bat\n"
             ]
 
       let (_errs, options) = parsePragmaOptions yaml

@@ -23,7 +23,10 @@ parsePragma =
 fromComment :: ByteString -> Maybe String
 fromComment bs =
   unpack <$> do
-    c <- T.stripPrefix "# " $ decodeUtf8With lenientDecode bs
+    c <-
+      T.stripPrefix "# "
+        . T.dropWhile isSpace
+        $ decodeUtf8With lenientDecode bs
     T.stripPrefix "@sled " $ T.dropWhile isSpace c
 
 execParser :: ParserInfo a -> [String] -> Either String a
