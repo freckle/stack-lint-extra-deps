@@ -68,7 +68,7 @@ spec = do
             , "\n                             [-f|--format tty|gha|json] [--exclude PATTERN] "
             , "\n                             [--checks CHECKS] [-n|--no-exit] [PATTERN]"
             , "\n"
-            , "\n  Lint Stackage (extra) Deps"
+            , "\n  stack lint-extra-deps (sled)"
             ]
 
       errs `shouldBe` [expectedErr]
