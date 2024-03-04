@@ -19,6 +19,8 @@ formatSuggestionGHA m =
   "::error "
     <> T.intercalate "," attrs
     <> "::"
+    <> formatExtraDep s.target
+    <> ": "
     <> suggestionActionDescription s.action
  where
   attrs =

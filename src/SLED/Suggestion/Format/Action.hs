@@ -2,6 +2,7 @@
 
 module SLED.Suggestion.Format.Action
   ( formatAction
+  , formatExtraDep
   ) where
 
 import SLED.Prelude
