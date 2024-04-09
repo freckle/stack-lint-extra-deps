@@ -6,6 +6,7 @@ module SLED.ExtraDep
 
 import SLED.Prelude
 
+import Control.Error.Util (hush)
 import Data.Yaml.Marked.Parse
 import Data.Yaml.Marked.Value
 import SLED.GitExtraDep
@@ -25,11 +26,12 @@ data ExtraDep
 
 decodeExtraDep :: Marked Value -> Either String (Marked ExtraDep)
 decodeExtraDep mv =
-  asum
-    [ Git <$$> decodeGitExtraDep mv
-    , Hackage <$$> json mv
-    , pure $ Other () <$ mv
-    ]
+  Right
+    $ fromMaybe (Other () <$ mv)
+    $ asum
+      [ hush (Git <$$> decodeGitExtraDep mv)
+      , hush (Hackage <$$> json mv)
+      ]
 
 matchPattern :: Pattern -> ExtraDep -> Bool
 matchPattern p = \case
