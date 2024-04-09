@@ -25,11 +25,13 @@ data ExtraDep
   deriving anyclass (ToJSON)
 
 decodeExtraDep :: Marked Value -> Either String (Marked ExtraDep)
-decodeExtraDep mv = Right $ fromMaybe (Other () <$ mv) $
-  asum
-    [ eitherToMaybe (Git <$$> decodeGitExtraDep mv)
-    , eitherToMaybe (Hackage <$$> json mv)
-    ]
+decodeExtraDep mv =
+  Right
+    $ fromMaybe (Other () <$ mv)
+    $ asum
+      [ eitherToMaybe (Git <$$> decodeGitExtraDep mv)
+      , eitherToMaybe (Hackage <$$> json mv)
+      ]
 
 matchPattern :: Pattern -> ExtraDep -> Bool
 matchPattern p = \case
