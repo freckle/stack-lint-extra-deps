@@ -6,6 +6,7 @@ module SLED.ExtraDep
 
 import SLED.Prelude
 
+import Data.Either.Extra (eitherToMaybe)
 import Data.Yaml.Marked.Parse
 import Data.Yaml.Marked.Value
 import SLED.GitExtraDep
@@ -24,11 +25,10 @@ data ExtraDep
   deriving anyclass (ToJSON)
 
 decodeExtraDep :: Marked Value -> Either String (Marked ExtraDep)
-decodeExtraDep mv =
+decodeExtraDep mv = Right $ fromMaybe (Other () <$ mv) $
   asum
-    [ Git <$$> decodeGitExtraDep mv
-    , Hackage <$$> json mv
-    , pure $ Other () <$ mv
+    [ eitherToMaybe (Git <$$> decodeGitExtraDep mv)
+    , eitherToMaybe (Hackage <$$> json mv)
     ]
 
 matchPattern :: Pattern -> ExtraDep -> Bool
