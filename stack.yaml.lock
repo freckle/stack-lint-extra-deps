@@ -17,7 +17,7 @@ packages:
     url: https://github.com/pbrisbin/yaml-marked/archive/8fe21f6cf13b78f14c0fa41c84456b5dd32bd098.tar.gz
 snapshots:
 - completed:
-    sha256: 1b4c2669e26fa828451830ed4725e4d406acc25a1fa24fcc039465dd13d7a575
-    size: 714100
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/6.yaml
-  original: lts-22.6
+    sha256: acaab6ca693211938d1542abcb1c83a2f298b9f6b571854a9d38febe39b6408e
+    size: 719577
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/31.yaml
+  original: lts-22.31
