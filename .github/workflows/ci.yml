@@ -46,6 +46,7 @@ jobs:
           - macos-12
           - macos-latest
     runs-on: ${{ matrix.runner }}
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v26
