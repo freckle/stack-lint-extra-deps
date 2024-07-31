@@ -1,22 +1,5 @@
 {
   "nodes": {
-    "all-cabal-hashes": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1722379361,
-        "narHash": "sha256-VMUGBZGaiyDrikZh/t2/M7QKekOkK1auPtK2KmnakZ8=",
-        "owner": "commercialhaskell",
-        "repo": "all-cabal-hashes",
-        "rev": "69c9ea6a7746281865968fdccf00a07f5e1bdc04",
-        "type": "github"
-      },
-      "original": {
-        "owner": "commercialhaskell",
-        "ref": "hackage",
-        "repo": "all-cabal-hashes",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1722185531,
@@ -51,7 +34,6 @@
     },
     "root": {
       "inputs": {
-        "all-cabal-hashes": "all-cabal-hashes",
         "nixpkgs": "nixpkgs",
         "pgp-wordlist": "pgp-wordlist",
         "stacklock2nix": "stacklock2nix"

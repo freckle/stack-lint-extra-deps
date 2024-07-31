@@ -6,13 +6,6 @@
       repo = "nixpkgs";
       ref = "nixos-unstable";
     };
-    all-cabal-hashes = {
-      type = "github";
-      owner = "commercialhaskell";
-      repo = "all-cabal-hashes";
-      ref = "hackage";
-      flake = false;
-    };
     stacklock2nix = {
       type = "github";
       owner = "cdepillabout";
@@ -26,7 +19,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, all-cabal-hashes, pgp-wordlist, stacklock2nix }:
+  outputs = { self, nixpkgs, pgp-wordlist, stacklock2nix }:
     let
       supportedSystems = [
         "aarch64-darwin"
@@ -61,11 +54,12 @@
           # GHC version that matches stack.yaml
           baseHaskellPkgSet = final.haskell.packages.ghc966;
 
-          # Use the latest version of the Hackage package index.
-          # To update this (akin to running 'cabal update'), run:
-          #
-          #   nix flake lock --update-input all-cabal-hashes
-          all-cabal-hashes = all-cabal-hashes;
+          all-cabal-hashes = final.fetchFromGitHub {
+            owner = "commercialhaskell";
+            repo = "all-cabal-hashes";
+            rev = "69c9ea6a7746281865968fdccf00a07f5e1bdc04";
+            sha256 = "sha256-VMUGBZGaiyDrikZh/t2/M7QKekOkK1auPtK2KmnakZ8=";
+          };
 
           additionalHaskellPkgSetOverrides = hfinal: hprev: {
             # Workaround for unreleased updates
