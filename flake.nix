@@ -65,7 +65,10 @@
           # GHC version that matches stack.yaml
           baseHaskellPkgSet = final.haskell.packages.ghc966;
 
-          # Use the Hackage package index
+          # Use the latest version of the Hackage package index.
+          # To update this (akin to running 'cabal update'), run:
+          #
+          #   nix flake lock --update-input all-cabal-hashes
           all-cabal-hashes = all-cabal-hashes;
 
           additionalHaskellPkgSetOverrides = hfinal: hprev: {
