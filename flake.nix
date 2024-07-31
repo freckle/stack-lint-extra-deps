@@ -47,13 +47,9 @@
         });
     in
     {
-      # The default package you get when you run `nix build` on this flake
-      defaultPackage = forAllSystems (system:
-        self.packages.${system}.stack-lint-extra-deps
-      );
-
       # All packages provided by this flake
-      packages = forAllSystems (system: {
+      packages = forAllSystems (system: rec {
+        default = stack-lint-extra-deps;
         stack-lint-extra-deps = nixpkgsFor.${system}.stack-lint-extra-deps;
       });
 
