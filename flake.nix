@@ -61,26 +61,22 @@
             sha256 = "sha256-VMUGBZGaiyDrikZh/t2/M7QKekOkK1auPtK2KmnakZ8=";
           };
 
-          additionalHaskellPkgSetOverrides = hfinal: hprev: {
-            # Workaround for unreleased updates
-            pgp-wordlist =
-              final.haskell.lib.dontCheck (hprev.callCabal2nix "pgp-wordlist" pgp-wordlist { });
-          } //
-          # Workarounds for issues in tests
-          nixpkgs.lib.genAttrs [
-            "ansi-wl-pprint"
-            "case-insensitive"
-            "integer-logarithms"
-            "lifted-base"
-            "prettyprinter"
-            "prettyprinter-compat-ansi-wl-pprint"
-            "primitive"
-            "quickcheck-instances"
-            "test-framework"
-            "uuid-types"
-            "yaml-marked"
-          ]
-            (name: final.haskell.lib.dontCheck hprev.${name});
+          additionalHaskellPkgSetOverrides = hfinal: hprev:
+            # Workarounds for issues in tests
+            nixpkgs.lib.genAttrs [
+              "ansi-wl-pprint"
+              "case-insensitive"
+              "integer-logarithms"
+              "lifted-base"
+              "prettyprinter"
+              "prettyprinter-compat-ansi-wl-pprint"
+              "primitive"
+              "quickcheck-instances"
+              "test-framework"
+              "uuid-types"
+              "yaml-marked"
+            ]
+              (name: final.haskell.lib.dontCheck hprev.${name});
         };
 
         stack-lint-extra-deps =
