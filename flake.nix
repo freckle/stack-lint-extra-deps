@@ -54,11 +54,12 @@
           # GHC version that matches stack.yaml
           baseHaskellPkgSet = final.haskell.packages.ghc966;
 
-          all-cabal-hashes = final.fetchFromGitHub {
-            owner = "commercialhaskell";
-            repo = "all-cabal-hashes";
-            rev = "69c9ea6a7746281865968fdccf00a07f5e1bdc04";
-            sha256 = "sha256-VMUGBZGaiyDrikZh/t2/M7QKekOkK1auPtK2KmnakZ8=";
+          # It is necessary to get this using a fetcher that doesn't unpack to
+          # preserve hash compatibility among case (in/)sensitive file systems.
+          all-cabal-hashes = final.fetchurl {
+            name = "all-cabal-hashes";
+            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/69c9ea6a7746281865968fdccf00a07f5e1bdc04.tar.gz";
+            sha256 = "1l9k4sg7pigr73749h4nkldllvl36d86sghjb5ibqpckkrbr3yky";
           };
 
           additionalHaskellPkgSetOverrides = hfinal: hprev:
