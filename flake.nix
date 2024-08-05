@@ -19,7 +19,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, pgp-wordlist, stacklock2nix }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      pgp-wordlist,
+      stacklock2nix,
+    }:
     let
       supportedSystems = [
         "aarch64-darwin"
@@ -30,14 +36,16 @@
 
       forAllSystems = f: nixpkgs.lib.genAttrs supportedSystems (system: f system);
 
-      nixpkgsFor =
-        forAllSystems (system: import nixpkgs {
+      nixpkgsFor = forAllSystems (
+        system:
+        import nixpkgs {
           inherit system;
           overlays = [
             stacklock2nix.overlay
             self.overlays.default
           ];
-        });
+        }
+      );
     in
     {
       # All packages provided by this flake
@@ -62,7 +70,8 @@
             sha256 = "1l9k4sg7pigr73749h4nkldllvl36d86sghjb5ibqpckkrbr3yky";
           };
 
-          additionalHaskellPkgSetOverrides = hfinal: hprev:
+          additionalHaskellPkgSetOverrides =
+            hfinal: hprev:
             # Workarounds for issues in tests
             nixpkgs.lib.genAttrs [
               "ansi-wl-pprint"
@@ -76,21 +85,15 @@
               "test-framework"
               "uuid-types"
               "yaml-marked"
-            ]
-              (name: final.haskell.lib.dontCheck hprev.${name});
+            ] (name: final.haskell.lib.dontCheck hprev.${name});
         };
 
-        stack-lint-extra-deps =
-          final.stack-lint-extra-deps-stacklock.pkgSet.stack-lint-extra-deps;
+        stack-lint-extra-deps = final.stack-lint-extra-deps-stacklock.pkgSet.stack-lint-extra-deps;
       };
     };
 
   nixConfig = {
-    extra-substituters = [
-      "https://freckle.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "freckle.cachix.org-1:WnI1pZdwLf2vnP9Fx7OGbVSREqqi4HM2OhNjYmZ7odo="
-    ];
+    extra-substituters = [ "https://freckle.cachix.org" ];
+    extra-trusted-public-keys = [ "freckle.cachix.org-1:WnI1pZdwLf2vnP9Fx7OGbVSREqqi4HM2OhNjYmZ7odo=" ];
   };
 }
