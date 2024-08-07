@@ -22,6 +22,7 @@ data Options = Options
   , checks :: Maybe ChecksName
   , noExit :: Any
   , filter :: Last Pattern
+  , version :: Any
   }
   deriving stock (Generic)
   deriving (Semigroup, Monoid) via GenericSemigroupMonoid Options
@@ -89,5 +90,10 @@ optionsParser =
                   ( metavar "PATTERN"
                       <> help "Limit to deps matching PATTERN"
                   )
+              )
+        )
+    <*> ( Any
+            <$> switch
+              ( long "version" <> help "Print version number information and quit"
               )
         )

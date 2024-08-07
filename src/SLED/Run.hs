@@ -15,6 +15,8 @@ import Blammo.Logging.Logger
 import Conduit
 import Data.Conduit.Combinators (iterM)
 import qualified Data.List.NonEmpty as NE
+import Data.Version (showVersion)
+import Paths_stack_lint_extra_deps (version)
 import SLED.Check
 import SLED.Checks
 import SLED.Options.Parse
@@ -36,6 +38,9 @@ runSLED
      )
   => Options
   -> m ()
+runSLED options
+  | options.version =
+      liftIO $ putStrLn $ "stack-lint-extra-deps-" <> showVersion version
 runSLED options = do
   logDebug $ "Loaded stack.yaml" :# ["path" .= options.path]
 
