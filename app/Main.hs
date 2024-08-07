@@ -5,12 +5,17 @@ module Main
 import SLED.Prelude
 
 import Blammo.Logging.Simple
+import Data.Version (showVersion)
+import Paths_stack_lint_extra_deps (version)
 import SLED.App
 import SLED.Options.Parse
 import SLED.Run
 
 main :: IO ()
-main = do
-  opts <- parseOptions
-  logger <- newLoggerEnv
-  runAppT (runSLED opts) logger
+main =
+  parseOptions >>= \case
+    Left PrintVersion ->
+      putStrLn $ "stack-lint-extra-deps-" <> showVersion version
+    Right opts -> do
+      logger <- newLoggerEnv
+      runAppT (runSLED opts) logger
