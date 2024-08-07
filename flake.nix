@@ -86,10 +86,21 @@
               "uuid-types"
               "yaml-marked"
             ] (name: final.haskell.lib.dontCheck hprev.${name});
+
+          additionalDevShellNativeBuildInputs = stacklockHaskellPkgSet: [
+            final.cabal-install
+            final.haskellPackages.fourmolu
+            final.stack
+            final.zlib
+          ];
         };
 
         stack-lint-extra-deps = final.stack-lint-extra-deps-stacklock.pkgSet.stack-lint-extra-deps;
       };
+
+      devShells = forAllSystems (system: {
+        default = nixpkgsFor.${system}.stack-lint-extra-deps-stacklock.devShell;
+      });
     };
 
   nixConfig = {
