@@ -1,5 +1,6 @@
 module SLED.Options.Parse
   ( Options (..)
+  , PrintVersion (..)
   , parseOptions
   ) where
 
@@ -27,40 +28,44 @@ data Options = Options
   , filter :: Maybe Pattern
   , stackYaml :: StackYaml
   , stackYamlContents :: ByteString
-  , version :: Bool
   }
 
-parseOptions :: IO Options
+data PrintVersion = PrintVersion
+
+parseOptions :: IO (Either PrintVersion Options)
 parseOptions = do
-  envStackYaml <- lookupEnv "STACK_YAML"
   cli <- execParser optionsParserInfo
+  if getAny cli.version
+    then pure $ Left PrintVersion
+    else do
+      envStackYaml <- lookupEnv "STACK_YAML"
 
-  let path = fromMaybe "stack.yaml" $ getLast cli.path <|> envStackYaml
+      let path = fromMaybe "stack.yaml" $ getLast cli.path <|> envStackYaml
 
-  bs <- readFileBS path
-  stackYaml <- liftIO $ markedItem <$> decodeThrow decodeStackYaml path bs
+      bs <- readFileBS path
+      stackYaml <- liftIO $ markedItem <$> decodeThrow decodeStackYaml path bs
 
-  let (errs, pragmas) = parsePragmaOptions bs
+      let (errs, pragmas) = parsePragmaOptions bs
 
-  for_ errs $ hPutStrLn stderr . ("Warning: invalid @sled pragma:\n" <>)
+      for_ errs $ hPutStrLn stderr . ("Warning: invalid @sled pragma:\n" <>)
 
-  let
-    options = pragmas <> cli
+      let
+        options = pragmas <> cli
 
-    -- Mark an option resolver with the in-file resolver's position so that if
-    -- we do anything based on it, that's what we'll use
-    resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) $ getLast options.resolver
+        -- Mark an option resolver with the in-file resolver's position so that if
+        -- we do anything based on it, that's what we'll use
+        resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) $ getLast options.resolver
 
-  pure
-    Options
-      { path = path
-      , resolver = resolver
-      , format = fromMaybe defaultFormat $ getLast options.format
-      , excludes = options.excludes
-      , checks = fromMaybe AllChecks $ options.checks
-      , noExit = getAny options.noExit
-      , filter = getLast options.filter
-      , stackYaml = stackYaml
-      , stackYamlContents = bs
-      , version = getAny options.version
-      }
+      pure
+        $ Right
+          Options
+            { path = path
+            , resolver = resolver
+            , format = fromMaybe defaultFormat $ getLast options.format
+            , excludes = options.excludes
+            , checks = fromMaybe AllChecks $ options.checks
+            , noExit = getAny options.noExit
+            , filter = getLast options.filter
+            , stackYaml = stackYaml
+            , stackYamlContents = bs
+            }
