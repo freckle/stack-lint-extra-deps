@@ -5,7 +5,7 @@ cabal-version: 1.18
 -- see: https://github.com/sol/hpack
 
 name:           stack-lint-extra-deps
-version:        1.2.1.0
+version:        1.2.2.0
 license:        MIT
 license-file:   LICENSE
 build-type:     Simple
