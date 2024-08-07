@@ -27,6 +27,7 @@ data Options = Options
   , filter :: Maybe Pattern
   , stackYaml :: StackYaml
   , stackYamlContents :: ByteString
+  , version :: Bool
   }
 
 parseOptions :: IO Options
@@ -61,4 +62,5 @@ parseOptions = do
       , filter = getLast options.filter
       , stackYaml = stackYaml
       , stackYamlContents = bs
+      , version = getAny options.version
       }
