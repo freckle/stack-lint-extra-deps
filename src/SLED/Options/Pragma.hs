@@ -25,7 +25,7 @@ fromComment bs =
   unpack <$> do
     c <-
       T.stripPrefix "# "
-        . T.dropWhile isSpace
+        . T.dropWhile (/= '#')
         $ decodeUtf8With lenientDecode bs
     T.stripPrefix "@sled " $ T.dropWhile isSpace c
 

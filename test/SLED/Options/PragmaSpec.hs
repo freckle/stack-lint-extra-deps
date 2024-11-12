@@ -48,6 +48,22 @@ spec = do
 
       options.excludes `shouldBe` ["foo", "baz", "bat"]
 
+    it "parses trailing comments" $ do
+      let
+        yaml :: ByteString
+        yaml =
+          mconcat
+            [ "resolver: x\n"
+            , "extra-deps:\n"
+            , "  - foo\n"
+            , "  - bar\n"
+            , "  - bat # @sled --exclude=\"bat\"\n"
+            ]
+
+      let (_errs, options) = parsePragmaOptions yaml
+
+      options.excludes `shouldBe` ["bat"]
+
     it "returns errors in the case of invalid options" $ do
       let
         yaml :: ByteString
