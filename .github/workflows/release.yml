@@ -41,6 +41,9 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
+      - if: ${{ runner.os == 'macOS' }}
+        run: |
+          curl -SsL https://get.haskellstack.org | sh
       - uses: actions/checkout@v4
       - uses: freckle/stack-cache-action@v2
       - run: |
