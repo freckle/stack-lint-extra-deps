@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.2.1...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.3.0...main)
+
+## [v1.2.3.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.2.1...v1.2.3.1)
+
+- Parse `@sled` pragmas from trailing comments too
 
 ## [v1.2.2.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.2.0...v1.2.2.1)
 
