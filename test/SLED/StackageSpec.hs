@@ -25,3 +25,15 @@ spec = do
             { onPage = unsafeVersion "2.1.0.0"
             , onHackage = unsafeVersion "2.2.2.0"
             }
+
+    it "parses a page with revisions" $ do
+      let body =
+            BSL.fromStrict
+              $(embedFile "test/files/stackage/lts-20.26/servant-swagger-ui-core-0.3.5.html")
+
+      parseStackageVersions body
+        `shouldBe` Right
+          StackageVersions
+            { onPage = unsafeVersion "0.3.5@rev:6"
+            , onHackage = unsafeVersion "0.3.5@rev:11"
+            }
