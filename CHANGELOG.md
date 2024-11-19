@@ -1,15 +1,12 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.3.0...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.4.0...main)
 
-## [v1.2.3.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.2.1...v1.2.3.1)
+## [v1.2.4.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.3.1...v1.2.4.0)
+
+- Track and use package revisions in Hackage checks
+
+## [v1.2.3.1](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.2.1...v1.2.3.1)
 
 - Parse `@sled` pragmas from trailing comments too
-
-## [v1.2.2.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.2.0...v1.2.2.1)
-
-- Fix `--version` to work without a `stack.yaml` present
-
-## [v1.2.2.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.1.0...v1.2.2.0)
-
 - Add `--version` switch to make SLED print its own version number
 
 ## [v1.2.1.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.0.0...v1.2.1.0)
