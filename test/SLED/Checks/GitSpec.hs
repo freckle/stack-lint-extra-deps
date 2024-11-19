@@ -61,6 +61,5 @@ spec = do
               $ HackageExtraDep
                 { package = PackageName "foo"
                 , version = parseVersion "1.0.2"
-                , checksum = Nothing
                 }
           )

@@ -27,7 +27,6 @@ spec = do
         HackageExtraDep
           { package = package
           , version = parseVersion "1.0.1.1"
-          , checksum = Nothing
           }
         `shouldReturn` Just (UpdateHackageVersion version)
 
@@ -42,7 +41,6 @@ spec = do
         HackageExtraDep
           { package = package
           , version = parseVersion "1.0.1.1"
-          , checksum = Nothing
           }
         `shouldReturn` Nothing
 
@@ -58,7 +56,6 @@ spec = do
           HackageExtraDep
             { package = package
             , version = parseVersion "1.0.1.1"
-            , checksum = Nothing
             }
 
       runHackageChecks mempty mockStackage hed
@@ -78,7 +75,6 @@ spec = do
         HackageExtraDep
           { package = package
           , version = Just $ unsafeVersion "1.0.1.1"
-          , checksum = Nothing
           }
         `shouldReturn` Just Remove
 
@@ -96,7 +92,6 @@ spec = do
         HackageExtraDep
           { package = package
           , version = Just $ unsafeVersion "1.0.1.1"
-          , checksum = Nothing
           }
         `shouldReturn` Nothing
 

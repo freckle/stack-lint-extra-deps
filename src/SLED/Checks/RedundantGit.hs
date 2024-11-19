@@ -22,7 +22,6 @@ checkRedundantGit = Check $ \ed extraDep -> do
         HackageExtraDep
           { package = PackageName $ repositoryBaseName ged.repository
           , version = Just v
-          , checksum = Nothing
           }
 
     -- Attempt to suggest a version tag that exists on Hackage
