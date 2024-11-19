@@ -1,6 +1,5 @@
 module SLED.HackageExtraDep
   ( HackageExtraDep (..)
-  , SHA256 (..)
   , hackageExtraDepFromText
   ) where
 
@@ -15,7 +14,6 @@ import SLED.Version
 data HackageExtraDep = HackageExtraDep
   { package :: PackageName
   , version :: Maybe Version
-  , checksum :: Maybe SHA256
   }
   deriving stock (Eq, Show, Generic)
   deriving anyclass (ToJSON)
@@ -24,29 +22,20 @@ instance FromJSON HackageExtraDep where
   parseJSON =
     withText "HackageExtraDep" $ either fail pure . hackageExtraDepFromText
 
-newtype SHA256 = SHA256
-  { unwrap :: Text
-  }
-  deriving newtype (Eq, Show, FromJSON, ToJSON)
-
 hackageExtraDepFromText :: Text -> Either String HackageExtraDep
 hackageExtraDepFromText x =
   Right
     HackageExtraDep
       { package = PackageName package
       , version = mVersion
-      , checksum = do
-          guard $ not $ T.null suffix
-          pure $ SHA256 $ T.drop 1 suffix
       }
  where
-  (prefix, suffix) = T.breakOn "@" x
-  (package, mVersion) = splitPackageVersion prefix
+  (package, mVersion) = splitPackageVersion x
 
 -- |
 --
--- >>> second (fmap showVersion) $ splitPackageVersion "optparse-applicative-0.15.1.0"
--- ("optparse-applicative",Just "0.15.1.0")
+-- >>> second (fmap showVersion) $ splitPackageVersion "optparse-applicative-0.15.1.0@rev:1"
+-- ("optparse-applicative",Just "0.15.1.0@rev:1")
 splitPackageVersion :: Text -> (Text, Maybe Version)
 splitPackageVersion x =
   fromMaybe (x, Nothing)

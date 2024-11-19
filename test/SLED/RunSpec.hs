@@ -58,7 +58,6 @@ freckleApp1011 =
   HackageExtraDep
     { package = PackageName "freckle-app"
     , version = parseVersion "1.0.1.1"
-    , checksum = Nothing
     }
 
 yesodFlowRoutesGitHub :: GitExtraDep
