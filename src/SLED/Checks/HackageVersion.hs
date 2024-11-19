@@ -5,11 +5,12 @@ module SLED.Checks.HackageVersion
 import SLED.Prelude
 
 import SLED.Check
+import SLED.Version
 
 checkHackageVersion :: Check
 checkHackageVersion = Check $ \ed extraDep -> do
   Hackage hed <- pure extraDep
   hv <- ed.hackageVersions
-  current <- hed.version
   released <- headMaybe hv.normal
+  current <- defaultRevision hv.normal <$> hed.version
   UpdateHackageVersion released <$ guard (released > current)
