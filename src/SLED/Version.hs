@@ -1,5 +1,6 @@
 module SLED.Version
   ( Version
+  , defaultRevision
   , parseVersion
   , showVersion
   ) where
@@ -37,6 +38,15 @@ instance FromJSON Version where
       $ maybe (fail "Not a valid version") pure
       . parseVersion
       . unpack
+
+defaultRevision :: [Version] -> Version -> Version
+defaultRevision vs v =
+  case find (eqOnVersion v) vs of
+    Nothing -> v
+    Just v' -> v {revision = v.revision <|> v'.revision}
+
+eqOnVersion :: Version -> Version -> Bool
+eqOnVersion = (==) `on` (.version)
 
 parseVersion :: String -> Maybe Version
 parseVersion =
