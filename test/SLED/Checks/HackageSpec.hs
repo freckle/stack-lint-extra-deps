@@ -95,6 +95,42 @@ spec = do
           }
         `shouldReturn` Nothing
 
+    it "does not suggest when the extra-dep is a newer revision (implicit)" $ do
+      let
+        package = PackageName "servant-swagger-ui-core"
+        mockHackage = Map.singleton package $ hackageVersions ["0.3.5@rev:11"] [] []
+        mockStackage =
+          Map.singleton
+            (markedItem lts1818)
+            (Map.singleton package $ stackageVersions "0.3.5@rev:6" "0.3.5@rev:11")
+
+      runHackageChecks
+        mockHackage
+        mockStackage
+        HackageExtraDep
+          { package = package
+          , version = Just $ unsafeVersion "0.3.5"
+          }
+        `shouldReturn` Nothing
+
+    it "does not suggest when the extra-dep is a newer revision (explicit)" $ do
+      let
+        package = PackageName "servant-swagger-ui-core"
+        mockHackage = Map.singleton package $ hackageVersions ["0.3.5@rev:11"] [] []
+        mockStackage =
+          Map.singleton
+            (markedItem lts1818)
+            (Map.singleton package $ stackageVersions "0.3.5@rev:6" "0.3.5@rev:11")
+
+      runHackageChecks
+        mockHackage
+        mockStackage
+        HackageExtraDep
+          { package = package
+          , version = Just $ unsafeVersion "0.3.5@rev:11"
+          }
+        `shouldReturn` Nothing
+
 hackageVersions
   :: [String]
   -- ^ Normal
