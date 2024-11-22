@@ -1,10 +1,12 @@
 module SLED.Suggestion.Format.Target
   ( IsTarget (..)
+  , replaceMarkedTarget
   ) where
 
 import SLED.Prelude
 
 import qualified Data.Text as T
+import Data.Yaml.Marked.Replace
 import SLED.ExtraDep
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
@@ -51,3 +53,11 @@ instance IsTarget Version where
 
 instance IsTarget StackageResolver where
   formatTarget = stackageResolverToText
+
+replaceMarkedTarget
+  :: (IsTarget a, IsTarget b)
+  => Marked (Suggestion a)
+  -> b
+  -> Replace
+replaceMarkedTarget a =
+  replaceMarked (getTargetMark a) . encodeUtf8 . formatTarget

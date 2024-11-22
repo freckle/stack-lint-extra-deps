@@ -22,6 +22,7 @@ data Options = Options
   , noCheckResolver :: Any
   , checks :: Maybe ChecksName
   , noExit :: Any
+  , autoFix :: Any
   , filter :: Last Pattern
   , version :: Any
   }
@@ -89,6 +90,13 @@ optionsParser =
               ( short 'n'
                   <> long "no-exit"
                   <> help "Exit successfully, even if suggestions found"
+              )
+        )
+    <*> ( Any
+            <$> switch
+              ( short 'F'
+                  <> long "fix"
+                  <> help "Automatically fix problems"
               )
         )
     <*> ( Last

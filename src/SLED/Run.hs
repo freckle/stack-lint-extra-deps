@@ -12,12 +12,17 @@ import SLED.Prelude
 
 import Blammo.Logging.Colors
 import Blammo.Logging.Logger
-import Conduit
-import Data.Conduit.Combinators (iterM)
+import Control.Exception.Safe (MonadThrow)
+import Control.Lens (to, views, (<>=), (^.))
+import Data.List (partition)
 import qualified Data.List.NonEmpty as NE
+import Data.Yaml.Marked.Decode (decodeThrow)
+import Data.Yaml.Marked.Replace
 import SLED.Check
 import SLED.Checks
 import SLED.Checks.StackageResolver
+import SLED.Context
+import SLED.Marked.Line
 import SLED.Options.Parse
 import SLED.StackYaml
 import SLED.StackageResolver
@@ -39,46 +44,94 @@ runSLED
   => Options
   -> m ()
 runSLED options = do
-  logDebug $ "Loaded stack.yaml" :# ["path" .= options.path]
+  context <- execContextT options.contents $ runSuggestions options
 
-  n <-
-    fmap getSum
-      $ runConduit
-      $ (<>)
-      <$> do
-        msuggestion <- lift $ checkStackageResolver options.stackYaml.resolver
-        traverse_ yield msuggestion
-          .| outputSuggestions options.stackYamlContents options.format
-          .| foldMapC (const @(Sum Int) 1)
-      <*> do
-        yieldMany options.stackYaml.extraDeps
-          .| filterC (shouldIncludeExtraDep options.filter options.excludes . markedItem)
-          .| concatMapMC (runChecks options.resolver options.checks)
-          .| outputSuggestions options.stackYamlContents options.format
-          .| foldMapC (const @(Sum Int) 1)
+  let changed = context ^. contentsL /= options.contents
 
-  logDebug $ "Suggestions found" :# ["count" .= n]
+  when (options.autoFix && changed) $ do
+    logInfo $ "Re-writing fixed stack.yaml" :# ["path" .= options.path]
+    writeFileBS options.path $ context ^. contentsL
 
-  when (n /= 0 && not options.noExit) $ do
+  let (fixed, unfixed) = partition markedItem $ context ^. seenL . to toList
+
+  logDebug
+    $ "Suggestions found"
+    :# [ "fixed" .= length fixed
+       , "unfixed" .= length unfixed
+       ]
+
+  unless (null unfixed || options.noExit) $ do
     logDebug "Exiting non-zero (--no-exit to disable)"
     exitFailure
 
--- | Print 'Suggestion's according to 'Format'
-outputSuggestions
-  :: ( MonadUnliftIO m
+runSuggestions
+  :: ( MonadThrow m
+     , MonadUnliftIO m
      , MonadLogger m
+     , MonadHackage m
+     , MonadStackage m
+     , MonadGit m
      , MonadReader env m
      , HasLogger env
-     , IsTarget t
-     , ToJSON t
      )
-  => ByteString
-  -> Format
-  -> ConduitT (Marked (Suggestion t)) (Marked (Suggestion t)) m ()
-outputSuggestions contents format = do
-  cwd <- getCurrentDirectory
-  colors <- getColorsLogger
-  iterM $ pushLoggerLn . formatSuggestion cwd contents colors format
+  => Options
+  -> StateT Context m ()
+runSuggestions options = untilNoneSeen $ do
+  lseen <- gets $ views seenL length
+  logDebug $ "Linting pass" :# ["seen" .= lseen]
+
+  bs <- gets $ view contentsL
+  stackYaml <- liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
+
+  let
+    resolver :: Marked StackageResolver
+    resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
+
+  sequenceFirstSeen
+    $ bool id (checkResolver options resolver :) options.checkResolver
+    $ map (checkExtraDep resolver options) stackYaml.extraDeps
+
+checkResolver
+  :: ( MonadThrow m
+     , MonadUnliftIO m
+     , MonadLogger m
+     , MonadStackage m
+     , MonadReader env m
+     , HasLogger env
+     )
+  => Options
+  -> Marked StackageResolver
+  -> StateT Context m ()
+checkResolver options = whenUnseen $ \mresolver -> do
+  mSuggestion <- lift $ checkStackageResolver mresolver
+
+  for_ mSuggestion $ \ms -> do
+    outputSuggestion options ms
+    tryFixSuggestion options ms
+
+checkExtraDep
+  :: ( MonadThrow m
+     , MonadUnliftIO m
+     , MonadLogger m
+     , MonadHackage m
+     , MonadStackage m
+     , MonadGit m
+     , MonadReader env m
+     , HasLogger env
+     )
+  => Marked StackageResolver
+  -> Options
+  -> Marked ExtraDep
+  -> StateT Context m ()
+checkExtraDep mresolver options = whenUnseen $ \med -> do
+  when (included $ markedItem med) $ do
+    mSuggestion <- lift $ runChecks mresolver options.checks med
+
+    for_ mSuggestion $ \ms -> do
+      outputSuggestion options ms
+      tryFixSuggestion options ms
+ where
+  included = shouldIncludeExtraDep options.filter options.excludes
 
 shouldIncludeExtraDep :: Maybe Pattern -> [Pattern] -> ExtraDep -> Bool
 shouldIncludeExtraDep mInclude excludes dep
@@ -116,3 +169,62 @@ runChecks (markedItem -> resolver) checksName m@(markedItem -> extraDep) = do
 
     -- And mark the Suggestion at the point of the ExtraDep
     pure $ suggestion <$ m
+
+-- | Print 'Suggestion' according to 'Format'
+outputSuggestion
+  :: ( MonadUnliftIO m
+     , MonadLogger m
+     , MonadReader env m
+     , HasLogger env
+     , IsTarget t
+     , ToJSON t
+     , Show t
+     )
+  => Options
+  -> Marked (Suggestion t)
+  -> StateT Context m ()
+outputSuggestion options suggestion = do
+  logDebug
+    $ ""
+    :# [ "suggestion" .= show @Text suggestion
+       , "mark" .= getTargetMark suggestion
+       ]
+
+  formatted <-
+    formatSuggestion
+      <$> getCurrentDirectory
+      <*> gets (view contentsL)
+      <*> getColorsLogger
+      <*> pure options.format
+      <*> pure suggestion
+
+  pushLoggerLn formatted
+
+-- | Tries to fix the 'Suggestion' and updates 'Context' accordingly
+--
+-- If fixed, 'contents' is updated and a @'Marked' 'True'@ is placed in 'seen';
+-- otherwise, a @'Marked' 'False'@ is.
+tryFixSuggestion
+  :: (MonadThrow m, MonadState Context m, IsTarget t)
+  => Options
+  -> Marked (Suggestion t)
+  -> m ()
+tryFixSuggestion options ms = do
+  when options.autoFix $ rewriteContents $ \bs ->
+    runReplaces [suggestionReplace bs ms] bs
+
+  seenL <>= pure (options.autoFix <$ ms)
+
+suggestionReplace
+  :: IsTarget t => ByteString -> Marked (Suggestion t) -> Replace
+suggestionReplace bs m = case s.action of
+  Remove -> replaceMarkedLine bs m ""
+  UpdateGitCommit commit -> replaceMarkedTarget m commit
+  UpdateHackageVersion version -> replaceMarkedTarget m version
+  ReplaceGitWithHackage hed -> replaceMarkedTarget m hed
+  ReplaceWith b -> replaceMarkedTarget m b
+ where
+  s = markedItem m
+
+replaceMarkedLine :: ByteString -> Marked a -> ByteString -> Replace
+replaceMarkedLine bs m = newReplace (startOfStartLine bs m) (endOfEndLine bs m)

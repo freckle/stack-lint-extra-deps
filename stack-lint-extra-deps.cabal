@@ -25,6 +25,7 @@ library
       SLED.Checks.RedundantGit
       SLED.Checks.RedundantHackage
       SLED.Checks.StackageResolver
+      SLED.Context
       SLED.ExternalDetails
       SLED.ExtraDep
       SLED.GitDetails
@@ -75,8 +76,8 @@ library
     , aeson
     , base
     , bytestring
-    , conduit
     , containers
+    , dlist
     , errors
     , exceptions
     , extra
@@ -87,6 +88,7 @@ library
     , lens
     , optparse-applicative
     , relude
+    , safe-exceptions
     , semigroups
     , shellwords
     , text
