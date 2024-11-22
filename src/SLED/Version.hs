@@ -59,27 +59,29 @@ parseVersion =
 parseWithRevision :: ReadP Version
 parseWithRevision = do
   v <- V.parseVersion
-  r <- string "@rev:" *> digits
+  r <- string "@rev:" *> nat
   pure
     Version
       { version = v
-      , revision = Just $ Unsafe.read r
+      , revision = Just r
       }
- where
-  digits = many1 $ satisfy isDigit
 
 parseWithChecksum :: ReadP Version
 parseWithChecksum = do
   v <- V.parseVersion
   -- just discarded for now, but here if we want it later
-  _checksum <- char '@' *> many1 hex
+  _checksum <- string "@sha256:" *> hexes <* char ',' <* nat
   pure
     Version
       { version = v
       , revision = Nothing
       }
- where
-  hex = satisfy isHexDigit
+
+nat :: ReadP Natural
+nat = fmap Unsafe.read $ many1 $ satisfy isDigit
+
+hexes :: ReadP String
+hexes = many1 $ satisfy isHexDigit
 
 parseSimple :: ReadP Version
 parseSimple =
