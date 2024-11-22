@@ -58,9 +58,9 @@ formatMarkedContentIn Colors {..} m bs =
     concat
       [ [""]
       , T.lines
-          $ slice bs (startOfStartLine + 1) markedStart
+          $ slice bs startOfStartLine markedStart
           <> wrapNonSpace red (slice bs markedStart markedEnd)
-          <> slice bs (markedEnd + 1) endOfEndLine
+          <> slice bs markedEnd endOfEndLine
       , [markerLine]
       ]
 
@@ -70,13 +70,17 @@ formatMarkedContentIn Colors {..} m bs =
 
   sideBarWidth = length (show @String endLine) + 1
 
+  -- If we find the newline, we want to return thar char after it (+1), if we
+  -- don't, we want to return the overall start (0).
   startOfStartLine =
-    fromMaybe 0
+    maybe 0 (+ 1)
       $ find (\n -> BS8.indexMaybe bs n == Just '\n')
       $ reverse [0 .. markedStart]
 
+  -- Again, if we find a newline we want the char after that (+1), otherwise we
+  -- want the last char (or 0 if it's empty)
   endOfEndLine =
-    fromMaybe (BS8.length bs)
+    maybe (max 0 $ BS8.length bs - 1) (+ 1)
       $ find (\n -> BS8.indexMaybe bs n == Just '\n') [markedEnd ..]
 
   (minColumn, maxColumn) =
