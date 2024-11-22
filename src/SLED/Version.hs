@@ -8,19 +8,8 @@ module SLED.Version
 import SLED.Prelude
 
 import Data.Aeson (withText)
-import Data.Char (isDigit, isHexDigit)
-import qualified Data.List.NonEmpty as NE
 import qualified Data.Version as V
-import Text.ParserCombinators.ReadP
-  ( ReadP
-  , char
-  , eof
-  , many1
-  , readP_to_S
-  , satisfy
-  , string
-  )
-import qualified Prelude as Unsafe (read)
+import SLED.Parse
 
 data Version = Version
   { version :: V.Version
@@ -34,10 +23,7 @@ instance ToJSON Version where
 
 instance FromJSON Version where
   parseJSON =
-    withText "Version"
-      $ maybe (fail "Not a valid version") pure
-      . parseVersion
-      . unpack
+    withText "Version" $ maybe (fail "Not a valid version") pure . parseVersion
 
 defaultRevision :: [Version] -> Version -> Version
 defaultRevision vs v =
@@ -48,13 +34,12 @@ defaultRevision vs v =
 eqOnVersion :: Version -> Version -> Bool
 eqOnVersion = (==) `on` (.version)
 
-parseVersion :: String -> Maybe Version
+parseVersion :: Text -> Maybe Version
 parseVersion =
   parse
     $ parseWithRevision
     <|> parseWithChecksum
     <|> parseSimple
-    <* eof
 
 parseWithRevision :: ReadP Version
 parseWithRevision = do
@@ -77,12 +62,6 @@ parseWithChecksum = do
       , revision = Nothing
       }
 
-nat :: ReadP Natural
-nat = fmap Unsafe.read $ many1 $ satisfy isDigit
-
-hexes :: ReadP String
-hexes = many1 $ satisfy isHexDigit
-
 parseSimple :: ReadP Version
 parseSimple =
   Version
@@ -92,6 +71,3 @@ parseSimple =
 showVersion :: Version -> String
 showVersion (Version v mr) =
   V.showVersion v <> maybe "" (("@rev:" <>) . show) mr
-
-parse :: ReadP a -> String -> Maybe a
-parse p s = fst . NE.last <$> NE.nonEmpty (readP_to_S p s)

@@ -151,11 +151,11 @@ spec = do
         `shouldReturn` Nothing
 
 hackageVersions
-  :: [String]
+  :: [Text]
   -- ^ Normal
-  -> [String]
+  -> [Text]
   -- ^ Unpreferred
-  -> [String]
+  -> [Text]
   -- ^ Deprecated
   -> HackageVersions
 hackageVersions n u d =
@@ -166,9 +166,9 @@ hackageVersions n u d =
     }
 
 stackageVersions
-  :: String
+  :: Text
   -- ^ On-page
-  -> String
+  -> Text
   -- ^ On-Hackage
   -> StackageVersions
 stackageVersions p h =

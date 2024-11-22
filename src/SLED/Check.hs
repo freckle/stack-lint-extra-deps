@@ -18,5 +18,5 @@ import SLED.Stackage as X
 import SLED.Suggestion as X
 
 newtype Check = Check
-  { run :: ExternalDetails -> ExtraDep -> Maybe SuggestionAction
+  { run :: ExternalDetails -> ExtraDep -> Maybe (SuggestionAction ExtraDep)
   }

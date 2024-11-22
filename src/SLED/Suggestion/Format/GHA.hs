@@ -8,18 +8,19 @@ import Blammo.Logging.Colors
 import qualified Data.Text as T
 import SLED.Suggestion
 import SLED.Suggestion.Format.Action
+import SLED.Suggestion.Format.Target
 
 -- | Format a suggestion to create an annotation in GitHub Actions
 --
 -- @
 -- ::error file={name},line={line},endLine={endLine},title={title}::{message}
 -- @
-formatSuggestionGHA :: Marked Suggestion -> Text
+formatSuggestionGHA :: IsTarget t => Marked (Suggestion t) -> Text
 formatSuggestionGHA m =
   "::error "
     <> T.intercalate "," attrs
     <> "::"
-    <> formatExtraDep s.target
+    <> formatTarget s.target
     <> ": "
     <> suggestionActionDescription s.action
  where

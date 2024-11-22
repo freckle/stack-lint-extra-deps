@@ -24,6 +24,8 @@ class MonadStackage m where
   getStackageVersions
     :: StackageResolver -> PackageName -> m (Maybe StackageVersions)
 
+  getLatestInSeries :: StackageResolver -> m StackageResolver
+
 data StackageVersions = StackageVersions
   { onPage :: Version
   , onHackage :: Version
@@ -50,9 +52,9 @@ parseVersionsTable cursor = do
   toPair = \case
     [] -> Nothing
     [_] -> Nothing
-    [k, v] -> (k,) <$> parseVersion (unpack v)
-    [k, _, v] -> (k,) <$> parseVersion (unpack v)
-    (k : v : _) -> (k,) <$> parseVersion (unpack v)
+    [k, v] -> (k,) <$> parseVersion v
+    [k, _, v] -> (k,) <$> parseVersion v
+    (k : v : _) -> (k,) <$> parseVersion v
 
   fixNightly m =
     maybe m (\(_, v) -> Map.insertWith (\_new old -> old) currentKey v m)

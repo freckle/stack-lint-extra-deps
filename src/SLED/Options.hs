@@ -48,7 +48,7 @@ optionsParser =
         )
     <*> ( Last
             <$> optional
-              ( StackageResolver
+              ( readStackageResolver
                   <$> strOption
                     ( short 'r'
                         <> long "resolver"
@@ -94,6 +94,5 @@ optionsParser =
         )
     <*> ( Any
             <$> switch
-              ( long "version" <> help "Print version number information and quit"
-              )
+              (long "version" <> help "Print version number information and quit")
         )

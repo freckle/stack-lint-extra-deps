@@ -24,6 +24,7 @@ library
       SLED.Checks.HackageVersion
       SLED.Checks.RedundantGit
       SLED.Checks.RedundantHackage
+      SLED.Checks.StackageResolver
       SLED.ExternalDetails
       SLED.ExtraDep
       SLED.GitDetails
@@ -35,15 +36,18 @@ library
       SLED.Options.Parse
       SLED.Options.Pragma
       SLED.PackageName
+      SLED.Parse
       SLED.Prelude
       SLED.Run
       SLED.Stackage
+      SLED.Stackage.Snapshots
       SLED.StackageResolver
       SLED.StackYaml
       SLED.Suggestion
       SLED.Suggestion.Format
       SLED.Suggestion.Format.Action
       SLED.Suggestion.Format.GHA
+      SLED.Suggestion.Format.Target
       SLED.Suggestion.Format.TTY
       SLED.Version
   other-modules:
