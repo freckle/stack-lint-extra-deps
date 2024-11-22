@@ -64,6 +64,8 @@ instance Monad m => MonadStackage (TestAppT TestApp m) where
       m <- Map.lookup resolver ms
       Map.lookup package m
 
+  getLatestInSeries x = pure x
+
 instance Monad m => MonadGit (TestAppT TestApp m) where
   gitClone _ _ = pure ()
 
@@ -131,7 +133,7 @@ runGitChecks
   :: MonadUnliftIO m
   => Maybe (NonEmpty (CommitSHA, Maybe Text))
   -> GitExtraDep
-  -> m (Maybe SuggestionAction)
+  -> m (Maybe (SuggestionAction ExtraDep))
 runGitChecks mockGit =
   runTestChecks mempty mempty mockGit lts1818 GitChecks . Git
 
@@ -140,7 +142,7 @@ runHackageChecks
   => Map PackageName HackageVersions
   -> Map StackageResolver (Map PackageName StackageVersions)
   -> HackageExtraDep
-  -> m (Maybe SuggestionAction)
+  -> m (Maybe (SuggestionAction ExtraDep))
 runHackageChecks mockHackage mockStackage =
   runTestChecks mockHackage mockStackage Nothing lts1818 HackageChecks
     . Hackage
@@ -153,7 +155,7 @@ runTestChecks
   -> Marked StackageResolver
   -> ChecksName
   -> ExtraDep
-  -> m (Maybe SuggestionAction)
+  -> m (Maybe (SuggestionAction ExtraDep))
 runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraDep = do
   testApp <-
     TestApp
@@ -182,10 +184,10 @@ runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraD
 
     pure $ suggestion.action
 
-unsafeVersion :: HasCallStack => String -> Version
-unsafeVersion s = fromMaybe err $ parseVersion s
+unsafeVersion :: HasCallStack => Text -> Version
+unsafeVersion t = fromMaybe err $ parseVersion t
  where
-  err = error $ pack $ "Invalid version: " <> s
+  err = error $ "Invalid version: " <> t
 
 markAtZero :: a -> Marked a
 markAtZero a =
@@ -197,4 +199,4 @@ markAtZero a =
     }
 
 lts1818 :: Marked StackageResolver
-lts1818 = markAtZero (StackageResolver "lts-18.18")
+lts1818 = markAtZero $ stackageResolverFromText "lts-18.18"

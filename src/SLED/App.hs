@@ -16,6 +16,7 @@ import SLED.GitDetails
 import SLED.Hackage
 import SLED.PackageName
 import SLED.Stackage
+import qualified SLED.Stackage.Snapshots as Stackage
 import SLED.StackageResolver
 import System.Process.Typed
 import UnliftIO.Exception (throwIO)
@@ -58,7 +59,7 @@ instance MonadIO m => MonadHackage (AppT app m) where
 
     pure $ hush eVersions
 
-instance MonadIO m => MonadStackage (AppT app m) where
+instance MonadUnliftIO m => MonadStackage (AppT app m) where
   getStackageVersions resolver package = do
     eStackageVersions <-
       httpParse parseStackageVersions
@@ -66,7 +67,7 @@ instance MonadIO m => MonadStackage (AppT app m) where
           ( parseRequest
               $ unpack
               $ "https://www.stackage.org/"
-              <> resolver.unwrap
+              <> stackageResolverToText resolver
               <> "/package/"
               <> package.unwrap
           )
@@ -79,6 +80,8 @@ instance MonadIO m => MonadStackage (AppT app m) where
          ]
 
     pure $ hush eStackageVersions
+
+  getLatestInSeries = Stackage.getLatestInSeries
 
 instance MonadIO m => MonadGit (AppT app m) where
   gitClone url path = runGit ["clone", "--quiet", url, path]

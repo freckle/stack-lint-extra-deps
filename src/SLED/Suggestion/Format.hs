@@ -13,6 +13,7 @@ import Data.Aeson (encode)
 import SLED.Suggestion
 import SLED.Suggestion.Format.GHA
 import SLED.Suggestion.Format.TTY
+import SLED.Suggestion.Format.Target
 
 data Format
   = FormatJSON
@@ -36,13 +37,14 @@ defaultFormat :: Format
 defaultFormat = FormatTTY
 
 formatSuggestion
-  :: FilePath
+  :: (IsTarget t, ToJSON t)
+  => FilePath
   -- ^ Current directory
   -> ByteString
   -- ^ Full content of file being linted
   -> Colors
   -> Format
-  -> Marked Suggestion
+  -> Marked (Suggestion t)
   -> Text
 formatSuggestion cwd bs colors = \case
   FormatJSON -> decodeUtf8 . encode

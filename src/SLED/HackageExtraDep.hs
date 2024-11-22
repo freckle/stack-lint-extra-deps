@@ -41,7 +41,7 @@ splitPackageVersion x =
   fromMaybe (x, Nothing)
     $ headMaybe
     $ filter (isJust . snd)
-    $ map (second (parseVersion . unpack))
+    $ map (second parseVersion)
     $ breaksOn '-' x
 
 -- |

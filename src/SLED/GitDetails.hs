@@ -10,7 +10,6 @@ import SLED.Prelude
 
 import qualified Data.ByteString.Lazy as BSL
 import Data.Char (isSpace)
-import Data.List.Extra (dropPrefix)
 import qualified Data.Text as T
 import SLED.GitExtraDep
 import SLED.Version
@@ -98,7 +97,7 @@ gitTaggedVersions = do
   toPair x = case T.words x of
     [ref, sha] -> do
       tag <- T.stripPrefix "refs/tags/" ref
-      version <- parseVersion $ dropPrefix "v" $ unpack tag
+      version <- parseVersion $ dropPrefix "v" tag
       pure (CommitSHA sha, version)
     _ -> Nothing
 
@@ -112,3 +111,6 @@ bsToInt = readMaybe . unpack . T.dropWhileEnd isSpace . bsToText
 
 bsToText :: BSL.ByteString -> Text
 bsToText = decodeUtf8With lenientDecode . BSL.toStrict
+
+dropPrefix :: Text -> Text -> Text
+dropPrefix p t = fromMaybe t $ T.stripPrefix p t
