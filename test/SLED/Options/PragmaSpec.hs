@@ -83,7 +83,7 @@ spec = do
             , "\nUsage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER] "
             , "\n                             [-f|--format tty|gha|json] [--exclude PATTERN] "
             , "\n                             [-R|--no-check-resolver] [--checks CHECKS] "
-            , "\n                             [-n|--no-exit] [PATTERN] [--version]"
+            , "\n                             [-n|--no-exit] [-F|--fix] [PATTERN] [--version]"
             , "\n\n  stack lint-extra-deps (sled)"
             ]
 
