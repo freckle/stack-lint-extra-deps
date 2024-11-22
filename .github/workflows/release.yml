@@ -36,19 +36,22 @@ jobs:
         include:
           - os: ubuntu-latest
             suffix: x86_64-linux
-          - os: macOS-latest
+          - os: macos-12
             suffix: x86_64-osx
+          - os: macos-latest
+            suffix: arm64-osx
 
     runs-on: ${{ matrix.os }}
     steps:
-      - if: ${{ runner.os == 'macOS' }}
-        run: |
-          curl -SsL https://get.haskellstack.org | sh
       - uses: actions/checkout@v4
-      - uses: freckle/stack-cache-action@v2
       - run: |
           mkdir -p dist/stack-lint-extra-deps
-          stack build --copy-bins --local-bin-path dist/stack-lint-extra-deps
+      - id: stack
+        uses: freckle/stack-action@v5
+        with:
+          build-arguments: >-
+            --local-bin-path ./dist/stack-lint-extra-deps
+      - run: |
           tar -C dist -czf ./stack-lint-extra-deps-${{ matrix.suffix }}.tar.gz ./stack-lint-extra-deps
       - uses: freckle/action-gh-release@v2
         with:
