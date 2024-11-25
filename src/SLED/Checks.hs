@@ -15,12 +15,15 @@ import SLED.Checks.RedundantHackage
 import SLED.Options.BoundedEnum
 
 data ChecksName
-  = AllChecks
+  = NoChecks
+  | AllChecks
   | GitChecks
   | HackageChecks
   deriving stock (Bounded, Enum)
 
 instance Semigroup ChecksName where
+  NoChecks <> x = x
+  x <> NoChecks = x
   AllChecks <> _ = AllChecks
   _ <> AllChecks = AllChecks
   GitChecks <> HackageChecks = AllChecks
@@ -40,12 +43,14 @@ checksNameOption =
 
 showChecksName :: ChecksName -> String
 showChecksName = \case
+  NoChecks -> "none"
   AllChecks -> "all"
   GitChecks -> "git"
   HackageChecks -> "hackage"
 
 checksByName :: ChecksName -> [Check]
 checksByName = \case
+  NoChecks -> []
   AllChecks -> checksByName GitChecks <> checksByName HackageChecks
   GitChecks -> [checkRedundantGit, checkGitVersion]
   HackageChecks -> [checkRedundantHackage, checkHackageVersion]

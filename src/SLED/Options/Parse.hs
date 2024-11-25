@@ -23,6 +23,7 @@ data Options = Options
   , resolver :: Marked StackageResolver
   , format :: Format
   , excludes :: [Pattern]
+  , checkResolver :: Bool
   , checks :: ChecksName
   , noExit :: Bool
   , filter :: Maybe Pattern
@@ -63,6 +64,7 @@ parseOptions = do
             , resolver = resolver
             , format = fromMaybe defaultFormat $ getLast options.format
             , excludes = options.excludes
+            , checkResolver = not $ getAny options.noCheckResolver
             , checks = fromMaybe AllChecks $ options.checks
             , noExit = getAny options.noExit
             , filter = getLast options.filter
