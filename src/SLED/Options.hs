@@ -19,6 +19,7 @@ data Options = Options
   , resolver :: Last StackageResolver
   , format :: Last Format
   , excludes :: [Pattern]
+  , noCheckResolver :: Any
   , checks :: Maybe ChecksName
   , noExit :: Any
   , filter :: Last Pattern
@@ -75,6 +76,13 @@ optionsParser =
               <> metavar "PATTERN"
           )
       )
+    <*> ( Any
+            <$> switch
+              ( short 'R'
+                  <> long "no-check-resolver"
+                  <> help "Don't check for out of date resolver"
+              )
+        )
     <*> optional checksNameOption
     <*> ( Any
             <$> switch

@@ -36,19 +36,23 @@ url=$(curl --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/r
 ```console
 % stack lint-extra-deps --help
 Usage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER]
-                             [--exclude PATTERN] [--checks CHECKS]
-                             [-n|--no-exit] [PATTERN]
+                             [-f|--format tty|gha|json] [--exclude PATTERN]
+                             [-R|--no-check-resolver] [--checks CHECKS]
+                             [-n|--no-exit] [-F|--fix] [PATTERN] [--version]
 
-  Lint Stackage (extra) Deps
+  stack lint-extra-deps (sled)
 
 Available options:
-  -p,--path PATH           Path to config to lint (default: "stack.yaml")
+  -p,--path PATH           Path to config to lint
   -r,--resolver RESOLVER   Resolver to use, default is read from --path
+  -f,--format tty|gha|json Format to output in
   --exclude PATTERN        Exclude deps matching PATTERN
-  --checks CHECKS          Checks to run, one of: all, git, hackage
-                           (default: all)
+  -R,--no-check-resolver   Don't check for out of date resolver
+  --checks CHECKS          Checks to run, one of: none, all, git, hackage
   -n,--no-exit             Exit successfully, even if suggestions found
+  -F,--fix                 Automatically fix problems
   PATTERN                  Limit to deps matching PATTERN
+  --version                Print version number information and quit
   -h,--help                Show this help text
 ```
 
