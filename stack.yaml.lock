@@ -5,16 +5,12 @@
 
 packages:
 - completed:
-    name: yaml-marked
+    hackage: yaml-marked-0.1.0.0@sha256:6390773525f376e881328e95c98a8e38c4e9c188a02f610d23b5aa2eea35500e,5598
     pantry-tree:
-      sha256: 280a8d711fdf09671cc7024bfa696da700ad11034b3433fb700cbe29a8e05ad4
-      size: 1401
-    sha256: 0d0767cb3038809595f1563f607f6b2198c82567a7e66d10bb4e13cbc67e96d0
-    size: 16181
-    url: https://github.com/pbrisbin/yaml-marked/archive/8fe21f6cf13b78f14c0fa41c84456b5dd32bd098.tar.gz
-    version: 0.0.0.0
+      sha256: 27af7104a559e210f927b67f8ebafa768e6125ca08e3d079fcaff95edc7360d6
+      size: 1167
   original:
-    url: https://github.com/pbrisbin/yaml-marked/archive/8fe21f6cf13b78f14c0fa41c84456b5dd32bd098.tar.gz
+    hackage: yaml-marked-0.1.0.0
 snapshots:
 - completed:
     sha256: acaab6ca693211938d1542abcb1c83a2f298b9f6b571854a9d38febe39b6408e
