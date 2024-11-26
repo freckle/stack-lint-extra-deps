@@ -12,5 +12,5 @@ checkHackageVersion = Check $ \ed extraDep -> do
   Hackage hed <- pure extraDep
   hv <- ed.hackageVersions
   released <- headMaybe hv.normal
-  current <- defaultRevision hv.normal <$> hed.version
+  let current = defaultRevision hv.normal $ markedItem $ hed.version
   UpdateHackageVersion released <$ guard (released > current)

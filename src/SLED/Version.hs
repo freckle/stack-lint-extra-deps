@@ -2,6 +2,7 @@ module SLED.Version
   ( Version
   , defaultRevision
   , parseVersion
+  , versionParser
   , showVersion
   ) where
 
@@ -35,9 +36,11 @@ eqOnVersion :: Version -> Version -> Bool
 eqOnVersion = (==) `on` (.version)
 
 parseVersion :: Text -> Maybe Version
-parseVersion =
-  parse
-    $ parseWithRevision
+parseVersion = parse versionParser
+
+versionParser :: ReadP Version
+versionParser =
+  parseWithRevision
     <|> parseWithChecksum
     <|> parseSimple
 

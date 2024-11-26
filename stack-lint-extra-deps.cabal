@@ -156,6 +156,7 @@ test-suite hspec
   other-modules:
       SLED.Checks.GitSpec
       SLED.Checks.HackageSpec
+      SLED.HackageExtraDepSpec
       SLED.HackageSpec
       SLED.Options.PragmaSpec
       SLED.RunSpec
@@ -188,4 +189,5 @@ test-suite hspec
     , hspec
     , stack-lint-extra-deps
     , text
+    , yaml-marked
   default-language: Haskell2010

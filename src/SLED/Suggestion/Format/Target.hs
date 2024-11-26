@@ -33,6 +33,7 @@ instance IsTarget ExtraDep where
     Other {} -> "<unknown>"
 
   getTargetMark m = case (s.target, s.action) of
+    (Hackage hed, UpdateHackageVersion {}) -> void hed.version
     (Git ged, UpdateGitCommit {}) -> void ged.commit
     _ -> void m
    where
@@ -40,10 +41,13 @@ instance IsTarget ExtraDep where
 
 instance IsTarget HackageExtraDep where
   formatTarget hed =
-    hed.package.unwrap <> maybe "" (("-" <>) . pack . showVersion) hed.version
+    hed.package.unwrap <> "-" <> pack (showVersion $ markedItem hed.version)
 
 instance IsTarget CommitSHA where
   formatTarget = (.unwrap)
+
+instance IsTarget Version where
+  formatTarget = pack . showVersion
 
 instance IsTarget StackageResolver where
   formatTarget = stackageResolverToText

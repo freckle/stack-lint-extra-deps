@@ -6,7 +6,6 @@ import SLED.Prelude
 
 import SLED.Run
 import SLED.Test
-import SLED.Version
 
 spec :: Spec
 spec = do
@@ -57,7 +56,7 @@ freckleApp1011 :: HackageExtraDep
 freckleApp1011 =
   HackageExtraDep
     { package = PackageName "freckle-app"
-    , version = parseVersion "1.0.1.1"
+    , version = markAtZero $ unsafeVersion "1.0.1.1"
     }
 
 yesodFlowRoutesGitHub :: GitExtraDep
