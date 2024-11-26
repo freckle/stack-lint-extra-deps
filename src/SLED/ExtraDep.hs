@@ -7,7 +7,6 @@ module SLED.ExtraDep
 import SLED.Prelude
 
 import Control.Error.Util (hush)
-import Data.Yaml.Marked.Parse
 import Data.Yaml.Marked.Value
 import SLED.GitExtraDep
 import SLED.HackageExtraDep
@@ -15,7 +14,7 @@ import SLED.PackageName
 import System.FilePath.Glob
 
 data ExtraDep
-  = -- | @{package}(-{version})(@{checksum})
+  = -- | @{package}-{version(\@rev:{number})}@
     Hackage HackageExtraDep
   | -- | @{ git: {repository}, commit: {commit} }@
     Git GitExtraDep
@@ -30,7 +29,7 @@ decodeExtraDep mv =
     $ fromMaybe (Other () <$ mv)
     $ asum
       [ hush (Git <$$> decodeGitExtraDep mv)
-      , hush (Hackage <$$> json mv)
+      , hush (Hackage <$$> decodeHackageExtraDep mv)
       ]
 
 matchPattern :: Pattern -> ExtraDep -> Bool

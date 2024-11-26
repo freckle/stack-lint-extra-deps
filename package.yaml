@@ -99,3 +99,4 @@ tests:
       - hspec
       - stack-lint-extra-deps
       - text
+      - yaml-marked

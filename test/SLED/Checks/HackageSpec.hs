@@ -26,7 +26,7 @@ spec = do
         mempty
         HackageExtraDep
           { package = package
-          , version = parseVersion "1.0.1.1"
+          , version = markAtZero $ unsafeVersion "1.0.1.1"
           }
         `shouldReturn` Just (UpdateHackageVersion version)
 
@@ -40,7 +40,7 @@ spec = do
         mempty
         HackageExtraDep
           { package = package
-          , version = parseVersion "1.0.1.1"
+          , version = markAtZero $ unsafeVersion "1.0.1.1"
           }
         `shouldReturn` Nothing
 
@@ -55,7 +55,7 @@ spec = do
         hed =
           HackageExtraDep
             { package = package
-            , version = parseVersion "1.0.1.1"
+            , version = markAtZero $ unsafeVersion "1.0.1.1"
             }
 
       runHackageChecks mempty mockStackage hed
@@ -74,7 +74,7 @@ spec = do
         mockStackage
         HackageExtraDep
           { package = package
-          , version = Just $ unsafeVersion "1.0.1.1"
+          , version = markAtZero $ unsafeVersion "1.0.1.1"
           }
         `shouldReturn` Just Remove
 
@@ -91,7 +91,7 @@ spec = do
         mockStackage
         HackageExtraDep
           { package = package
-          , version = Just $ unsafeVersion "1.0.1.1"
+          , version = markAtZero $ unsafeVersion "1.0.1.1"
           }
         `shouldReturn` Nothing
 
@@ -109,7 +109,7 @@ spec = do
         mockStackage
         HackageExtraDep
           { package = package
-          , version = Just $ unsafeVersion "0.3.5"
+          , version = markAtZero $ unsafeVersion "0.3.5"
           }
         `shouldReturn` Nothing
 
@@ -128,7 +128,7 @@ spec = do
         mockStackage
         HackageExtraDep
           { package = package
-          , version = Just version
+          , version = markAtZero version
           }
         `shouldReturn` Nothing
 
@@ -146,7 +146,7 @@ spec = do
         mockStackage
         HackageExtraDep
           { package = package
-          , version = Just $ unsafeVersion "0.3.5@rev:11"
+          , version = markAtZero $ unsafeVersion "0.3.5@rev:11"
           }
         `shouldReturn` Nothing
 

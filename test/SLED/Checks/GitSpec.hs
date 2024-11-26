@@ -9,7 +9,6 @@ import SLED.Prelude
 import qualified Data.List.NonEmpty as NE
 import SLED.Suggestion
 import SLED.Test
-import SLED.Version
 
 spec :: Spec
 spec = do
@@ -60,6 +59,6 @@ spec = do
           ( ReplaceGitWithHackage
               $ HackageExtraDep
                 { package = PackageName "foo"
-                , version = parseVersion "1.0.2"
+                , version = markAtZero $ unsafeVersion "1.0.2"
                 }
           )

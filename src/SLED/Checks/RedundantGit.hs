@@ -21,7 +21,7 @@ checkRedundantGit = Check $ \ed extraDep -> do
       ReplaceGitWithHackage
         HackageExtraDep
           { package = PackageName $ repositoryBaseName ged.repository
-          , version = Just v
+          , version = markAtZero v -- this mark is ignored
           }
 
     -- Attempt to suggest a version tag that exists on Hackage
@@ -37,3 +37,12 @@ checkRedundantGit = Check $ \ed extraDep -> do
       pure $ replaceGitWithHackage version
 
   suggestHackage <|> suggestGit
+
+markAtZero :: a -> Marked a
+markAtZero a =
+  Marked
+    { markedItem = a
+    , markedPath = "<input>"
+    , markedLocationStart = Location 0 0 0
+    , markedLocationEnd = Location 0 0 0
+    }
