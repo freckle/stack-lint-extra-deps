@@ -1,7 +1,8 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.4.1...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.5.0...main)
 
-## [v1.2.4.1](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.4.0...v1.2.4.1)
+## [v1.2.5.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.4.0...v1.2.5.0)
 
+- Emit suggestion on out of date resolver
 - Don't fail with a parse error in the presence of Hackage checksums
 
 ## [v1.2.4.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.3.1...v1.2.4.0)
