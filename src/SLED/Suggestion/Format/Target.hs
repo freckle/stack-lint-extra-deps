@@ -18,7 +18,7 @@ class IsTarget a where
 
   -- | Allows marking parts of a target for specific actions
   --
-  -- We return void since we don't know what type some some item could be, and
+  -- We return void since we don't know what type that part could be, and
   -- at the point we use this we only care about the marks anyway.
   getTargetMark :: Marked (Suggestion a) -> Marked ()
   getTargetMark m = void m
