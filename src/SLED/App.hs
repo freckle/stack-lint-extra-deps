@@ -59,7 +59,7 @@ instance MonadIO m => MonadHackage (AppT app m) where
 
     pure $ hush eVersions
 
-instance MonadUnliftIO m => MonadStackage (AppT app m) where
+instance MonadIO m => MonadStackage (AppT app m) where
   getStackageVersions resolver package = do
     eStackageVersions <-
       httpParse parseStackageVersions
