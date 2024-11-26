@@ -16,14 +16,6 @@ import SLED.Prelude
 import Data.Char (isDigit, isHexDigit)
 import qualified Data.List.NonEmpty as NE
 import Text.ParserCombinators.ReadP
-  ( ReadP
-  , char
-  , eof
-  , many1
-  , readP_to_S
-  , satisfy
-  , string
-  )
 import qualified Prelude as Unsafe (read)
 
 parse :: ReadP a -> Text -> Maybe a
