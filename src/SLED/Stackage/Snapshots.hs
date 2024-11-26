@@ -9,7 +9,7 @@ import Network.HTTP.Simple
 import SLED.StackageResolver
 import UnliftIO.Exception (try)
 
-getLatestInSeries :: MonadUnliftIO m => StackageResolver -> m StackageResolver
+getLatestInSeries :: MonadIO m => StackageResolver -> m StackageResolver
 getLatestInSeries x = maybe x (.resolver) <$> getFirstSnapshotMatching sameSeries
  where
   sameSeries :: Snapshot -> Bool
@@ -45,7 +45,7 @@ snapshotPageLength :: SnapshotPage -> Int
 snapshotPageLength = length . concat . (.snapshots)
 
 getFirstSnapshotMatching
-  :: MonadUnliftIO m => (Snapshot -> Bool) -> m (Maybe Snapshot)
+  :: MonadIO m => (Snapshot -> Bool) -> m (Maybe Snapshot)
 getFirstSnapshotMatching p = go 0 1
  where
   go seenSoFar page = do
@@ -58,11 +58,10 @@ getFirstSnapshotMatching p = go 0 1
       Right {} -> pure Nothing
 
 getSnapshotsPage
-  :: MonadUnliftIO m => Int -> m (Either HttpException SnapshotPage)
-getSnapshotsPage page = try $ do
+  :: MonadIO m => Int -> m (Either HttpException SnapshotPage)
+getSnapshotsPage page = liftIO $ try $ do
   req <-
-    liftIO
-      $ parseRequestThrow
+    parseRequestThrow
       $ "http://www.stackage.org/snapshots?page="
       <> show page
   resp <- httpJSON req
