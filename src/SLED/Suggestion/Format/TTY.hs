@@ -70,7 +70,7 @@ formatMarkedContentIn Colors {..} m bs =
 
   sideBarWidth = length (show @String endLine) + 1
 
-  -- If we find the newline, we want to return thar char after it (+1), if we
+  -- If we find the newline, we want to return the char after it (+1), if we
   -- don't, we want to return the overall start (0).
   startOfStartLine =
     maybe 0 (+ 1)
