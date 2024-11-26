@@ -11,6 +11,7 @@ import qualified Data.ByteString.Char8 as BS8
 import Data.Char (isSpace)
 import qualified Data.List.NonEmpty.Extra as NE
 import qualified Data.Text as T
+import SLED.Marked.Line
 import SLED.Suggestion
 import SLED.Suggestion.Format.Action
 import SLED.Suggestion.Format.Target
@@ -51,60 +52,41 @@ formatMarkedContentIn Colors {..} m bs =
       <> map Just [startLine .. endLine]
       <> [Nothing]
 
-  gutterLine :: Maybe Int -> Text
+  gutterLine :: Maybe Natural -> Text
   gutterLine mn = blue $ padTo sideBarWidth (maybe " " show mn) <> "|"
 
   contentLines =
     concat
       [ [""]
       , T.lines
-          $ slice bs startOfStartLine markedStart
-          <> wrapNonSpace red (slice bs markedStart markedEnd)
-          <> slice bs markedEnd endOfEndLine
+          $ slice bs (startOfStartLine bs m) (markedStart m)
+          <> wrapNonSpace red (slice bs (markedStart m) (markedEnd m))
+          <> slice bs (markedEnd m) (endOfEndLine bs m)
       , [markerLine]
       ]
 
   markerLine =
-    T.replicate minColumn " "
-      <> red (T.replicate markedWidth "^")
+    T.replicate (fromIntegral minColumn) " "
+      <> red (T.replicate (fromIntegral markedWidth) "^")
 
-  sideBarWidth = length (show @String endLine) + 1
-
-  -- If we find the newline, we want to return the char after it (+1), if we
-  -- don't, we want to return the overall start (0).
-  startOfStartLine =
-    maybe 0 (+ 1)
-      $ find (\n -> BS8.indexMaybe bs n == Just '\n')
-      $ reverse [0 .. markedStart]
-
-  -- Again, if we find a newline we want the char after that (+1), otherwise we
-  -- want the last char (or 0 if it's empty)
-  endOfEndLine =
-    maybe (max 0 $ BS8.length bs - 1) (+ 1)
-      $ find (\n -> BS8.indexMaybe bs n == Just '\n') [markedEnd ..]
+  sideBarWidth = genericLength @Natural (show @String endLine) + 1
 
   (minColumn, maxColumn) =
     (NE.minimum1 &&& NE.maximum1) $ startColumn :| [endColumn]
 
   markedWidth = maxColumn - minColumn
 
-  startLine :: Int
-  startLine = (+ 1) $ fromIntegral $ locationLine $ markedLocationStart m
+  startLine :: Natural
+  startLine = (+ 1) $ locationLine $ markedLocationStart m
 
-  endLine :: Int
-  endLine = (+ 1) $ fromIntegral $ locationLine $ markedLocationEnd m
+  endLine :: Natural
+  endLine = (+ 1) $ locationLine $ markedLocationEnd m
 
-  startColumn :: Int
-  startColumn = fromIntegral $ locationColumn $ markedLocationStart m
+  startColumn :: Natural
+  startColumn = locationColumn $ markedLocationStart m
 
-  endColumn :: Int
-  endColumn = fromIntegral $ locationColumn $ markedLocationEnd m
-
-  markedStart :: Int
-  markedStart = fromIntegral $ locationIndex $ markedLocationStart m
-
-  markedEnd :: Int
-  markedEnd = fromIntegral $ locationIndex $ markedLocationEnd m
+  endColumn :: Natural
+  endColumn = locationColumn $ markedLocationEnd m
 
 -- | Break and re-join a 'Text', converting non-space segments by a function
 wrapNonSpace :: (Text -> Text) -> Text -> Text
@@ -118,15 +100,17 @@ wrapNonSpace f t
 -- | Pads a 'Text' with spaces up to the given length
 --
 -- If the given value is longer, it is truncated.
-padTo :: Int -> Text -> Text
-padTo n t =
-  let l = T.length t
-  in  if T.length t < n
-        then t <> T.replicate (n - l) " "
-        else T.take n t
+padTo :: Natural -> Text -> Text
+padTo n t
+  | T.length t < i = t <> T.replicate (i - l) " "
+  | otherwise = T.take i t
+ where
+  i = fromIntegral @_ @Int n
+  l = T.length t
 
 -- | Slices between start (inclusive) and end (exclusive) indexes
 --
 -- Returns 'Text' because that's what we need here.
-slice :: ByteString -> Int -> Int -> Text
-slice bs start end = pack $ map (BS8.index bs) [start .. (end - 1)]
+slice :: ByteString -> Natural -> Natural -> Text
+slice bs start end =
+  pack $ map (BS8.index bs) [fromIntegral start .. (fromIntegral end - 1)]

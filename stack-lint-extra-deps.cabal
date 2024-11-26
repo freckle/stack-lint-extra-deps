@@ -31,6 +31,7 @@ library
       SLED.GitExtraDep
       SLED.Hackage
       SLED.HackageExtraDep
+      SLED.Marked.Line
       SLED.Options
       SLED.Options.BoundedEnum
       SLED.Options.Parse
@@ -158,6 +159,7 @@ test-suite hspec
       SLED.Checks.HackageSpec
       SLED.HackageExtraDepSpec
       SLED.HackageSpec
+      SLED.Marked.LineSpec
       SLED.Options.PragmaSpec
       SLED.RunSpec
       SLED.StackageSpec
