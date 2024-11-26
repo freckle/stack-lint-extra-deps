@@ -51,6 +51,7 @@ jobs:
         with:
           stack-build-arguments: >-
             --local-bin-path ./dist/stack-lint-extra-deps
+            --copy-bins
       - run: |
           ./dist/stack-lint-extra-deps/stack-lint-extra-deps --version
           tar -C dist -czf ./stack-lint-extra-deps-${{ matrix.suffix }}.tar.gz ./stack-lint-extra-deps
