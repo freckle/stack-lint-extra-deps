@@ -46,7 +46,6 @@ library:
     - aeson
     - bytestring
     - containers
-    - dlist
     - errors
     - extra
     - filepath
