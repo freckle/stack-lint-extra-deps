@@ -37,7 +37,10 @@ runs:
               --retry 5 \
               --retry-delay 0 \
               --retry-max-time 30 \
-              -sSf https://api.github.com/repos/freckle/stack-lint-extra-deps/releases |
+              --fail-with-body \
+              --show-error \
+              --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/releases |
+              tee /dev/stderr |
               jq '.[] | select(.draft|not) | select(.prerelease|not) | .tag_name' --raw-output |
               head -n 1
           )
