@@ -43,6 +43,7 @@ markAtZero a =
   Marked
     { markedItem = a
     , markedPath = "<input>"
+    , markedJSONPath = Nothing
     , markedLocationStart = Location 0 0 0
     , markedLocationEnd = Location 0 0 0
     }

@@ -4,6 +4,7 @@ module SLED.HackageExtraDepSpec
 
 import SLED.Prelude
 
+import Data.Aeson.Types (JSONPathElement (..))
 import Data.Yaml.Marked.Decode
 import Data.Yaml.Marked.Parse
 import SLED.HackageExtraDep
@@ -25,6 +26,7 @@ spec = do
                             Marked
                               { markedItem = unsafeVersion "0.1.0.0"
                               , markedPath = "<input>"
+                              , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 6 0 6
                               , markedLocationEnd = Location 13 0 13
                               }
@@ -43,6 +45,7 @@ spec = do
                             Marked
                               { markedItem = unsafeVersion "0.1.0.0"
                               , markedPath = "<input>"
+                              , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 23 0 23
                               , markedLocationEnd = Location 30 0 30
                               }
@@ -61,6 +64,7 @@ spec = do
                             Marked
                               { markedItem = unsafeVersion "0.1.0.0@rev:5"
                               , markedPath = "<input>"
+                              , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 6 0 6
                               , markedLocationEnd = Location 19 0 19
                               }
@@ -79,6 +83,7 @@ spec = do
                             Marked
                               { markedItem = unsafeVersion "0.1.0.0@sha256:ffffff,100"
                               , markedPath = "<input>"
+                              , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 6 0 6
                               , markedLocationEnd = Location 31 0 31
                               }
