@@ -63,10 +63,10 @@ runAndCheckSeen act = do
   act
   gets $ views seenL $ (> before) . length
 
-rewriteContents :: MonadState Context m => (ByteString -> m ByteString) -> m ()
-rewriteContents = overM contentsL
-
-overM :: MonadState s m => Lens' s b -> (b -> m b) -> m ()
-overM l f = do
-  x <- gets $ view l
-  void $ (l .=) =<< f x
+-- | Returns if the contents were actually changed or not
+rewriteContents :: MonadState Context m => (ByteString -> ByteString) -> m Bool
+rewriteContents f = do
+  original <- gets $ view contentsL
+  let updated = f original
+  contentsL .= updated
+  pure $ updated /= original
