@@ -33,27 +33,21 @@ runs:
     - id: prep
       if: ${{ inputs.no-install != 'true' }}
       shell: bash
-      env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
       run: |
         version=${{ inputs.version }}
 
         if [[ -z "$version" ]]; then
           read -r version < <(
-            curl \
-              --silent \
-              --show-error \
-              --fail-with-body \
-              --header "authentication: token $GITHUB_TOKEN }}" \
-              https://api.github.com/repos/freckle/stack-lint-extra-deps/releases |
-              tee /dev/stderr |
-              jq '.[] | select(.draft|not) | select(.prerelease|not) | .tag_name' --raw-output |
+            gh api '/repos/freckle/stack-lint-extra-deps/releases' \
+              --jq '.[] | select(.draft|not) | select(.prerelease|not) | .tag_name' |
               head -n 1
           )
         fi
 
         echo "Installing stack-lint-extra-deps $version"
         echo "version=$version" >> "$GITHUB_OUTPUT"
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
 
     - if: ${{ inputs.no-install != 'true' }}
       uses: pbrisbin/setup-tool-action@v2
