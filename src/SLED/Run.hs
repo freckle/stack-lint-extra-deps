@@ -216,7 +216,7 @@ tryFixSuggestion options ms = do
 suggestionReplace
   :: IsTarget t => ByteString -> Marked (Suggestion t) -> Replace
 suggestionReplace bs m = case s.action of
-  Remove -> replaceMarkedLine bs m ""
+  Remove -> removeMarkedLine bs m
   UpdateGitCommit commit -> replaceMarkedTarget m commit
   UpdateHackageVersion version -> replaceMarkedTarget m version
   ReplaceGitWithHackage hed -> replaceMarkedTarget m hed
@@ -224,5 +224,9 @@ suggestionReplace bs m = case s.action of
  where
   s = markedItem m
 
-replaceMarkedLine :: ByteString -> Marked a -> ByteString -> Replace
-replaceMarkedLine bs m = newReplace (startOfStartLine bs m) (endOfEndLine bs m)
+removeMarkedLine :: ByteString -> Marked a -> Replace
+removeMarkedLine bs m = newReplace s len ""
+ where
+  s = startOfStartLine bs m
+  e = endOfEndLine bs m
+  len = e - s + 1 -- chomp newline too
