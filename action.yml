@@ -32,7 +32,12 @@ runs:
 
         if [[ -z "$version" ]]; then
           read -r version < <(
-            curl --silent https://api.github.com/repos/freckle/stack-lint-extra-deps/releases |
+            curl \
+              --max-time 10 \
+              --retry 5 \
+              --retry-delay 0 \
+              --retry-max-time 30 \
+              -sSf https://api.github.com/repos/freckle/stack-lint-extra-deps/releases |
               jq '.[] | select(.draft|not) | select(.prerelease|not) | .tag_name' --raw-output |
               head -n 1
           )
