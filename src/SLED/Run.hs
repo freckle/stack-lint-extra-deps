@@ -12,16 +12,12 @@ import SLED.Prelude
 
 import Blammo.Logging.Colors
 import Blammo.Logging.Logger
-import Control.Error.Util (hush)
-import Control.Lens (to, views, (<>=), (^.))
-import Data.List (partition)
 import qualified Data.List.NonEmpty as NE
 import Data.Yaml.Marked.Decode (decodeThrow)
 import Data.Yaml.Marked.Replace
 import SLED.Check
 import SLED.Checks
 import SLED.Checks.StackageResolver
-import SLED.Context
 import SLED.Marked.Line
 import SLED.Options.Parse
 import SLED.StackYaml
@@ -44,23 +40,17 @@ runSLED
   => Options
   -> m ()
 runSLED options = do
-  context <- execContextT options.contents $ runSuggestions options
+  replaces <- runSuggestions options
 
-  let changed = context ^. contentsL /= options.contents
+  let changed = not $ null replaces
 
   when (options.autoFix && changed) $ do
     logInfo $ "Re-writing fixed stack.yaml" :# ["path" .= options.path]
-    writeFileBS options.path $ context ^. contentsL
+    liftIO $ writeFileBS options.path =<< runReplaces replaces options.contents
 
-  let (fixed, unfixed) = partition markedItem $ context ^. seenL . to toList
+  logDebug $ "Suggestions found" :# ["count" .= length replaces]
 
-  logDebug
-    $ "Suggestions found"
-    :# [ "fixed" .= length fixed
-       , "unfixed" .= length unfixed
-       ]
-
-  unless (null unfixed || options.noExit) $ do
+  unless (not changed || options.noExit) $ do
     logDebug "Exiting non-zero (--no-exit to disable)"
     exitFailure
 
@@ -74,21 +64,21 @@ runSuggestions
      , HasLogger env
      )
   => Options
-  -> StateT Context m ()
-runSuggestions options = untilNoneSeen $ do
-  lseen <- gets $ views seenL length
-  logDebug $ "Linting pass" :# ["seen" .= lseen]
+  -> m [Replace]
+runSuggestions options = do
+  stackYaml <-
+    liftIO
+      $ maybe id setStackYamlResolver options.resolver
+      . markedItem
+      <$> decodeThrow decodeStackYaml options.path options.contents
 
-  bs <- gets $ view contentsL
-  stackYaml <- liftIO $ markedItem <$> decodeThrow decodeStackYaml options.path bs
+  result <- checkResolver stackYaml options
 
-  let
-    resolver :: Marked StackageResolver
-    resolver = maybe stackYaml.resolver (<$ stackYaml.resolver) options.resolver
+  case result of
+    Unchanged -> checkExtraDeps stackYaml options
+    Updated yaml replace -> (replace :) <$> checkExtraDeps yaml options
 
-  sequenceFirstSeen
-    $ bool id (checkResolver options resolver :) options.checkResolver
-    $ map (checkExtraDep resolver options) stackYaml.extraDeps
+data CheckResolverResult = Unchanged | Updated StackYaml Replace
 
 checkResolver
   :: ( MonadUnliftIO m
@@ -97,15 +87,39 @@ checkResolver
      , MonadReader env m
      , HasLogger env
      )
-  => Options
-  -> Marked StackageResolver
-  -> StateT Context m ()
-checkResolver options = whenUnseen $ \mresolver -> do
-  mSuggestion <- lift $ checkStackageResolver mresolver
+  => StackYaml
+  -> Options
+  -> m CheckResolverResult
+checkResolver stackYaml options
+  | not options.checkResolver = pure Unchanged
+  | otherwise = do
+      mSuggestion <- checkStackageResolver $ stackYaml.resolver
 
-  for_ mSuggestion $ \ms -> do
-    outputSuggestion options ms
-    tryFixSuggestion options ms
+      case mSuggestion of
+        Just ms | Suggestion _ (ReplaceWith latest) <- markedItem ms -> do
+          outputSuggestion options ms
+
+          let
+            updated = setStackYamlResolver latest stackYaml
+            replace = suggestionReplace options.contents ms
+
+          pure $ Updated updated replace
+        _ -> pure Unchanged
+
+checkExtraDeps
+  :: ( MonadUnliftIO m
+     , MonadLogger m
+     , MonadHackage m
+     , MonadStackage m
+     , MonadGit m
+     , MonadReader env m
+     , HasLogger env
+     )
+  => StackYaml
+  -> Options
+  -> m [Replace]
+checkExtraDeps stackYaml options =
+  mapMaybeM (checkExtraDep stackYaml.resolver options) stackYaml.extraDeps
 
 checkExtraDep
   :: ( MonadUnliftIO m
@@ -119,14 +133,17 @@ checkExtraDep
   => Marked StackageResolver
   -> Options
   -> Marked ExtraDep
-  -> StateT Context m ()
-checkExtraDep mresolver options = whenUnseen $ \med -> do
-  when (included $ markedItem med) $ do
-    mSuggestion <- lift $ runChecks mresolver options.checks med
+  -> m (Maybe Replace)
+checkExtraDep mresolver options med = do
+  if included $ markedItem med
+    then do
+      mSuggestion <- runChecks mresolver options.checks med
 
-    for_ mSuggestion $ \ms -> do
-      outputSuggestion options ms
-      tryFixSuggestion options ms
+      for mSuggestion $ \ms -> do
+        outputSuggestion options ms
+        pure $ suggestionReplace options.contents ms
+    else
+      pure Nothing
  where
   included = shouldIncludeExtraDep options.filter options.excludes
 
@@ -178,7 +195,7 @@ outputSuggestion
      )
   => Options
   -> Marked (Suggestion t)
-  -> StateT Context m ()
+  -> m ()
 outputSuggestion options suggestion = do
   logDebug
     $ ""
@@ -189,28 +206,12 @@ outputSuggestion options suggestion = do
   formatted <-
     formatSuggestion
       <$> getCurrentDirectory
-      <*> gets (view contentsL)
+      <*> pure options.contents
       <*> getColorsLogger
       <*> pure options.format
       <*> pure suggestion
 
   pushLoggerLn formatted
-
--- | Tries to fix the 'Suggestion' and updates 'Context' accordingly
---
--- If fixed, 'contents' is updated and a @'Marked' 'True'@ is placed in 'seen';
--- otherwise, a @'Marked' 'False'@ is.
-tryFixSuggestion
-  :: (MonadState Context m, IsTarget t)
-  => Options
-  -> Marked (Suggestion t)
-  -> m ()
-tryFixSuggestion options ms = do
-  fixed <- rewriteContents $ \bs -> fromMaybe bs $ do
-    guard options.autoFix
-    hush $ runReplaces [suggestionReplace bs ms] bs
-
-  seenL <>= pure (fixed <$ ms)
 
 suggestionReplace
   :: IsTarget t => ByteString -> Marked (Suggestion t) -> Replace

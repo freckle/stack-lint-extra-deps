@@ -1,5 +1,8 @@
+{-# OPTIONS_GHC -Wno-ambiguous-fields #-}
+
 module SLED.StackYaml
   ( StackYaml (..)
+  , setStackYamlResolver
   , decodeStackYaml
   ) where
 
@@ -19,6 +22,9 @@ data StackYaml = StackYaml
 instance ToJSON StackYaml where
   toJSON = toJSON . show @Text
   toEncoding = toEncoding . show @Text
+
+setStackYamlResolver :: StackageResolver -> StackYaml -> StackYaml
+setStackYamlResolver r stackYaml = stackYaml {resolver = r <$ stackYaml.resolver}
 
 decodeStackYaml :: Marked Value -> Either String (Marked StackYaml)
 decodeStackYaml = withObject "StackYaml" $ \o -> do

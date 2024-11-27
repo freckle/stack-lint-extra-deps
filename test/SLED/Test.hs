@@ -19,10 +19,9 @@ import SLED.Prelude
 import Blammo.Logging.LogSettings (defaultLogSettings)
 import Blammo.Logging.Logger (newTestLogger)
 import Blammo.Logging.Setup
-import Control.Lens ((^.))
 import qualified Data.Text as T
+import Data.Yaml.Marked.Replace (runReplaces)
 import SLED.Checks (ChecksName (..))
-import SLED.Context (contentsL, execContextT)
 import SLED.GitDetails
 import SLED.GitExtraDep (CommitSHA (..), Repository (..))
 import SLED.Hackage
@@ -81,9 +80,8 @@ runTestAppM f = do
 
 assertAutoFixed :: [Text] -> TestAppM ()
 assertAutoFixed diff = do
-  ctx <-
-    execContextT input
-      $ runSuggestions
+  replaces <-
+    runSuggestions
       $ Options
         { path = "stack.yaml"
         , resolver = Nothing
@@ -97,7 +95,7 @@ assertAutoFixed diff = do
         , filter = Nothing
         }
 
-  liftIO $ ctx ^. contentsL `shouldBe` expected
+  liftIO $ runReplaces replaces input `shouldReturn` expected
  where
   (input, expected) = fromDiffLines diff
 
