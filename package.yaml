@@ -80,14 +80,6 @@ executables:
       - -with-rtsopts=-N
 
 tests:
-  doctest:
-    main: Main.hs
-    source-dirs: doctest
-    dependencies:
-      - aeson
-      - doctest
-      - yaml
-
   hspec:
     main: Spec.hs
     source-dirs: test
