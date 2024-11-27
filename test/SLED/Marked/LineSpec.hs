@@ -51,6 +51,7 @@ markAt s e =
   Marked
     { markedItem = ()
     , markedPath = "unused"
+    , markedJSONPath = Nothing
     , markedLocationStart = Location s 0 0 -- line/column unused
     , markedLocationEnd = Location e 0 0 -- line/column unused
     }

@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: yaml-marked-0.1.0.0@sha256:6390773525f376e881328e95c98a8e38c4e9c188a02f610d23b5aa2eea35500e,5598
+    hackage: yaml-marked-0.2.0.1@sha256:e1178ace8a85559abdc61c25ae015f75ad977c3e9516f0f25f46858d34c1b61f,5598
     pantry-tree:
-      sha256: 27af7104a559e210f927b67f8ebafa768e6125ca08e3d079fcaff95edc7360d6
+      sha256: 6ce8f2798ab4142658f0a9a500d995a2ddbe66a3cffeb968470030ee22d27c02
       size: 1167
   original:
-    hackage: yaml-marked-0.1.0.0
+    hackage: yaml-marked-0.2.0.1
 snapshots:
 - completed:
     sha256: acaab6ca693211938d1542abcb1c83a2f298b9f6b571854a9d38febe39b6408e

@@ -168,6 +168,7 @@ runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraD
         Marked
           { markedItem = extraDep
           , markedPath = "example.yaml"
+          , markedJSONPath = Nothing
           , markedLocationStart = Location 10 1 11
           , markedLocationEnd = Location 21 1 19
           }
@@ -194,6 +195,7 @@ markAtZero a =
   Marked
     { markedItem = a
     , markedPath = "<input>"
+    , markedJSONPath = Nothing
     , markedLocationStart = Location 0 0 0
     , markedLocationEnd = Location 0 0 0
     }
