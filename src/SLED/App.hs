@@ -6,7 +6,6 @@ module SLED.App
 import SLED.Prelude
 
 import Control.Error.Util (hush, note)
-import Control.Monad.Catch (MonadThrow (..))
 import Data.Aeson (eitherDecode)
 import qualified Data.ByteString.Lazy as BSL
 import Network.HTTP.Simple
@@ -19,7 +18,6 @@ import SLED.Stackage
 import qualified SLED.Stackage.Snapshots as Stackage
 import SLED.StackageResolver
 import System.Process.Typed
-import UnliftIO.Exception (throwIO)
 
 newtype AppT app m a = AppT
   { unwrap :: ReaderT app (LoggingT m) a
@@ -34,9 +32,6 @@ newtype AppT app m a = AppT
     , MonadLoggerIO
     , MonadReader app
     )
-
-instance MonadIO m => MonadThrow (AppT app m) where
-  throwM = throwIO
 
 instance MonadIO m => MonadHackage (AppT app m) where
   getHackageVersions package = do

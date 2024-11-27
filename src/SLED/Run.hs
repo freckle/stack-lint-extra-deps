@@ -12,7 +12,7 @@ import SLED.Prelude
 
 import Blammo.Logging.Colors
 import Blammo.Logging.Logger
-import Control.Exception.Safe (MonadThrow)
+import Control.Error.Util (hush)
 import Control.Lens (to, views, (<>=), (^.))
 import Data.List (partition)
 import qualified Data.List.NonEmpty as NE
@@ -32,14 +32,14 @@ import System.FilePath.Glob
 import UnliftIO.Directory (getCurrentDirectory)
 
 runSLED
-  :: ( MonadThrow m
-     , MonadUnliftIO m
+  :: ( MonadUnliftIO m
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
      , MonadGit m
      , MonadReader env m
      , HasLogger env
+     , HasCallStack
      )
   => Options
   -> m ()
@@ -65,8 +65,7 @@ runSLED options = do
     exitFailure
 
 runSuggestions
-  :: ( MonadThrow m
-     , MonadUnliftIO m
+  :: ( MonadUnliftIO m
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
@@ -92,8 +91,7 @@ runSuggestions options = untilNoneSeen $ do
     $ map (checkExtraDep resolver options) stackYaml.extraDeps
 
 checkResolver
-  :: ( MonadThrow m
-     , MonadUnliftIO m
+  :: ( MonadUnliftIO m
      , MonadLogger m
      , MonadStackage m
      , MonadReader env m
@@ -110,8 +108,7 @@ checkResolver options = whenUnseen $ \mresolver -> do
     tryFixSuggestion options ms
 
 checkExtraDep
-  :: ( MonadThrow m
-     , MonadUnliftIO m
+  :: ( MonadUnliftIO m
      , MonadLogger m
      , MonadHackage m
      , MonadStackage m
@@ -205,15 +202,16 @@ outputSuggestion options suggestion = do
 -- If fixed, 'contents' is updated and a @'Marked' 'True'@ is placed in 'seen';
 -- otherwise, a @'Marked' 'False'@ is.
 tryFixSuggestion
-  :: (MonadThrow m, MonadState Context m, IsTarget t)
+  :: (MonadState Context m, IsTarget t)
   => Options
   -> Marked (Suggestion t)
   -> m ()
 tryFixSuggestion options ms = do
-  when options.autoFix $ rewriteContents $ \bs ->
-    runReplaces [suggestionReplace bs ms] bs
+  fixed <- rewriteContents $ \bs -> fromMaybe bs $ do
+    guard options.autoFix
+    hush $ runReplaces [suggestionReplace bs ms] bs
 
-  seenL <>= pure (options.autoFix <$ ms)
+  seenL <>= pure (fixed <$ ms)
 
 suggestionReplace
   :: IsTarget t => ByteString -> Marked (Suggestion t) -> Replace

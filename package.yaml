@@ -48,7 +48,6 @@ library:
     - containers
     - dlist
     - errors
-    - exceptions
     - extra
     - filepath
     - html-conduit
@@ -57,7 +56,6 @@ library:
     - lens
     - optparse-applicative
     - relude
-    - safe-exceptions
     - semigroups
     - shellwords
     - text
