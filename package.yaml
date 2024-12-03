@@ -86,7 +86,9 @@ tests:
       - aeson
       - bytestring
       - containers
+      - extra
       - file-embed
+      - lens
       - hspec
       - stack-lint-extra-deps
       - text

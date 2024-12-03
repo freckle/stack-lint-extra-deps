@@ -1,44 +1,54 @@
+{-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -Wno-orphans #-}
 
 module SLED.Test
-  ( runGitChecks
-  , runHackageChecks
-  , runTestChecks
-
-    -- * Helpers
-  , unsafeVersion
-  , markAtZero
-
-    -- * Fixtures
-  , lts1818
+  ( TestAppM
+  , runTestAppM
+  , assertAutoFixed
+  , assertNoFixes
 
     -- * Re-exports
-  , module X
+  , module SLED.Prelude
+  , module SLED.Test.Mocks
+  , module Test.Hspec
   ) where
-
-import SLED.Checks as X
-import SLED.ExtraDep as X
-import SLED.GitDetails
-import SLED.GitExtraDep as X
-import SLED.HackageExtraDep as X
-import SLED.PackageName as X
-import SLED.StackageResolver as X
-import SLED.Suggestion as X
-import Test.Hspec as X
 
 import SLED.Prelude
 
+import Blammo.Logging.LogSettings (defaultLogSettings)
 import Blammo.Logging.Logger (newTestLogger)
-import Data.List (elemIndex)
-import qualified Data.Map.Strict as Map
+import Blammo.Logging.Setup
+import Control.Lens ((^.))
 import qualified Data.Text as T
+import SLED.Checks (ChecksName (..))
+import SLED.Context (contentsL, execContextT)
+import SLED.GitDetails
+import SLED.GitExtraDep (CommitSHA (..), Repository (..))
 import SLED.Hackage
-import SLED.Run (runChecks)
+import SLED.Options.Parse
+import SLED.PackageName
+import SLED.Run (runSuggestions)
 import SLED.Stackage
+import SLED.StackageResolver
+import SLED.Suggestion.Format (defaultFormat)
+import SLED.Test.Mocks
 import SLED.Version
+import Test.Hspec
 
-newtype TestAppT app m a = TestAppT
-  { run :: ReaderT app (LoggingT m) a
+data TestApp = TestApp
+  { logger :: Logger
+  , mocks :: Mocks
+  }
+
+instance HasLogger TestApp where
+  loggerL = lens (.logger) $ \x y -> x {logger = y}
+
+instance HasMocks TestApp where
+  mocksL = lens (.mocks) $ \x y -> x {mocks = y}
+
+newtype TestAppM a = TestAppM
+  { unwrap :: ReaderT TestApp IO a
   }
   deriving newtype
     ( Functor
@@ -46,159 +56,120 @@ newtype TestAppT app m a = TestAppT
     , Monad
     , MonadIO
     , MonadUnliftIO
-    , MonadLogger
-    , MonadLoggerIO
-    , MonadReader app
+    , MonadReader TestApp
     )
+  deriving
+    ( MonadLogger
+    , MonadLoggerIO
+    )
+    via (WithLogger TestApp IO)
+  deriving
+    ( MonadHackage
+    , MonadStackage
+    , MonadGit
+    )
+    via (ReaderMocks TestAppM)
 
-instance Monad m => MonadHackage (TestAppT TestApp m) where
-  getHackageVersions package = do
-    m <- asks (.hackageVersionsByPackage)
-    pure $ Map.lookup package m
-
-instance Monad m => MonadStackage (TestAppT TestApp m) where
-  getStackageVersions resolver package = do
-    ms <- asks (.stackageVersionsByResolver)
-
-    pure $ do
-      m <- Map.lookup resolver ms
-      Map.lookup package m
-
-  getLatestInSeries x = pure x
-
-instance Monad m => MonadGit (TestAppT TestApp m) where
-  gitClone _ _ = pure ()
-
-  gitRevParse = \case
-    "HEAD" -> withMockCommitSHAs $ (<> "\n") . encodeUtf8 . (.unwrap) . head
-    x -> error $ pack $ "git rev-parse called with unexpected argument " <> x
-
-  gitRevListCount spec = do
-    headCommit <- T.strip . decodeUtf8 <$> gitRevParse "HEAD"
-    let replaceHead x = if x == "HEAD" then headCommit else x
-
-    withMockCommitSHAs $ \shas ->
-      let (a, b) = T.breakOn ".." $ pack spec
-      in  fromMaybe "" $ do
-            let a' = replaceHead a
-            b' <- replaceHead <$> T.stripPrefix ".." b
-            nA <- CommitSHA a' `elemIndex` toList shas
-            nB <- CommitSHA b' `elemIndex` toList shas
-            pure $ (<> "\n") $ encodeUtf8 $ show @Text $ nA - nB
-
-  gitForEachRef _ =
-    withMockCommits
-      $ encodeUtf8
-      . mconcat
-      . map (<> "\n")
-      . mapMaybe (uncurry toRef)
-      . toList
-   where
-    toRef :: CommitSHA -> Maybe Text -> Maybe Text
-    toRef sha mTag = do
-      t <- mTag
-      pure $ "refs/tags/" <> t <> " " <> sha.unwrap
-
-runTestAppT
-  :: (MonadUnliftIO m, HasLogger app) => TestAppT app m a -> app -> m a
-runTestAppT action app =
-  runLoggerLoggingT app $ runReaderT action.run app
-
-data TestApp = TestApp
-  { logger :: Logger
-  , hackageVersionsByPackage :: Map PackageName HackageVersions
-  , stackageVersionsByResolver
-      :: Map StackageResolver (Map PackageName StackageVersions)
-  , commits :: Maybe (NonEmpty (CommitSHA, Maybe Text))
-  }
-
-instance HasLogger TestApp where
-  loggerL = lens (.logger) $ \x y -> x {logger = y}
-
-withMockCommitSHAs
-  :: (HasCallStack, MonadReader TestApp m) => (NonEmpty CommitSHA -> a) -> m a
-withMockCommitSHAs f = withMockCommits $ f . fmap fst
-
-withMockCommits
-  :: (HasCallStack, MonadReader TestApp m)
-  => (NonEmpty (CommitSHA, Maybe Text) -> a)
-  -> m a
-withMockCommits f = do
-  mCommits <- asks (.commits)
-  case mCommits of
-    Nothing -> error "Git operation used without setting TestApp.commits"
-    Just cs -> pure $ f cs
-
-runGitChecks
-  :: MonadUnliftIO m
-  => Maybe (NonEmpty (CommitSHA, Maybe Text))
-  -> GitExtraDep
-  -> m (Maybe (SuggestionAction ExtraDep))
-runGitChecks mockGit =
-  runTestChecks mempty mempty mockGit lts1818 GitChecks . Git
-
-runHackageChecks
-  :: MonadUnliftIO m
-  => Map PackageName HackageVersions
-  -> Map StackageResolver (Map PackageName StackageVersions)
-  -> HackageExtraDep
-  -> m (Maybe (SuggestionAction ExtraDep))
-runHackageChecks mockHackage mockStackage =
-  runTestChecks mockHackage mockStackage Nothing lts1818 HackageChecks
-    . Hackage
-
-runTestChecks
-  :: MonadUnliftIO m
-  => Map PackageName HackageVersions
-  -> Map StackageResolver (Map PackageName StackageVersions)
-  -> Maybe (NonEmpty (CommitSHA, Maybe Text))
-  -> Marked StackageResolver
-  -> ChecksName
-  -> ExtraDep
-  -> m (Maybe (SuggestionAction ExtraDep))
-runTestChecks mockHackage mockStackage mockCommitSHAs resolver checksName extraDep = do
-  testApp <-
+runTestAppM :: TestAppM a -> IO a
+runTestAppM f = do
+  app <-
     TestApp
       <$> newTestLogger defaultLogSettings
-      <*> pure mockHackage
-      <*> pure mockStackage
-      <*> pure mockCommitSHAs
+      <*> pure emptyMocks
 
-  let mextraDep =
-        Marked
-          { markedItem = extraDep
-          , markedPath = "example.yaml"
-          , markedJSONPath = Nothing
-          , markedLocationStart = Location 10 1 11
-          , markedLocationEnd = Location 21 1 19
-          }
+  runReaderT f.unwrap app
 
-  mSuggestion <- runTestAppT (runChecks resolver checksName mextraDep) testApp
+assertAutoFixed :: [Text] -> TestAppM ()
+assertAutoFixed diff = do
+  ctx <-
+    execContextT input
+      $ runSuggestions
+      $ Options
+        { path = "stack.yaml"
+        , resolver = Nothing
+        , contents = input
+        , format = defaultFormat
+        , excludes = []
+        , checkResolver = True
+        , checks = AllChecks
+        , noExit = True
+        , autoFix = True
+        , filter = Nothing
+        }
 
-  for mSuggestion $ \msuggestion -> do
-    let suggestion = markedItem msuggestion
-
-    liftIO $ do
-      -- Assert the suggestion is for the right thing at the right mark
-      void msuggestion `shouldBe` void mextraDep
-      suggestion.target `shouldBe` extraDep
-
-    pure $ suggestion.action
-
-unsafeVersion :: HasCallStack => Text -> Version
-unsafeVersion t = fromMaybe err $ parseVersion t
+  liftIO $ ctx ^. contentsL `shouldBe` expected
  where
-  err = error $ "Invalid version: " <> t
+  (input, expected) = fromDiffLines diff
 
-markAtZero :: a -> Marked a
-markAtZero a =
-  Marked
-    { markedItem = a
-    , markedPath = "<input>"
-    , markedJSONPath = Nothing
-    , markedLocationStart = Location 0 0 0
-    , markedLocationEnd = Location 0 0 0
-    }
+assertNoFixes :: [Text] -> TestAppM ()
+assertNoFixes = assertAutoFixed . map toContext
+ where
+  toContext :: Text -> Text
+  toContext t
+    | T.null t = t
+    | otherwise = "  " <> t
 
-lts1818 :: Marked StackageResolver
-lts1818 = markAtZero $ stackageResolverFromText "lts-18.18"
+-- | Produce before/after from a simple diff
+--
+-- Given the lines:
+--
+-- @
+-- [ " foo"
+-- , "-bar"
+-- , "+baz"
+-- , " bat"
+-- ]
+-- @
+--
+-- it collects the context and removals on one side and the context and
+-- additions on the other, producing the tuple:
+--
+-- @
+-- ( "foo\nbar\nbat\n"
+-- , "foo\nbaz\nbat\n"
+-- )
+-- @
+fromDiffLines :: [Text] -> (ByteString, ByteString)
+fromDiffLines = bimap encodeUtf8 encodeUtf8 . foldl' go ("", "")
+ where
+  go :: (Text, Text) -> Text -> (Text, Text)
+  go (l, r) t = case T.uncons t of
+    Nothing -> (l <> "\n", r <> "\n")
+    Just (' ', rest) -> (l <> rest <> "\n", r <> rest <> "\n")
+    Just ('-', rest) -> (l <> rest <> "\n", r)
+    Just ('+', rest) -> (l, r <> rest <> "\n") -- after only
+    Just (c, _) ->
+      error
+        $ "Invalid diff line: "
+        <> show t
+        <> "."
+        <> "\nDiff lines must begin with space, -, or +, "
+        <> "\nsaw "
+        <> T.singleton c
+
+instance IsString PackageName where
+  fromString = PackageName . pack
+
+instance IsString Version where
+  fromString s = fromMaybe (error $ "Invalid version: " <> t) $ parseVersion t
+   where
+    t = pack s
+
+instance IsString StackageResolver where
+  fromString = stackageResolverFromText . pack
+
+instance IsString Repository where
+  fromString = Repository . pack
+
+instance IsString CommitSHA where
+  fromString = CommitSHA . pack
+
+instance IsString t => IsString (Marked t) where
+  fromString s =
+    Marked
+      { markedItem = fromString s
+      , markedPath = "<input>"
+      , markedJSONPath = Nothing
+      , markedLocationStart = Location 0 0 0
+      , markedLocationEnd = Location 0 0 0
+      }

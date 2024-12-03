@@ -4,12 +4,11 @@ module SLED.StackageSpec
   ( spec
   ) where
 
-import SLED.Prelude
+import SLED.Test
 
 import qualified Data.ByteString.Lazy as BSL
 import Data.FileEmbed
 import SLED.Stackage
-import SLED.Test
 
 spec :: Spec
 spec = do
@@ -22,8 +21,8 @@ spec = do
       parseStackageVersions body
         `shouldBe` Right
           StackageVersions
-            { onPage = unsafeVersion "2.1.0.0"
-            , onHackage = unsafeVersion "2.2.2.0"
+            { onPage = "2.1.0.0"
+            , onHackage = "2.2.2.0"
             }
 
     it "parses a page with revisions" $ do
@@ -34,6 +33,6 @@ spec = do
       parseStackageVersions body
         `shouldBe` Right
           StackageVersions
-            { onPage = unsafeVersion "0.3.5@rev:6"
-            , onHackage = unsafeVersion "0.3.5@rev:11"
+            { onPage = "0.3.5@rev:6"
+            , onHackage = "0.3.5@rev:11"
             }

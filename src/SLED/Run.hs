@@ -5,7 +5,7 @@ module SLED.Run
 
     -- * Exported for testing
   , shouldIncludeExtraDep
-  , runChecks
+  , runSuggestions
   ) where
 
 import SLED.Prelude
