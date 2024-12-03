@@ -13,7 +13,6 @@ import Data.Char (isSpace)
 import qualified Data.Text as T
 import SLED.GitExtraDep
 import SLED.Version
-import UnliftIO.Directory (withCurrentDirectory)
 import UnliftIO.Temporary (withSystemTempDirectory)
 
 class Monad m => MonadGit m where
