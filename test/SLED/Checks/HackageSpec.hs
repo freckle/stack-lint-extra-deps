@@ -13,10 +13,10 @@ spec = do
       runTestAppM
         $ withHackage "freckle-app" "1.0.1.2"
         $ assertAutoFixed
-          [ " resolver: lts-0.0\n"
-          , " extra-deps:\n"
-          , "-  - freckle-app-1.0.1.1\n"
-          , "+  - freckle-app-1.0.1.2\n"
+          [ " resolver: lts-0.0"
+          , " extra-deps:"
+          , "-  - freckle-app-1.0.1.1"
+          , "+  - freckle-app-1.0.1.2"
           ]
 
     it "doesn't suggest deprecated versions" $ do
