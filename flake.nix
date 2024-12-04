@@ -66,8 +66,8 @@
           # preserve hash compatibility among case (in/)sensitive file systems.
           all-cabal-hashes = final.fetchurl {
             name = "all-cabal-hashes";
-            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/69c9ea6a7746281865968fdccf00a07f5e1bdc04.tar.gz";
-            sha256 = "1l9k4sg7pigr73749h4nkldllvl36d86sghjb5ibqpckkrbr3yky";
+            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/82b9142173a2d39bc0988dce33d618a892e2e7f1.tar.gz";
+            sha256 = "sha256-mKOc6+wsY0JT7/K64RLg6O7AR8aS/tguX8NZbyLVdks=";
           };
 
           additionalHaskellPkgSetOverrides =
