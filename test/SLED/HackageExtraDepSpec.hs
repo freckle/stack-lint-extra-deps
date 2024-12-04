@@ -2,13 +2,12 @@ module SLED.HackageExtraDepSpec
   ( spec
   ) where
 
-import SLED.Prelude
+import SLED.Test
 
 import Data.Aeson.Types (JSONPathElement (..))
 import Data.Yaml.Marked.Decode
 import Data.Yaml.Marked.Parse
 import SLED.HackageExtraDep
-import SLED.Test
 
 spec :: Spec
 spec = do
@@ -21,10 +20,10 @@ spec = do
         --                            1111
         map markedItem (markedItem mdeps)
           `shouldBe` [ HackageExtraDep
-                        { package = PackageName "foo"
+                        { package = "foo"
                         , version =
                             Marked
-                              { markedItem = unsafeVersion "0.1.0.0"
+                              { markedItem = "0.1.0.0"
                               , markedPath = "<input>"
                               , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 6 0 6
@@ -40,10 +39,10 @@ spec = do
         --                            111111111122222222223
         map markedItem (markedItem mdeps)
           `shouldBe` [ HackageExtraDep
-                        { package = PackageName "optparse-applicative"
+                        { package = "optparse-applicative"
                         , version =
                             Marked
-                              { markedItem = unsafeVersion "0.1.0.0"
+                              { markedItem = "0.1.0.0"
                               , markedPath = "<input>"
                               , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 23 0 23
@@ -59,10 +58,10 @@ spec = do
         --                            1111111111
         map markedItem (markedItem mdeps)
           `shouldBe` [ HackageExtraDep
-                        { package = PackageName "foo"
+                        { package = "foo"
                         , version =
                             Marked
-                              { markedItem = unsafeVersion "0.1.0.0@rev:5"
+                              { markedItem = "0.1.0.0@rev:5"
                               , markedPath = "<input>"
                               , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 6 0 6
@@ -78,10 +77,10 @@ spec = do
         --                            1111111111222222222233
         map markedItem (markedItem mdeps)
           `shouldBe` [ HackageExtraDep
-                        { package = PackageName "foo"
+                        { package = "foo"
                         , version =
                             Marked
-                              { markedItem = unsafeVersion "0.1.0.0@sha256:ffffff,100"
+                              { markedItem = "0.1.0.0@sha256:ffffff,100"
                               , markedPath = "<input>"
                               , markedJSONPath = Just [Index 0]
                               , markedLocationStart = Location 6 0 6

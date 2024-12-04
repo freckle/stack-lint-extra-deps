@@ -13,11 +13,10 @@ import Data.Char (isSpace)
 import qualified Data.Text as T
 import SLED.GitExtraDep
 import SLED.Version
-import UnliftIO.Directory (withCurrentDirectory)
 import UnliftIO.Temporary (withSystemTempDirectory)
 
 class Monad m => MonadGit m where
-  gitClone :: String -> FilePath -> m ()
+  gitClone :: String -> FilePath -> m a -> m a
   gitRevParse :: String -> m BSL.ByteString
   gitRevListCount :: String -> m BSL.ByteString
   gitForEachRef :: String -> m BSL.ByteString
@@ -36,9 +35,7 @@ getGitDetails ged = do
   logDebug $ "Cloning git dependency" :# ["cloneUrl" .= cloneUrl]
 
   withSystemTempDirectory "stack-lint-extra-deps" $ \path -> do
-    gitClone cloneUrl path
-
-    withCurrentDirectory path $ do
+    gitClone cloneUrl path $ do
       commit <- gitCurrentSHA "HEAD"
       countToHead <-
         gitCountRevisionBetween (markedItem ged.commit) $ CommitSHA "HEAD"

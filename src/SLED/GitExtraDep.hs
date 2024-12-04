@@ -35,7 +35,7 @@ decodeGitExtraDep = withObject "GitExtraDep" $ \o -> do
 newtype Repository = Repository
   { unwrap :: Text
   }
-  deriving newtype (Eq, Show, FromJSON, ToJSON)
+  deriving newtype (Eq, Ord, Show, FromJSON, ToJSON)
 
 repositoryBase :: Repository -> Text
 repositoryBase repo = dropPrefix ghBase repo.unwrap

@@ -1,3 +1,5 @@
+{-# LANGUAGE DerivingVia #-}
+
 module SLED.App
   ( AppT (..)
   , runAppT
@@ -5,6 +7,7 @@ module SLED.App
 
 import SLED.Prelude
 
+import Blammo.Logging.Setup
 import Control.Error.Util (hush, note)
 import Data.Aeson (eitherDecode)
 import qualified Data.ByteString.Lazy as BSL
@@ -18,9 +21,10 @@ import SLED.Stackage
 import qualified SLED.Stackage.Snapshots as Stackage
 import SLED.StackageResolver
 import System.Process.Typed
+import UnliftIO.Directory (withCurrentDirectory)
 
 newtype AppT app m a = AppT
-  { unwrap :: ReaderT app (LoggingT m) a
+  { unwrap :: ReaderT app m a
   }
   deriving newtype
     ( Functor
@@ -28,12 +32,15 @@ newtype AppT app m a = AppT
     , Monad
     , MonadIO
     , MonadUnliftIO
-    , MonadLogger
-    , MonadLoggerIO
     , MonadReader app
     )
+  deriving
+    ( MonadLogger
+    , MonadLoggerIO
+    )
+    via (WithLogger app m)
 
-instance MonadIO m => MonadHackage (AppT app m) where
+instance (MonadIO m, HasLogger app) => MonadHackage (AppT app m) where
   getHackageVersions package = do
     eVersions <-
       httpParse eitherDecode
@@ -54,7 +61,7 @@ instance MonadIO m => MonadHackage (AppT app m) where
 
     pure $ hush eVersions
 
-instance MonadIO m => MonadStackage (AppT app m) where
+instance (MonadIO m, HasLogger app) => MonadStackage (AppT app m) where
   getStackageVersions resolver package = do
     eStackageVersions <-
       httpParse parseStackageVersions
@@ -78,15 +85,16 @@ instance MonadIO m => MonadStackage (AppT app m) where
 
   getLatestInSeries = Stackage.getLatestInSeries
 
-instance MonadIO m => MonadGit (AppT app m) where
-  gitClone url path = runGit ["clone", "--quiet", url, path]
+instance (MonadUnliftIO m, HasLogger app) => MonadGit (AppT app m) where
+  gitClone url path f = do
+    runGit ["clone", "--quiet", url, path]
+    withCurrentDirectory path f
   gitRevParse ref = readGit ["rev-parse", ref]
   gitRevListCount spec = readGit ["rev-list", "--count", spec]
   gitForEachRef refFormat = readGit ["for-each-ref", refFormat, "refs/tags"]
 
-runAppT :: (MonadUnliftIO m, HasLogger app) => AppT app m a -> app -> m a
-runAppT action app =
-  runLoggerLoggingT app $ runReaderT action.unwrap app
+runAppT :: AppT app m a -> app -> m a
+runAppT = runReaderT . (.unwrap)
 
 httpParse
   :: MonadIO m

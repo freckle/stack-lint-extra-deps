@@ -2,10 +2,9 @@ module SLED.Marked.LineSpec
   ( spec
   ) where
 
-import SLED.Prelude
+import SLED.Test
 
 import SLED.Marked.Line
-import SLED.Test
 
 spec :: Spec
 spec = do

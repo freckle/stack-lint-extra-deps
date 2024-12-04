@@ -2,11 +2,10 @@ module SLED.Options.PragmaSpec
   ( spec
   ) where
 
-import SLED.Prelude
+import SLED.Test
 
 import SLED.Options (Options (..))
 import SLED.Options.Pragma
-import Test.Hspec
 
 spec :: Spec
 spec = do

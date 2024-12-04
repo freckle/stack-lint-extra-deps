@@ -5,23 +5,18 @@ module SLED.HackageSpec
   )
 where
 
-import SLED.Prelude
+import SLED.Test
 
 import Data.Aeson
-import qualified Data.ByteString.Lazy as BSL
 import Data.FileEmbed
 import SLED.Hackage
 import SLED.Version
-import Test.Hspec
 
 spec :: Spec
 spec = do
   describe "FromJSON" $ do
     it "parses a Hackage JSON response" $ do
-      let body =
-            BSL.fromStrict $(embedFile "test/files/hackage/freckle-app.json")
-
-      eitherDecode body
+      eitherDecodeStrict $(embedFile "test/files/hackage/freckle-app.json")
         `shouldBe` Right
           HackageVersions
             { normal =

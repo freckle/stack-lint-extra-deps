@@ -136,6 +136,7 @@ test-suite hspec
       SLED.RunSpec
       SLED.StackageSpec
       SLED.Test
+      SLED.Test.Mocks
       Paths_stack_lint_extra_deps
   hs-source-dirs:
       test
@@ -159,8 +160,10 @@ test-suite hspec
     , base
     , bytestring
     , containers
+    , extra
     , file-embed
     , hspec
+    , lens
     , stack-lint-extra-deps
     , text
     , yaml-marked
