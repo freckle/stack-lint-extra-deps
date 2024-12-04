@@ -29,9 +29,9 @@ spec = do
             , deprecated = ["1.0.1.2"]
             }
         $ assertNoFixes
-          [ "resolver: lts-0.0\n"
-          , "extra-deps:\n"
-          , "  - freckle-app-1.0.1.1\n"
+          [ "resolver: lts-0.0"
+          , "extra-deps:"
+          , "  - freckle-app-1.0.1.1"
           ]
 
   describe "checkRedundantHackage" $ do
