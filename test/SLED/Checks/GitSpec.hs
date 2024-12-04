@@ -9,15 +9,17 @@ spec = do
   describe "checkGitVersion" $ do
     it "suggests if there are newer commits" $ do
       runTestAppM
-        $ withGitClone
-          "https://github.com/freckle/foo"
-          [ ("yyyyyy", Nothing)
-          , ("abc456", Nothing)
-          , ("def456", Nothing)
-          , ("jkl789", Nothing)
-          , ("xxxxxx", Nothing)
-          , ("xyz012", Nothing)
-          ]
+        $ withMocks
+          ( git
+              "https://github.com/freckle/foo"
+              [ ("yyyyyy", Nothing)
+              , ("abc456", Nothing)
+              , ("def456", Nothing)
+              , ("jkl789", Nothing)
+              , ("xxxxxx", Nothing)
+              , ("xyz012", Nothing)
+              ]
+          )
         $ assertAutoFixed
           [ " resolver: lts-0.0"
           , " extra-deps:"
@@ -29,14 +31,16 @@ spec = do
   describe "checkRedundantGit" $ do
     it "suggests if there are newer version-like tags" $ do
       runTestAppM
-        $ withGitClone
-          "git@github.com:freckle/foo"
-          [ ("yyyyyy", Just "v1.0.2")
-          , ("abc456", Nothing)
-          , ("def456", Just "beta")
-          , ("jkl789", Nothing)
-          , ("xxxxxx", Just "v1.0.0")
-          ]
+        $ withMocks
+          ( git
+              "git@github.com:freckle/foo"
+              [ ("yyyyyy", Just "v1.0.2")
+              , ("abc456", Nothing)
+              , ("def456", Just "beta")
+              , ("jkl789", Nothing)
+              , ("xxxxxx", Just "v1.0.0")
+              ]
+          )
         $ assertAutoFixed
           [ " resolver: lts-0.0"
           , " extra-deps:"

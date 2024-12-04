@@ -11,7 +11,7 @@ spec = do
   describe "checkHackageVersion" $ do
     it "suggests newer normal versions" $ do
       runTestAppM
-        $ withHackage "freckle-app" "1.0.1.2"
+        $ withMocks (hackage "freckle-app" "1.0.1.2")
         $ assertAutoFixed
           [ " resolver: lts-0.0"
           , " extra-deps:"
@@ -21,13 +21,15 @@ spec = do
 
     it "doesn't suggest deprecated versions" $ do
       runTestAppM
-        $ withHackageVersions
-          "freckle-app"
-          HackageVersions
-            { normal = []
-            , unpreferred = []
-            , deprecated = ["1.0.1.2"]
-            }
+        $ withMocks
+          ( hackageVersions
+              "freckle-app"
+              HackageVersions
+                { normal = []
+                , unpreferred = []
+                , deprecated = ["1.0.1.2"]
+                }
+          )
         $ assertNoFixes
           [ "resolver: lts-0.0"
           , "extra-deps:"
@@ -37,7 +39,7 @@ spec = do
   describe "checkRedundantHackage" $ do
     it "suggests when stackage has your dep" $ do
       runTestAppM
-        $ withStackage "lts-18.18" "freckle-app" "1.0.1.1"
+        $ withMocks (stackage "lts-18.18" "freckle-app" "1.0.1.1")
         $ assertAutoFixed
           [ " resolver: lts-18.18"
           , " extra-deps:"
@@ -47,7 +49,7 @@ spec = do
 
     it "suggests when stackage has a newer dep" $ do
       runTestAppM
-        $ withStackage "lts-18.18" "freckle-app" "1.0.1.2"
+        $ withMocks (stackage "lts-18.18" "freckle-app" "1.0.1.2")
         $ assertAutoFixed
           [ " resolver: lts-18.18"
           , " extra-deps:"
@@ -57,7 +59,7 @@ spec = do
 
     it "does not suggest when stackage has an older dep" $ do
       runTestAppM
-        $ withStackage "lts-18.18" "freckle-app" "1.0.1.0"
+        $ withMocks (stackage "lts-18.18" "freckle-app" "1.0.1.0")
         $ assertNoFixes
           [ "resolver: lts-18.18"
           , "extra-deps:"
@@ -66,8 +68,10 @@ spec = do
 
     it "does not suggest when the extra-dep is a newer revision (implicit)" $ do
       runTestAppM
-        $ withHackage "servant-swagger-ui-core" "0.3.5@rev:11"
-        $ withStackage "lts-18.18" "servant-swagger-ui-core" "0.3.5@rev:6"
+        $ withMocks
+          ( hackage "servant-swagger-ui-core" "0.3.5@rev:11"
+              . stackage "lts-18.18" "servant-swagger-ui-core" "0.3.5@rev:6"
+          )
         $ assertNoFixes
           [ "resolver: lts-18.18"
           , "extra-deps:"
@@ -76,8 +80,10 @@ spec = do
 
     it "does not suggest when the extra-dep is a newer revision (checksum)" $ do
       runTestAppM
-        $ withHackage "servant-swagger-ui-core" "0.3.5@rev:11"
-        $ withStackage "lts-18.18" "servant-swagger-ui-core" "0.3.5@rev:6"
+        $ withMocks
+          ( hackage "servant-swagger-ui-core" "0.3.5@rev:11"
+              . stackage "lts-18.18" "servant-swagger-ui-core" "0.3.5@rev:6"
+          )
         $ assertNoFixes
           [ "resolver: lts-18.18"
           , "extra-deps:"
@@ -86,8 +92,10 @@ spec = do
 
     it "does not suggest when the extra-dep is a newer revision (explicit)" $ do
       runTestAppM
-        $ withHackage "servant-swagger-ui-core" "0.3.5@rev:11"
-        $ withStackage "lts-18.18" "servant-swagger-ui-core" "0.3.5@rev:6"
+        $ withMocks
+          ( hackage "servant-swagger-ui-core" "0.3.5@rev:11"
+              . stackage "lts-18.18" "servant-swagger-ui-core" "0.3.5@rev:6"
+          )
         $ assertNoFixes
           [ "resolver: lts-18.18"
           , "extra-deps:"

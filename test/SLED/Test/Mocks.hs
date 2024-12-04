@@ -10,17 +10,18 @@ module SLED.Test.Mocks
   , ReaderMocks (..)
 
     -- * Helpers
-  , withHackage
-  , withHackageVersions
-  , withStackage
-  , withStackageVersions
-  , withStackageResolvers
-  , withGitClone
+  , withMocks
+  , hackage
+  , hackageVersions
+  , stackage
+  , stackageVersions
+  , stackageResolvers
+  , git
   ) where
 
 import SLED.Prelude
 
-import Control.Lens (at, non, (<>~), (?~))
+import Control.Lens (at, non, (%~), (<>~), (?~))
 import Data.List.Extra (splitOn)
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as T
@@ -184,74 +185,57 @@ instance (MonadReader env m, HasMocks env) => MonadGit (ReaderMocks m) where
       tag <- mTag
       pure $ "refs/tags/" <> tag <> " " <> sha.unwrap
 
-withHackage
+withMocks
   :: (MonadReader env m, HasMocks env)
-  => PackageName
-  -> Version
+  => (Mocks -> Mocks)
   -> m a
   -> m a
-withHackage package version =
-  withHackageVersions package
+withMocks f = local $ mocksL %~ f
+
+hackage :: PackageName -> Version -> Mocks -> Mocks
+hackage package version =
+  hackageVersions package
     $ HackageVersions
       { normal = [version]
       , unpreferred = []
       , deprecated = []
       }
 
-withHackageVersions
-  :: (MonadReader env m, HasMocks env)
-  => PackageName
-  -> HackageVersions
-  -> m a
-  -> m a
-withHackageVersions package versions =
-  local $ mocksL . hackageL . at package ?~ versions
+hackageVersions :: PackageName -> HackageVersions -> Mocks -> Mocks
+hackageVersions package versions = hackageL . at package ?~ versions
 
-withStackage
-  :: (MonadReader env m, HasMocks env)
-  => StackageResolver
+stackage
+  :: StackageResolver
   -> PackageName
   -> Version
-  -> m a
-  -> m a
-withStackage resolver package version =
-  withStackageVersions resolver package
+  -> Mocks
+  -> Mocks
+stackage resolver package version =
+  stackageVersions resolver package
     $ StackageVersions
       { onPage = version
       , onHackage = error "onHackage not defined"
       }
 
-withStackageVersions
-  :: (MonadReader env m, HasMocks env)
-  => StackageResolver
+stackageVersions
+  :: StackageResolver
   -> PackageName
   -> StackageVersions
-  -> m a
-  -> m a
-withStackageVersions resolver package versions =
-  local
-    $ mocksL
-    . stackageL
-    . versionsL
-    . at resolver
-    . non Map.empty
-    . at package
-    ?~ versions
+  -> Mocks
+  -> Mocks
+stackageVersions resolver package versions =
+  stackageL . versionsL . at resolver . non Map.empty . at package ?~ versions
 
-withStackageResolvers
-  :: (MonadReader env m, HasMocks env)
-  => [StackageResolver]
-  -> m a
-  -> m a
-withStackageResolvers resolvers =
-  local $ mocksL . stackageL . resolversL <>~ resolvers
+stackageResolvers
+  :: [StackageResolver]
+  -> Mocks
+  -> Mocks
+stackageResolvers resolvers = stackageL . resolversL <>~ resolvers
 
-withGitClone
-  :: (MonadReader env m, HasMocks env)
-  => String
+git
+  :: String
   -- ^ URL
   -> [(CommitSHA, Maybe Text)]
-  -> m a
-  -> m a
-withGitClone url commits =
-  local $ mocksL . gitL . commitsL . at url ?~ commits
+  -> Mocks
+  -> Mocks
+git url commits = gitL . commitsL . at url ?~ commits

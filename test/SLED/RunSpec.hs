@@ -13,27 +13,29 @@ spec :: Spec
 spec = do
   it "works for our lts-18.18 example" $ do
     runTestAppM
-      $ withHackage "faktory" "1.1.3.0"
-      $ withHackage "freckle-app" "1.21.0.0"
-      $ withHackage "hspec" "2.11.10"
-      $ withHackage "hspec-core" "2.11.10"
-      $ withHackage "hspec-junit-formatter" "1.1.2.1"
-      $ withHackage "network" "3.2.7"
-      $ withStackage "lts-22.43" "dhall" "1.40.0"
-      $ withStackage "lts-22.43" "generic-lens" "2.0.0.1"
-      $ withStackageResolvers ["nightly-2024-12-03", "nightly-2024-11-01"]
-      $ withStackageResolvers ["lts-22.43", "lts-22.32", "lts-21.20"]
-      $ withGitClone "https://github.com/freckle/asana" []
-      $ withGitClone
-        "https://github.com/freckle/yesod-routes-flow"
-        [ ("2a9cd873880956dd9a0999b593022d3c74xxxxxx", Nothing)
-        , ("2a9cd873880956dd9a0999b593022d3c74yyyyyy", Just "v3.0.0.2")
-        , ("2a9cd873880956dd9a0999b593022d3c74zzzzzz", Nothing)
-        , ("2a9cd873880956dd9a0999b593022d3c746324e8", Just "v0.0")
-        , ("2a9cd873880956dd9a0999b593022d3c74aaaaaa", Nothing)
-        , ("2a9cd873880956dd9a0999b593022d3c74bbbbbb", Nothing)
-        , ("2a9cd873880956dd9a0999b593022d3c74cccccc", Nothing)
-        ]
+      $ withMocks
+        ( hackage "faktory" "1.1.3.0"
+            . hackage "freckle-app" "1.21.0.0"
+            . hackage "hspec" "2.11.10"
+            . hackage "hspec-core" "2.11.10"
+            . hackage "hspec-junit-formatter" "1.1.2.1"
+            . hackage "network" "3.2.7"
+            . stackage "lts-22.43" "dhall" "1.40.0"
+            . stackage "lts-22.43" "generic-lens" "2.0.0.1"
+            . stackageResolvers ["nightly-2024-12-03", "nightly-2024-11-01"]
+            . stackageResolvers ["lts-22.43", "lts-22.32", "lts-21.20"]
+            . git "https://github.com/freckle/asana" []
+            . git
+              "https://github.com/freckle/yesod-routes-flow"
+              [ ("2a9cd873880956dd9a0999b593022d3c74xxxxxx", Nothing)
+              , ("2a9cd873880956dd9a0999b593022d3c74yyyyyy", Just "v3.0.0.2")
+              , ("2a9cd873880956dd9a0999b593022d3c74zzzzzz", Nothing)
+              , ("2a9cd873880956dd9a0999b593022d3c746324e8", Just "v0.0")
+              , ("2a9cd873880956dd9a0999b593022d3c74aaaaaa", Nothing)
+              , ("2a9cd873880956dd9a0999b593022d3c74bbbbbb", Nothing)
+              , ("2a9cd873880956dd9a0999b593022d3c74cccccc", Nothing)
+              ]
+        )
       $ assertAutoFixed
         [ "-resolver: lts-18.18"
         , "+resolver: lts-22.43"
