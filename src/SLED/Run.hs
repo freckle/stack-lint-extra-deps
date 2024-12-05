@@ -175,7 +175,6 @@ outputSuggestion
      , HasLogger env
      , IsTarget t
      , ToJSON t
-     , Show t
      )
   => Options
   -> Marked (Suggestion t)
@@ -183,7 +182,7 @@ outputSuggestion
 outputSuggestion options suggestion = do
   logDebug
     $ ""
-    :# [ "suggestion" .= show @Text suggestion
+    :# [ "suggestion" .= suggestionPretty (markedItem suggestion)
        , "mark" .= getTargetMark suggestion
        ]
 
@@ -230,3 +229,15 @@ removeMarkedLine bs m = newReplace s len ""
   s = startOfStartLine bs m
   e = endOfEndLine bs m
   len = e - s + 1 -- chomp newline too
+
+suggestionPretty :: IsTarget t => Suggestion t -> Text
+suggestionPretty s =
+  formatTarget s.target <> ": " <> suggestionActionPretty s.action
+
+suggestionActionPretty :: IsTarget t => SuggestionAction t -> Text
+suggestionActionPretty = \case
+  Remove -> "remove"
+  UpdateGitCommit sha -> "updated to " <> formatTarget sha
+  UpdateHackageVersion v -> "update to " <> formatTarget v
+  ReplaceGitWithHackage d -> "update to " <> formatTarget d
+  ReplaceWith t -> "replace with " <> formatTarget t
