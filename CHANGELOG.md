@@ -1,4 +1,9 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.5.0...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.3.0.0...main)
+
+## [v1.3.0.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.5.0...v1.3.0.0)
+
+- Mark the version with Hackage dependencies when out of date
+- Implement `--fix` to automatically fix suggestions
 
 ## [v1.2.5.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.4.0...v1.2.5.0)
 
