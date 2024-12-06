@@ -84,6 +84,16 @@ These comments can appear anywhere. All options besides `--path` will be
 respected. Failure to parse a directive will result in a warning logged to
 `stderr`, but otherwise be ignored.
 
+## Checking Resolver
+
+Before checking `extra-deps`, SLED will check that your `resolver` is the latest
+in its series. If not, it will emit a "replace with" suggestion and use the new
+resolver when checking the `extra-deps`.
+
+This behavior is not part of the `--checks` option, which refers to `extra-deps`
+checks only. It can be disabled with `--no-check-resolver`, or you can run
+_only_ this check by using `--checks none`.
+
 ## GitHub Action
 
 This repository is also a GitHub Action that installs and runs the tool with no
