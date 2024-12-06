@@ -140,8 +140,8 @@ are expected to add it yourself if desired.
 - [x] Suggest replacement when there is a Hackage version of a git dep at a
       same-or-newer version
 - [ ] Apply custom rules
-- [ ] Suggest when newer resolver is available
-- [ ] Auto-fix
+- [x] Suggest when newer resolver is available
+- [x] Auto-fix
 
 ---
 
