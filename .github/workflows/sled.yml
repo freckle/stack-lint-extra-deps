@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./
         with:
-          arguments: --fix
+          arguments: --fix --no-exit
 
       # Use a token to ensure CI runs on the created PR
       - id: token
