@@ -36,8 +36,6 @@ jobs:
         include:
           - os: ubuntu-latest
             suffix: x86_64-linux
-          - os: macos-12
-            suffix: x86_64-osx
           - os: macos-latest
             suffix: arm64-osx
 
