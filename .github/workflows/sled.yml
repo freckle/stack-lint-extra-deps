@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: ./
         with:
           arguments: --fix --no-exit
@@ -28,6 +29,7 @@ jobs:
 
       - uses: peter-evans/create-pull-request@v7
         with:
+          branch: sled/auto-fix
           title: "Auto-fix stack.yaml"
-          commit-message: "Auto-fix stack.yaml"
+          base: ${{ github.event.name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
           token: ${{ steps.token.outputs.token }}
