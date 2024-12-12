@@ -4,7 +4,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-24.11";
+      ref = "haskell-updates";
     };
     stacklock2nix = {
       type = "github";
