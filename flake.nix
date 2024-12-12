@@ -4,7 +4,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-unstable";
+      ref = "nixos-24.11";
     };
     stacklock2nix = {
       type = "github";
