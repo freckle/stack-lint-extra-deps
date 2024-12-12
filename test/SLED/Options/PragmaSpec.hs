@@ -4,6 +4,8 @@ module SLED.Options.PragmaSpec
 
 import SLED.Test
 
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.List as List
 import SLED.Options (Options (..))
 import SLED.Options.Pragma
 
@@ -14,15 +16,15 @@ spec = do
       let
         yaml :: ByteString
         yaml =
-          mconcat
-            [ "# @sled --exclude foo --exclude bar\n"
-            , "resolver: x\n"
-            , "extra-deps:\n"
-            , "# This is another comment that might mention\n"
-            , "# sled at the beginning of a sentence.\n"
-            , "- foo\n"
-            , "- bar\n"
-            , "- baz\n"
+          BS.unlines
+            [ "# @sled --exclude foo --exclude bar"
+            , "resolver: x"
+            , "extra-deps:"
+            , "# This is another comment that might mention"
+            , "# sled at the beginning of a sentence."
+            , "- foo"
+            , "- bar"
+            , "- baz"
             ]
 
       let (_errs, options) = parsePragmaOptions yaml
@@ -33,14 +35,14 @@ spec = do
       let
         yaml :: ByteString
         yaml =
-          mconcat
-            [ "# @sled --exclude foo --exclude baz\n"
-            , "resolver: x\n"
-            , "extra-deps:\n"
-            , "  - foo\n"
-            , "  - bar\n"
-            , "  # @sled --exclude=\"bat\"\n"
-            , "  - bat\n"
+          BS.unlines
+            [ "# @sled --exclude foo --exclude baz"
+            , "resolver: x"
+            , "extra-deps:"
+            , "  - foo"
+            , "  - bar"
+            , "  # @sled --exclude=\"bat\""
+            , "  - bat"
             ]
 
       let (_errs, options) = parsePragmaOptions yaml
@@ -51,12 +53,12 @@ spec = do
       let
         yaml :: ByteString
         yaml =
-          mconcat
-            [ "resolver: x\n"
-            , "extra-deps:\n"
-            , "  - foo\n"
-            , "  - bar\n"
-            , "  - bat # @sled --exclude=\"bat\"\n"
+          BS.unlines
+            [ "resolver: x"
+            , "extra-deps:"
+            , "  - foo"
+            , "  - bar"
+            , "  - bat # @sled --exclude=\"bat\""
             ]
 
       let (_errs, options) = parsePragmaOptions yaml
@@ -67,23 +69,24 @@ spec = do
       let
         yaml :: ByteString
         yaml =
-          mconcat
-            [ "# @sled --what --no-way\n"
-            , "resolver: x\n"
+          BS.unlines
+            [ "# @sled --what --no-way"
+            , "resolver: x"
             ]
 
       let
         (errs, _) = parsePragmaOptions yaml
 
         expectedErr =
-          concat
+          intercalate "\n"
             [ "Invalid option `--what'"
-            , "\n"
-            , "\nUsage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER] "
-            , "\n                             [-f|--format tty|gha|json] [--exclude PATTERN] "
-            , "\n                             [-R|--no-check-resolver] [--checks CHECKS] "
-            , "\n                             [-n|--no-exit] [-F|--fix] [PATTERN] [--version]"
-            , "\n\n  stack lint-extra-deps (sled)"
+            , ""
+            , "Usage: stack-lint-extra-deps [-p|--path PATH] [-r|--resolver RESOLVER] "
+            , "                             [-f|--format tty|gha|json] [--exclude PATTERN] "
+            , "                             [-R|--no-check-resolver] [--checks CHECKS] "
+            , "                             [-n|--no-exit] [-F|--fix] [PATTERN] [--version]"
+            , ""
+            , "  stack lint-extra-deps (sled)"
             ]
 
       errs `shouldBe` [expectedErr]
@@ -92,23 +95,22 @@ spec = do
       let
         yaml :: ByteString
         yaml =
-          mconcat
-            [ "# @sled foo '\n"
-            , "resolver: x\n"
+          BS.unlines
+            [ "# @sled foo '"
+            , "resolver: x"
             ]
 
       let
         (errs, _) = parsePragmaOptions yaml
 
         expectedErr =
-          concat
+          List.unlines
             [ "<input>:1:6:"
-            , "\n  |"
-            , "\n1 | foo '"
-            , "\n  |      ^"
-            , "\nunexpected end of input"
-            , "\nexpecting ''' or escaped'\\''"
-            , "\n"
+            , "  |"
+            , "1 | foo '"
+            , "  |      ^"
+            , "unexpected end of input"
+            , "expecting ''', escaped'\\'', or escaped'\\\\'"
             ]
 
       errs `shouldBe` [expectedErr]
@@ -117,10 +119,10 @@ spec = do
       let
         yaml :: ByteString
         yaml =
-          mconcat
-            [ "# @sled foo '\n"
-            , "resolver: x\n"
-            , "# @sled bar '\n"
+          BS.unlines
+            [ "# @sled foo '"
+            , "resolver: x"
+            , "# @sled bar '"
             ]
 
       let (errs, _) = parsePragmaOptions yaml

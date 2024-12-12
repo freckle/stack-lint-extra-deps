@@ -4,7 +4,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-unstable";
+      ref = "haskell-updates";
     };
     stacklock2nix = {
       type = "github";
@@ -53,6 +53,18 @@
         default = stack-lint-extra-deps;
         stack-lint-extra-deps = nixpkgsFor.${system}.stack-lint-extra-deps;
       });
+
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
+        rec {
+          sled-version = pkgs.testers.testVersion {
+            package = pkgs.stack-lint-extra-deps;
+          };
+        }
+      );
 
       overlays.default = final: prev: {
         stack-lint-extra-deps-stacklock = final.stacklock2nix {

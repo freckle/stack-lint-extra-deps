@@ -43,6 +43,7 @@ jobs:
       matrix:
         runner:
           - ubuntu-latest
+          - macos-13
           - macos-latest
     runs-on: ${{ matrix.runner }}
     continue-on-error: true
