@@ -5,13 +5,6 @@
 
 packages:
 - completed:
-    hackage: Blammo-2.1.1.0@sha256:29fa7c1411fc3dc87504e3c2d1e903a0077208a51228d779eaa02abf025219c0,4755
-    pantry-tree:
-      sha256: 3b2772b11e465564d2addc7225e33c211538ed96f4212b8d091edc7d9c352672
-      size: 1788
-  original:
-    hackage: Blammo-2.1.1.0
-- completed:
     hackage: yaml-marked-0.2.0.1@sha256:e1178ace8a85559abdc61c25ae015f75ad977c3e9516f0f25f46858d34c1b61f,5598
     pantry-tree:
       sha256: 6ce8f2798ab4142658f0a9a500d995a2ddbe66a3cffeb968470030ee22d27c02
@@ -20,7 +13,7 @@ packages:
     hackage: yaml-marked-0.2.0.1
 snapshots:
 - completed:
-    sha256: 08bd13ce621b41a8f5e51456b38d5b46d7783ce114a50ab604d6bbab0d002146
-    size: 720271
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/43.yaml
-  original: lts-22.43
+    sha256: 9444fadfa30b67a93080254d53872478c087592ad64443e47c546cdcd13149ae
+    size: 678857
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/23/0.yaml
+  original: lts-23.0
