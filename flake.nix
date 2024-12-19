@@ -72,7 +72,7 @@
           stackYaml = ./stack.yaml;
 
           # GHC version that matches stack.yaml
-          baseHaskellPkgSet = final.haskell.packages.ghc966;
+          baseHaskellPkgSet = final.haskell.packages.ghc984;
 
           # It is necessary to get this using a fetcher that doesn't unpack to
           # preserve hash compatibility among case (in/)sensitive file systems.
