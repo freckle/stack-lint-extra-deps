@@ -5,6 +5,20 @@
 
 packages:
 - completed:
+    hackage: hedgehog-1.4@sha256:9860ab34ab3951d9515c71b777d8c9c47610aae7339933e17d26ad9a4afa5618,4754
+    pantry-tree:
+      sha256: 8fd5983d447a5362856d4741d9e19cac8dcab150017c91b0c5acad6472afb0f6
+      size: 2713
+  original:
+    hackage: hedgehog-1.4
+- completed:
+    hackage: tasty-quickcheck-0.10.3@sha256:39154b9444d8d3cd13884b9d9157752af822e03c53542d410ab317f62c0b4f48,1864
+    pantry-tree:
+      sha256: 2155418f7f07743257444e600291372e7fa7733fab9a277c84f6b6d66d631e4c
+      size: 332
+  original:
+    hackage: tasty-quickcheck-0.10.3
+- completed:
     hackage: yaml-marked-0.2.0.1@sha256:e1178ace8a85559abdc61c25ae015f75ad977c3e9516f0f25f46858d34c1b61f,5598
     pantry-tree:
       sha256: 6ce8f2798ab4142658f0a9a500d995a2ddbe66a3cffeb968470030ee22d27c02
@@ -13,7 +27,7 @@ packages:
     hackage: yaml-marked-0.2.0.1
 snapshots:
 - completed:
-    sha256: 9444fadfa30b67a93080254d53872478c087592ad64443e47c546cdcd13149ae
-    size: 678857
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/23/0.yaml
-  original: lts-23.0
+    sha256: 18514ff1ed00330c922bd8d28d88a54670a9849f17eb07dc78391a94d576749d
+    size: 678854
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/23/1.yaml
+  original: lts-23.1

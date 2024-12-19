@@ -2,6 +2,22 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
+        "lastModified": 1734323986,
+        "narHash": "sha256-m/lh6hYMIWDYHCAsn81CDAiXoT3gmxXI9J987W5tZrE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "394571358ce82dff7411395829aa6a3aad45b907",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-haskell-updates": {
+      "locked": {
         "lastModified": 1734394670,
         "narHash": "sha256-ttW+BaeNbquXRMFbjqTo2D2vOBv95jHRWgD/94yMGw8=",
         "owner": "nixos",
@@ -35,6 +51,7 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
+        "nixpkgs-haskell-updates": "nixpkgs-haskell-updates",
         "pgp-wordlist": "pgp-wordlist",
         "stacklock2nix": "stacklock2nix"
       }

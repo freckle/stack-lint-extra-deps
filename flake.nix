@@ -4,6 +4,12 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
+      ref = "nixos-24.11";
+    };
+    nixpkgs-haskell-updates = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixpkgs";
       ref = "haskell-updates";
     };
     stacklock2nix = {
@@ -23,6 +29,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-haskell-updates,
       pgp-wordlist,
       stacklock2nix,
     }:
@@ -38,13 +45,10 @@
 
       nixpkgsFor = forAllSystems (
         system:
-        import nixpkgs {
-          inherit system;
-          overlays = [
-            stacklock2nix.overlay
-            self.overlays.default
-          ];
-        }
+        nixpkgs-haskell-updates.legacyPackages.${system}.appendOverlays [
+          stacklock2nix.overlay
+          self.overlays.default
+        ]
       );
     in
     {
@@ -85,7 +89,7 @@
           additionalHaskellPkgSetOverrides =
             hfinal: hprev:
             # Workarounds for issues in tests
-            nixpkgs.lib.genAttrs [
+            nixpkgs-haskell-updates.lib.genAttrs [
               "ansi-wl-pprint"
               "case-insensitive"
               "integer-logarithms"
@@ -94,6 +98,7 @@
               "prettyprinter-compat-ansi-wl-pprint"
               "primitive"
               "quickcheck-instances"
+              "serialise"
               "test-framework"
               "uuid-types"
               "yaml-marked"
@@ -102,7 +107,7 @@
           additionalDevShellNativeBuildInputs = stacklockHaskellPkgSet: [
             final.cabal-install
             final.haskellPackages.fourmolu
-            final.stack
+            nixpkgs.legacyPackages.${final.system}.stack
             final.zlib
           ];
         };
