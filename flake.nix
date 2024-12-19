@@ -4,6 +4,12 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
+      ref = "nixos-24.11";
+    };
+    nixpkgs-haskell-updates = {
+      type = "github";
+      owner = "nixos";
+      repo = "nixpkgs";
       ref = "haskell-updates";
     };
     stacklock2nix = {
@@ -23,6 +29,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-haskell-updates,
       pgp-wordlist,
       stacklock2nix,
     }:
@@ -38,13 +45,10 @@
 
       nixpkgsFor = forAllSystems (
         system:
-        import nixpkgs {
-          inherit system;
-          overlays = [
-            stacklock2nix.overlay
-            self.overlays.default
-          ];
-        }
+        nixpkgs-haskell-updates.legacyPackages.${system}.appendOverlays [
+          stacklock2nix.overlay
+          self.overlays.default
+        ]
       );
     in
     {
@@ -72,20 +76,20 @@
           stackYaml = ./stack.yaml;
 
           # GHC version that matches stack.yaml
-          baseHaskellPkgSet = final.haskell.packages.ghc966;
+          baseHaskellPkgSet = final.haskell.packages.ghc984;
 
           # It is necessary to get this using a fetcher that doesn't unpack to
           # preserve hash compatibility among case (in/)sensitive file systems.
           all-cabal-hashes = final.fetchurl {
             name = "all-cabal-hashes";
-            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/82b9142173a2d39bc0988dce33d618a892e2e7f1.tar.gz";
-            sha256 = "sha256-mKOc6+wsY0JT7/K64RLg6O7AR8aS/tguX8NZbyLVdks=";
+            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/090338d05bcc279b2c99f0251943a62ef4e5f8ae.tar.gz";
+            sha256 = "sha256-DFxLXAXAfZjk+LIwezqpnQGo9GgwI6Fpua31aTOWI+I=";
           };
 
           additionalHaskellPkgSetOverrides =
             hfinal: hprev:
             # Workarounds for issues in tests
-            nixpkgs.lib.genAttrs [
+            nixpkgs-haskell-updates.lib.genAttrs [
               "ansi-wl-pprint"
               "case-insensitive"
               "integer-logarithms"
@@ -94,6 +98,7 @@
               "prettyprinter-compat-ansi-wl-pprint"
               "primitive"
               "quickcheck-instances"
+              "serialise"
               "test-framework"
               "uuid-types"
               "yaml-marked"
@@ -102,7 +107,7 @@
           additionalDevShellNativeBuildInputs = stacklockHaskellPkgSet: [
             final.cabal-install
             final.haskellPackages.fourmolu
-            final.stack
+            nixpkgs.legacyPackages.${final.system}.stack
             final.zlib
           ];
         };
