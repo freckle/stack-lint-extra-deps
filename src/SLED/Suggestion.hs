@@ -41,7 +41,7 @@ instance Semigroup (SuggestionAction t) where
 
 suggestionActionDescription :: SuggestionAction t -> Text
 suggestionActionDescription = \case
-  Remove {} -> "This version (or newer) is in your Stackage resolver"
+  Remove {} -> "This version (or newer) is in the Stackage resolver"
   UpdateGitCommit {} -> "Newer commits exist on the default branch"
   UpdateHackageVersion {} -> "A newer version is available"
   ReplaceGitWithHackage {} -> "A version on Hackage exists for this commit (or newer)"
