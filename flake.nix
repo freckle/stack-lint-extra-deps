@@ -82,27 +82,14 @@
           # preserve hash compatibility among case (in/)sensitive file systems.
           all-cabal-hashes = final.fetchurl {
             name = "all-cabal-hashes";
-            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/090338d05bcc279b2c99f0251943a62ef4e5f8ae.tar.gz";
-            sha256 = "sha256-DFxLXAXAfZjk+LIwezqpnQGo9GgwI6Fpua31aTOWI+I=";
+            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/3f2daa6d209292ce44b10b05e74a74e76f1dbb78.tar.gz";
+            sha256 = "sha256-dgSJWSIOkPBYvNDtWnxA2cBaQVDrsIA1PnpgUJ2Fr7w=";
           };
 
-          additionalHaskellPkgSetOverrides =
-            hfinal: hprev:
-            # Workarounds for issues in tests
-            nixpkgs-haskell-updates.lib.genAttrs [
-              "ansi-wl-pprint"
-              "case-insensitive"
-              "integer-logarithms"
-              "lifted-base"
-              "prettyprinter"
-              "prettyprinter-compat-ansi-wl-pprint"
-              "primitive"
-              "quickcheck-instances"
-              "serialise"
-              "test-framework"
-              "uuid-types"
-              "yaml-marked"
-            ] (name: final.haskell.lib.dontCheck hprev.${name});
+          additionalHaskellPkgSetOverrides = hfinal: hprev: {
+            # Do not test libraries
+            mkDerivation = args: hprev.mkDerivation (args // { doCheck = false; });
+          };
 
           additionalDevShellNativeBuildInputs = stacklockHaskellPkgSet: [
             final.cabal-install
