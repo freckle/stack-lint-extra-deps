@@ -17,5 +17,5 @@ main =
     Left PrintVersion ->
       putStrLn $ "stack-lint-extra-deps-" <> showVersion version
     Right opts -> do
-      logger <- newLoggerEnv
-      runAppT (runSLED opts) logger
+      withLoggerEnv $ \logger ->
+        runAppT (runSLED opts) logger
