@@ -16,6 +16,4 @@ main =
   parseOptions >>= \case
     Left PrintVersion ->
       putStrLn $ "stack-lint-extra-deps-" <> showVersion version
-    Right opts -> do
-      withLoggerEnv $ \logger ->
-        runAppT (runSLED opts) logger
+    Right opts -> withLoggerEnv $ runAppT $ runSLED opts
