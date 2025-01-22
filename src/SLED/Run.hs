@@ -76,7 +76,13 @@ runSuggestions options = do
 
   case result of
     Unchanged -> checkExtraDeps stackYaml options
-    Updated yaml replace -> (replace :) <$> checkExtraDeps yaml options
+    Updated yaml replace -> do
+      logInfo
+        $ ( "Resolver update available, linting extra-deps based on "
+              <> stackageResolverToText (markedItem yaml.resolver)
+          )
+        :# []
+      (replace :) <$> checkExtraDeps yaml options
 
 data CheckResolverResult = Unchanged | Updated StackYaml Replace
 
