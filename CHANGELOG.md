@@ -1,4 +1,10 @@
-## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.3.0.0...main)
+## [_Unreleased_](https://github.com/freckle/stack-lint-extra-deps/compare/v1.3.0.1...main)
+
+## [v1.3.0.1](https://github.com/freckle/stack-lint-extra-deps/compare/v1.3.0.0...v1.3.0.1)
+
+- Adjust messaging to clarify that a resolver update, if checked, is what's used
+  for further linting
+- Ensure logging output is not lost to due broken flush
 
 ## [v1.3.0.0](https://github.com/freckle/stack-lint-extra-deps/compare/v1.2.5.0...v1.3.0.0)
 
