@@ -5,6 +5,7 @@ on:
     # Twice a month, every ~two weeks
     - cron: "0 0 01 * *"
     - cron: "0 0 15 * *"
+  workflow_dispatch:
 
   pull_request:
     paths:
