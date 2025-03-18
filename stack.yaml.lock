@@ -13,7 +13,7 @@ packages:
     hackage: yaml-marked-0.2.0.1
 snapshots:
 - completed:
-    sha256: 0d61fd2be255f5c425cd92dbb4a78d1f70af2c138f3ec921e98b97ae182b044c
-    size: 679291
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/23/4.yaml
-  original: lts-23.4
+    sha256: 3020db98a5e35009543057d6e6b96890d285890fc97688933e1798da92c8bbde
+    size: 683815
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/23/15.yaml
+  original: lts-23.15
