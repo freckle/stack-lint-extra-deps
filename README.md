@@ -143,6 +143,17 @@ are expected to add it yourself if desired.
 - [x] Suggest when newer resolver is available
 - [x] Auto-fix
 
+## Release
+
+To trigger a new release, push a [conventional commit] to `main`:
+
+- `fix:` to trigger a patch release
+- `feat:` to trigger a minor release
+- Use `<type>!:` or include a `BREAKING CHANGE: <change>` footer to trigger
+  major
+
+[conventional commit]: https://www.conventionalcommits.org/en/v1.0.0/#summary
+
 ---
 
 [LICENSE](./LICENSE) | [CHANGELOG](./CHANGELOG.md)

@@ -1,0 +1,17 @@
+tagFormat: "v1.${version}" # PVP prefixed
+
+plugins:
+  - - "@semantic-release/commit-analyzer"
+    - preset: "conventionalcommits"
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/exec"
+    - verifyReleaseCmd: "./bump-package-yaml '${nextRelease.version}'"
+  - - "@semantic-release/github"
+    - assets: "*-binaries/stack-lint-extra-deps-*.tar.gz"
+      successCommentCondition: false
+      failCommentCondition: false
+
+branches:
+  - main
+  - name: rc/*
+    prerelease: '${name.replace(/^rc\//, "rc-")}'
