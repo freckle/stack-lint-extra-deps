@@ -2,34 +2,12 @@ name: Release executables
 
 on:
   push:
-    branches: main
+    branches:
+      - main
+      - rc/*
 
 jobs:
-  tag:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - id: tag
-        uses: freckle/haskell-tag-action@v1
-    outputs:
-      tag: ${{ steps.tag.outputs.tag }}
-
-  create-release:
-    needs: tag
-    if: needs.tag.outputs.tag
-    runs-on: ubuntu-latest
-    steps:
-      - id: create-release
-        uses: freckle/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.tag.outputs.tag }}
-          generate_release_notes: true
-          draft: true
-    outputs:
-      release_id: ${{ steps.create-release.outputs.id }}
-
-  upload-assets:
-    needs: create-release
+  build:
     strategy:
       fail-fast: false
       matrix:
@@ -44,30 +22,49 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+
+      # Do a dry-run release in order to update package.yaml before compilation,
+      # so the version subcommand works correctly.
+      - uses: cycjimmy/semantic-release-action@v4
+        with:
+          dry_run: true
+          extra_plugins: |
+            @semantic-release/exec
+        env:
+          FORCE_COLOR: 1
+          GITHUB_TOKEN: ${{ github.token }}
+
       - run: |
           mkdir -p dist/stack-lint-extra-deps
+
       - id: stack
         uses: freckle/stack-action@v5
         with:
           stack-build-arguments: >-
             --local-bin-path ./dist/stack-lint-extra-deps
             --copy-bins
+
       - run: |
           ./dist/stack-lint-extra-deps/stack-lint-extra-deps --version
           tar -C dist -czf ./stack-lint-extra-deps-${{ matrix.suffix }}.tar.gz ./stack-lint-extra-deps
-      - uses: freckle/action-gh-release@v2
-        with:
-          id: ${{ needs.create-release.outputs.release_id }}
-          files: "*-${{ matrix.suffix }}.tar.gz"
-          fail_on_unmatched_files: true
 
-  publish-release:
-    needs:
-      - create-release
-      - upload-assets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-binaries
+          path: "stack-lint-extra-deps-*.tar.gz"
+          if-no-files-found: error
+
+  release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: freckle/action-gh-release@v2
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+      - id: release
+        uses: cycjimmy/semantic-release-action@v4
         with:
-          id: ${{ needs.create-release.outputs.release_id }}
-          draft: false
+          extra_plugins: |
+            @semantic-release/exec
+        env:
+          FORCE_COLOR: 1
+          GITHUB_TOKEN: ${{ github.token }}
