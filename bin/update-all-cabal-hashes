@@ -8,4 +8,8 @@ url="https://github.com/commercialhaskell/all-cabal-hashes/archive/$commit.tar.g
 
 hash=$(nix-prefetch-url --type sha256 "$url")
 
-echo "{\"url\": \"$url\", \"sha256\": \"$hash\"}" | jq > all-cabal-hashes.json
+jq \
+  --arg url "$url" \
+  --arg hash "$hash" \
+  --null-input '{ url: $url, sha256: $hash }' \
+  > all-cabal-hashes.json
