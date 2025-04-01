@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+commit=$(curl "https://api.github.com/repos/commercialhaskell/all-cabal-hashes/commits/hackage" | jq --raw-output '.sha')
+
+url="https://github.com/commercialhaskell/all-cabal-hashes/archive/$commit.tar.gz"
+
+hash=$(nix-prefetch-url --type sha256 "$url")
+
+jq \
+  --arg url "$url" \
+  --arg hash "$hash" \
+  --null-input '{ url: $url, sha256: $hash }' \
+  > all-cabal-hashes.json

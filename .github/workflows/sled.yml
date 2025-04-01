@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
 
       - uses: ./
         with:
@@ -23,6 +24,9 @@ jobs:
 
       - name: Update stack.yaml.lock
         run: stack build --dry-run
+
+      - name: Update all-cabal-hashes.json
+        run: ./bin/update-all-cabal-hashes
 
       # Use a token to ensure CI runs on the created PR
       - id: token
@@ -34,6 +38,6 @@ jobs:
       - uses: peter-evans/create-pull-request@v7
         with:
           branch: sled/auto-fix
-          title: "Auto-fix stack.yaml"
+          title: "Update Haskell dependencies"
           base: ${{ github.event.name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
           token: ${{ steps.token.outputs.token }}
