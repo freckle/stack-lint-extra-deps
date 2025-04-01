@@ -80,11 +80,12 @@
 
           # It is necessary to get this using a fetcher that doesn't unpack to
           # preserve hash compatibility among case (in/)sensitive file systems.
-          all-cabal-hashes = final.fetchurl {
-            name = "all-cabal-hashes";
-            url = "https://github.com/commercialhaskell/all-cabal-hashes/archive/5930c2335a80404908fafcff6d99ef15a3b68aae.tar.gz";
-            sha256 = "1nagkbxy9fwyx46d3cvhq1y3sanxd73hbghfyxp6mf79f21g7xci";
-          };
+          all-cabal-hashes = final.fetchurl (
+            {
+              name = "all-cabal-hashes";
+            }
+            // nixpkgs.lib.importJSON ./all-cabal-hashes.json
+          );
 
           additionalHaskellPkgSetOverrides = hfinal: hprev: {
             # Do not test libraries
