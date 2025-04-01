@@ -24,8 +24,8 @@ jobs:
       - name: Update stack.yaml.lock
         run: stack build --dry-run
 
-      - name: Update nix lock
-        run: _
+      - name: Update all-cabal-hashes.json
+        run: ./update-all-cabal-hashes
 
       # Use a token to ensure CI runs on the created PR
       - id: token

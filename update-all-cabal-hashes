@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+COMMIT=$(curl "https://api.github.com/repos/commercialhaskell/all-cabal-hashes/commits/hackage" | jq '.sha')
+
+echo $COMMIT
