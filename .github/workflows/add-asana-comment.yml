@@ -1,0 +1,16 @@
+name: Asana
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  link-asana-task:
+    if: $
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Asana/create-app-attachment-github-action@v1.3
+        id: postAttachment
+        with:
+          asana-secret: $
+      - run: echo "Status is $"
