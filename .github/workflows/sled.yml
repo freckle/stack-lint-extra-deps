@@ -39,5 +39,6 @@ jobs:
         with:
           branch: sled/auto-fix
           title: "Update Haskell dependencies"
+          commit-message: "fix(deps): update Haskell dependencies"
           base: main
           token: ${{ steps.token.outputs.token }}
