@@ -39,5 +39,5 @@ jobs:
         with:
           branch: sled/auto-fix
           title: "Update Haskell dependencies"
-          base: ${{ github.event.name == 'pull_request' && github.event.pull_request.head.ref || 'main' }}
+          base: main
           token: ${{ steps.token.outputs.token }}
