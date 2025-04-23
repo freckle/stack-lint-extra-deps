@@ -2,7 +2,7 @@ name: stack-lint-extra-deps
 
 # Format: {EPOCH}.{MAJOR}.{MINOR}.{PATCH}
 #
-# {MAJOR}.{MINOR}.{PATCH} will be automatically set by semantic-relase, the
+# {MAJOR}.{MINOR}.{PATCH} will be automatically set by semantic-release, the
 # manually-set {EPOCH} will be respected. If changing {EPOCH}, also change
 # tagFormat in .releaserc.yaml.
 version: 1.0.0.0
