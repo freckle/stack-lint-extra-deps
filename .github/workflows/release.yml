@@ -29,6 +29,7 @@ jobs:
         with:
           dry_run: true
           extra_plugins: |
+            conventional-changelog-conventionalcommits
             @semantic-release/exec
         env:
           FORCE_COLOR: 1
@@ -64,6 +65,7 @@ jobs:
         uses: cycjimmy/semantic-release-action@v4
         with:
           extra_plugins: |
+            conventional-changelog-conventionalcommits
             @semantic-release/exec
         env:
           FORCE_COLOR: 1
