@@ -5,7 +5,7 @@ plugins:
     - preset: "conventionalcommits"
   - "@semantic-release/release-notes-generator"
   - - "@semantic-release/exec"
-    - verifyReleaseCmd: "./bump-package-yaml '${nextRelease.version}'"
+    - verifyReleaseCmd: "./bin/bump-package-yaml '${nextRelease.version}'"
   - - "@semantic-release/github"
     - assets: "*-binaries/stack-lint-extra-deps-*.tar.gz"
       successCommentCondition: false
