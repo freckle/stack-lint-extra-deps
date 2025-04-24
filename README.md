@@ -113,8 +113,6 @@ steps:
         --no-exit
 ```
 
-![](./files/action.png)
-
 ### Action Version
 
 Version branches (e.g. `@v1`) are unrelated to the tool's version itself (and
