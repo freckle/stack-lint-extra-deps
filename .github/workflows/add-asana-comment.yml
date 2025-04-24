@@ -6,11 +6,11 @@ on:
 
 jobs:
   link-asana-task:
-    if: $
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: Asana/create-app-attachment-github-action@v1.3
         id: postAttachment
         with:
-          asana-secret: $
-      - run: echo "Status is $"
+          asana-secret: ${{ secrets.ASANA_API_ACCESS_KEY }}
+      - run: echo "Status is ${{ steps.postAttachment.outputs.status }}"
