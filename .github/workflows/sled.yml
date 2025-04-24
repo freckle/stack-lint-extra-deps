@@ -26,7 +26,7 @@ jobs:
         run: stack build --dry-run
 
       - name: Update all-cabal-hashes.json
-        run: ./bin/update-all-cabal-hashes
+        run: git diff --exit-code stack.yaml.lock || ./bin/update-all-cabal-hashes
 
       # Use a token to ensure CI runs on the created PR
       - id: token
