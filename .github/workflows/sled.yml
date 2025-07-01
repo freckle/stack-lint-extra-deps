@@ -35,10 +35,17 @@ jobs:
           app-id: ${{ vars.FRECKLE_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.FRECKLE_AUTOMATION_PRIVATE_KEY }}
 
-      - uses: peter-evans/create-pull-request@v7
+      - id: create
+        uses: peter-evans/create-pull-request@v7
         with:
           branch: sled/auto-fix
           title: "Update Haskell dependencies"
           commit-message: "fix(deps): update Haskell dependencies"
           base: main
           token: ${{ steps.token.outputs.token }}
+
+      - if: ${{ steps.create.outputs.pull-request-operation == 'created' }}
+        run: gh pr merge --rebase --auto "$GH_PR"
+        env:
+          GH_PR: ${{ steps.create.outputs.pull-request-number }}
+          GH_TOKEN: ${{ steps.token.outputs.token }}
