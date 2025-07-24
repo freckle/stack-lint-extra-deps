@@ -60,7 +60,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - uses: actions/download-artifact@v4
+
+      - id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.FRECKLE_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.FRECKLE_AUTOMATION_PRIVATE_KEY }}
+
       - id: release
         uses: cycjimmy/semantic-release-action@v4
         with:
@@ -69,4 +79,4 @@ jobs:
             @semantic-release/exec
         env:
           FORCE_COLOR: 1
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ steps.token.outputs.token }}
