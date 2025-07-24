@@ -8,6 +8,12 @@ plugins:
 
   - - "@semantic-release/exec"
     - verifyReleaseCmd: "./bin/bump-package-yaml '${nextRelease.version}'"
+
+  # Commit the updated version so from-source builds work
+  - - "@semantic-release/git"
+    - assets: ["package.yaml", "*.cabal"]
+      message: "chore(release): update package.yaml and cabal files"
+
   - - "@semantic-release/github"
     - assets: "*-binaries/stack-lint-extra-deps-*.tar.gz"
       successCommentCondition: false
