@@ -62,7 +62,7 @@ getSnapshotsPage
 getSnapshotsPage page = liftIO $ try $ do
   req <-
     parseRequestThrow
-      $ "http://www.stackage.org/snapshots?page="
+      $ "https://www.stackage.org/api/v1/snapshots?page="
       <> show page
   resp <- httpJSON req
   pure $ getResponseBody resp
