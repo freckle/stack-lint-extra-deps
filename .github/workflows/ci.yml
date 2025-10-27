@@ -15,6 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: freckle/stack-action@v5
+
+      # NOTE: This step tests execution in the context of an action, and is here
+      # so that it uses the branch-built binary. The test-action matrix exists
+      # separately to test the _installation_ portion of the action only, which
+      # is affected by operating system.
       - uses: ./
         with:
           arguments: --format gha --path test/examples/lts-18.18.yaml --no-exit
@@ -36,7 +41,8 @@ jobs:
       - uses: actions/checkout@v5
       - uses: ./
         with:
-          arguments: --path test/examples/lts-18.18.yaml --no-exit
+          run: false
+      - run: stack-lint-extra-deps --version
 
   nix:
     strategy:
