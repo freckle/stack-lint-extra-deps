@@ -18,6 +18,12 @@ inputs:
       to be installed and on PATH already.
     required: false
     default: false
+  run:
+    description: |
+      Whether to run the tool or not. This is mostly useful for testing the
+      install portion of the action. Default is `true`.
+    required: false
+    default: true
   github-token:
     description: |
       GitHub token for authenticating with GitHub API (to determine release
@@ -59,7 +65,8 @@ runs:
         os-darwin: osx
         arch-x64: x86_64
 
-    - shell: bash
+    - if: ${{ inputs.run == 'true' }}
+      shell: bash
       run: |
         ${{inputs.executable}} ${{ inputs.arguments }}
       env:
