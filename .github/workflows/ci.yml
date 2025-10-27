@@ -14,16 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - id: stack
-        uses: freckle/stack-action@v5
-      - uses: actions/upload-artifact@v4
+      - uses: freckle/stack-action@v5
+      - uses: ./
         with:
-          name: binary
-          path: |
-            ${{ steps.stack.outputs.local-bin }}/stack-lint-extra-deps
+          arguments: --format gha --path test/examples/lts-18.18.yaml --no-exit
+          executable: stack exec -- stack-lint-extra-deps
+          no-install: true
 
   test-action:
-    needs: test
     strategy:
       matrix:
         runner:
@@ -36,14 +34,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v4
-        with:
-          name: binary
-          path: /usr/local/bin
       - uses: ./
         with:
-          arguments: --format gha --path test/examples/lts-18.18.yaml --no-exit
-          no-install: true
+          arguments: --path test/examples/lts-18.18.yaml --no-exit
 
   nix:
     strategy:
