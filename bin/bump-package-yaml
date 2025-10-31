@@ -13,3 +13,5 @@ version=$epoch.$major.$minor.$patch
 
 printf 'Updating package.yaml version to %s\n' "$version"
 yq -i ".version = \"$version\"" package.yaml
+
+stack build --dry-run --hpack-force
