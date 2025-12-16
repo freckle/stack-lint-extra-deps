@@ -36,7 +36,7 @@ jobs:
           private-key: ${{ secrets.FRECKLE_AUTOMATION_PRIVATE_KEY }}
 
       - id: create
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: sled/auto-fix
           title: "Update Haskell dependencies"
