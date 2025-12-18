@@ -49,7 +49,7 @@ jobs:
           ./dist/stack-lint-extra-deps/stack-lint-extra-deps --version
           tar -C dist -czf ./stack-lint-extra-deps-${{ matrix.suffix }}.tar.gz ./stack-lint-extra-deps
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.os }}-binaries
           path: "stack-lint-extra-deps-*.tar.gz"
@@ -63,7 +63,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
 
       - id: release
         uses: cycjimmy/semantic-release-action@v4
