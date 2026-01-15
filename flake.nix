@@ -4,7 +4,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-24.11";
+      ref = "nixos-25.11";
     };
     nixpkgs-haskell-updates = {
       type = "github";
@@ -76,7 +76,7 @@
           stackYaml = ./stack.yaml;
 
           # GHC version that matches stack.yaml
-          baseHaskellPkgSet = final.haskell.packages.ghc984;
+          baseHaskellPkgSet = final.haskell.packages.ghc9103;
 
           # It is necessary to get this using a fetcher that doesn't unpack to
           # preserve hash compatibility among case (in/)sensitive file systems.
