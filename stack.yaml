@@ -1,3 +1,3 @@
-resolver: lts-24.26
+resolver: lts-24.28
 extra-deps:
   - yaml-marked-0.2.0.1
