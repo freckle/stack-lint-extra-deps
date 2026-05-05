@@ -4,7 +4,7 @@
       type = "github";
       owner = "nixos";
       repo = "nixpkgs";
-      ref = "nixos-24.11";
+      ref = "nixos-25.11";
     };
     nixpkgs-haskell-updates = {
       type = "github";
