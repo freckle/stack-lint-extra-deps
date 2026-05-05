@@ -65,6 +65,12 @@ jobs:
 
       - uses: actions/download-artifact@v8
 
+      - id: token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.FRECKLE_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.FRECKLE_AUTOMATION_PRIVATE_KEY }}
+
       - id: release
         uses: cycjimmy/semantic-release-action@v6.0.0
         with:
@@ -73,4 +79,4 @@ jobs:
             @semantic-release/exec
         env:
           FORCE_COLOR: 1
-          GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.token.outputs.token }}
